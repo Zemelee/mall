@@ -4,25 +4,13 @@
 
     <el-form ref="form">
       <el-form-item prop="username">
-        <el-input
-          v-model="username"
-          placeholder="用户名"
-          :prefix-icon="User"
-        ></el-input>
+        <el-input v-model="username" placeholder="用户名" :prefix-icon="User"></el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input
-          v-model="password"
-          placeholder="密码"
-          type="password"
-          :prefix-icon="Lock"
-          show-password
-        ></el-input>
+        <el-input v-model="password" placeholder="密码" type="password" :prefix-icon="Lock" show-password></el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <div
-          style="display: flex; align-items: center; justify-content: flex-end"
-        >
+        <div style="display: flex; align-items: center; justify-content: flex-end">
           <div class="code-left">
             <el-input v-model="Bcode" placeholder="请输入验证码" />
           </div>
@@ -37,11 +25,7 @@
         <el-button class="thirdparty-button" type="primary" @click="dialog">
           注册
         </el-button>
-        <a
-          href="http://sugarblack.top/music/#/default/home"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href="http://sugarblack.top/music/#/default/home" target="_blank" rel="noopener noreferrer">
           听听歌
         </a>
       </el-form-item>
@@ -75,6 +59,7 @@ console.log(Acode.value);
 const codeImg = ref(generateCodeImg(Acode.value));
 const createCode = () => {
   var newCodeText = generateCode();
+  Acode.value = newCodeText;
   var newCode = generateCodeImg(newCodeText);
   codeImg.value = newCode;
   console.log(newCodeText);
@@ -88,6 +73,7 @@ async function login() {
     ElMessage.error("请输入验证码！");
     return;
   } else if (Bcode.value != Acode.value) {
+    console.log(Acode.value, Bcode.value);
     ElMessage.error("验证码不正确！");
     return;
   }
@@ -140,6 +126,6 @@ function dialog() {
   border: 1px solid #ddd;
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  
+
 }
 </style>

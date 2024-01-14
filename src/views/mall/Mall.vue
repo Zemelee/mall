@@ -1,30 +1,25 @@
 <template>
-  <div style="border:1px solid red">
+  <div>
     <el-container style="height: 100vh;">
 
 
-        <el-header style="height: 10%">
-          <Header @send-category="shift" />
-        </el-header>
+      <el-header style="height: 10%">
+        <Header @send-category="shift" />
+      </el-header>
 
 
-        <el-main style="border: 1px solid red;">
-          点击右上角头像--智能客服可以体验对话，还可以通过预设对话设置大模型人格
-          <br />注意：任何人格嘻嘻
-          <!-- <div class="products-display">
-            <Product
-              v-for="(item, index) in products.list"
-              :product="item"
-              :key="index"
-              @click="goDetails(item.id)"
-            />
-          </div> -->
-        </el-main>
+      <el-main style="border: 1px solid red;">
+        点击右上角头像--智能客服可以体验对话，还可以通过预设对话设置大模型人格
+        <br />注意：任何人格嘻嘻
+        <div class="products-display">
+          <Product v-for="(item, index) in products.list" :product="item" :key="index" @click="goDetails(item.id)" />
+        </div>
+      </el-main>
 
 
-        <el-footer class="el-footer">
-          <Footer />
-        </el-footer>
+      <el-footer class="el-footer">
+        <Footer />
+      </el-footer>
 
 
     </el-container>
@@ -37,7 +32,7 @@ import service from "../../request/index.js";
 import axios from 'axios';
 import Header from "./Header.vue";
 import Footer from "./Footer.vue";
-// import Product from "@/components/Product.vue";
+import Product from "../../components/Product.vue";
 import { ref, reactive, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
@@ -76,16 +71,16 @@ async function shift(category) {
     });
 }
 
-// function goDetails(id) {
-//   // 同时传入 path 和 params, params 会被忽略。
-//   router.push({ name: "details", params: { id: id }, target: "_blank" });
-// }
+const goDetails = (id) => {
+  router.push({ name: "details", params: { id: id }, target: "_blank" });
+}
 </script>
 
 <style scoped>
-.el-container{
+.el-container {
   width: 90vw;
 }
+
 .el-footer {
   position: relative;
   background-color: aliceblue;
