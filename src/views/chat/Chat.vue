@@ -89,8 +89,8 @@ export default {
   data() {
     return {
       appId: "ff4c471e",
-      apiKey: "8055ecee3d710fd9f099fa7c6198cd99",
-      apiSecret: "Y2VhMmI1ZmZjYTc3OWE2ZjY3NDgyOGQy",
+      apiKey: "",
+      apiSecret: "",
       status: "init",
       avavatar: "",
       sparkWS: null,
