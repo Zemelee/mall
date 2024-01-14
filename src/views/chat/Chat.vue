@@ -65,9 +65,6 @@
         <br />
         由于官方给的token有限，此服务可能在未来某个时间点（未知，按月计）停止
         <br />
-        所以里推荐一个功能比较正经的大模型:
-        <a href="https://wenbo.houqixx.com/web/#/" target="_blank" rel="noopener noreferrer">wenbo</a>
-        <br />
         <span style="color: red">WARNING：严禁诱导大模型作出任何违反社会主义价值观的行为！！！</span>
         <br />
         你的ip地址为:{{ ip }}
