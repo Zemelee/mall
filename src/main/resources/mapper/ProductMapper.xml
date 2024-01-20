@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mall.mapper.ProductMapper">
+
+
+    <select id="getProductById" resultType="com.example.mall.entity.Product">
+        select *
+        from product
+        where id = #{productId}
+    </select>
+
+    <select id="getProductWithAttributes" resultMap="productWithAttributesResultMap">
+        SELECT product.*,
+               attribution.id         as attr_id,
+               attribution.product_id as attr_product_id,
+               attribution.attrval,
+               attribution.inventory,
+               attribution.more
+        FROM product
+                 LEFT JOIN attribution ON product.id = attribution.product_id
+        WHERE product.id = #{productId}
+    </select>
+    <resultMap id="productWithAttributesResultMap" type="com.example.mall.entity.Product">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="price" column="price"/>
+        <result property="category" column="category"/>
+        <result property="state" column="state"/>
+        <result property="sales" column="sales"/>
+        <result property="description" column="description"/>
+        <result property="picsrc" column="picsrc"/>
+        <!-- 定义嵌套属性的 ResultMap -->
+        <collection property="attributions" ofType="com.example.mall.entity.Attribution">
+            <id property="id" column="attr_id"/>
+            <result property="product_id" column="attr_product_id"/>
+            <result property="attrval" column="attrval"/>
+            <result property="inventory" column="inventory"/>
+            <result property="more" column="more"/>
+        </collection>
+    </resultMap>
+
+
+    <select id="getProductByCategory" resultMap="productWithAttributionsResultMap">
+        SELECT product.*,
+               attribution.id as attr_id,
+               attribution.product_id,
+               attribution.attrval,
+               attribution.inventory,
+               attribution.more
+        FROM product
+                 LEFT JOIN attribution ON product.id = attribution.product_id
+        WHERE product.category = #{categoryId}
+    </select>
+    <resultMap id="productWithAttributionsResultMap" type="com.example.mall.entity.Product">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="price" column="price"/>
+        <result property="sales" column="sales"/>
+        <result property="category" column="category"/>
+        <result property="state" column="state"/>
+        <result property="description" column="description"/>
+        <result property="picsrc" column="picsrc"/>
+        <!-- 配置嵌套的 attribution 列表 -->
+        <collection property="attributions" ofType="com.example.mall.entity.Attribution">
+            <id property="id" column="attr_id"/>
+            <result property="product_id" column="product_id"/>
+            <result property="attrval" column="attrval"/>
+            <result property="inventory" column="inventory"/>
+            <result property="more" column="more"/>
+        </collection>
+    </resultMap>
+
+
+    <!--useGeneratedKeys="true": 这个属性告诉 MyBatis 启用 JDBC 驱动程序的生成键特性，以便从数据库中获取自动生成的主键值-->
+    <!--keyProperty="id": 指定了在插入记录后，将生成的主键值设置到参数类型Product哪个属性上。希望将生成的主键值设置到Product对象的id属性上。-->
+    <insert id="addProduct" parameterType="com.example.mall.entity.Product" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO product (name, price, category, description, picsrc)
+        VALUES (#{name}, #{price}, #{category}, #{description}, #{picsrc})
+    </insert>
+    <!-- 插入商品规格 -->
+    <insert id="addProductAttribution" parameterType="com.example.mall.entity.Attribution">
+        INSERT INTO attribution (product_id, attrval, inventory,more)
+        VALUES (#{product_id}, #{attrval}, #{inventory},#{more})
+    </insert>
+</mapper>
