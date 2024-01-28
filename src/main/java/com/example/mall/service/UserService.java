@@ -5,9 +5,6 @@ import com.example.mall.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
-
 @Service
 public class UserService {
     @Autowired
@@ -18,13 +15,14 @@ public class UserService {
         return userMapper.userLogin(name, pwd);
     }
 
+    public void registerUser(User user) {
+        userMapper.registerUser(user);
+    }
+
     public boolean validateUser(String name, String pwd) {
         User user = userMapper.getUserByName(name);
         // 如果找不到用户或者密码不匹配，返回 false
-        if (user == null || !user.getPassword().equals(pwd)) {
-            return false;
-        }
-        return true;
+        return user != null && user.getPassword().equals(pwd);
     }
 
     public User getUserById(int id) {

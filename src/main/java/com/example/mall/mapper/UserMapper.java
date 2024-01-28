@@ -15,7 +15,6 @@ public interface UserMapper {
 
     User getUserById(int id);
 
-    //
+    void registerUser(User user);
     float recharge(@Param("id") int id, @Param("amount") float amount);
-//    float selectBalance(@Param("id") int id);
 }

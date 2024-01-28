@@ -8,6 +8,11 @@
         where username = #{name}
           and password = #{pwd}
     </select>
+
+    <insert id="registerUser" parameterType="com.example.mall.entity.User" useGeneratedKeys="true" keyProperty="user_id">
+        insert into user (username, password, address, phone)
+        values (#{username}, #{password}, #{address}, #{phone})
+    </insert>
 <!--<selectKey>设置keyProperty为返回的余额字段名 表示在更新后再查询-->
     <update id="recharge">
         UPDATE user
