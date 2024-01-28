@@ -1,6 +1,7 @@
 package com.example.mall.service;
 
 import com.example.mall.entity.User;
+import com.example.mall.entity.UserFeedback;
 import com.example.mall.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,5 +34,8 @@ public class UserService {
         return userMapper.recharge(id, amount);
     }
 
+    public void addFeedback(UserFeedback userFeedback){
+        userMapper.addFeedback(userFeedback);
+    }
 
 }

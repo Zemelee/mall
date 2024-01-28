@@ -1,6 +1,7 @@
 package com.example.mall.controller;
 
 import com.example.mall.entity.User;
+import com.example.mall.entity.UserFeedback;
 import com.example.mall.entity.UserRegistrationRequest;
 import com.example.mall.mapper.UserMapper;
 import com.example.mall.response.LoginResponse;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 
 @RestController
@@ -61,6 +64,7 @@ public class UserController {
         return userService.getUserById(id);
     }
 
+
     @Getter
     static
     class RechargeRequest {
@@ -71,6 +75,21 @@ public class UserController {
     @PostMapping("/user/recharge")
     public Float recharge(@RequestBody RechargeRequest recharge) {
         return userService.recharge(recharge.getId(), recharge.getAmount());
+    }
+
+    @PostMapping("/user/feedback")
+    public ResponseEntity<String> registerUser(@RequestBody UserFeedback userFeedback) {
+        System.out.println(userFeedback);
+        UserFeedback newFeedback = new UserFeedback();
+        System.out.println(userFeedback.getFeedback() + " | " + userFeedback.getUsername() + " | " + userFeedback.getSubmitTime() + " | " + userFeedback.getEmail());
+        newFeedback.setUsername(userFeedback.getUsername());
+        newFeedback.setFeedback(userFeedback.getFeedback());
+        newFeedback.setEmail(userFeedback.getEmail());
+        Date currentTime = new Date();
+        newFeedback.setSubmitTime(currentTime);
+        // 调用服务层完成反馈保存
+        userService.addFeedback(newFeedback);
+        return new ResponseEntity<>("feedback successfully", HttpStatus.OK);
     }
 
 

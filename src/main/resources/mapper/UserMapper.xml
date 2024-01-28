@@ -35,5 +35,9 @@
         where user_id = #{id}
     </select>
 
+    <insert id="addFeedback" parameterType="com.example.mall.entity.UserFeedback">
+        insert into feedback (username, email, feedback, submittime)
+        values (#{username}, #{email}, #{feedback}, #{submitTime})
+    </insert>
 
 </mapper>

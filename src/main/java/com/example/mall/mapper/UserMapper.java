@@ -1,6 +1,7 @@
 package com.example.mall.mapper;
 
 import com.example.mall.entity.User;
+import com.example.mall.entity.UserFeedback;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -17,4 +18,7 @@ public interface UserMapper {
 
     void registerUser(User user);
     float recharge(@Param("id") int id, @Param("amount") float amount);
+
+    void addFeedback(UserFeedback feedback);
+
 }
