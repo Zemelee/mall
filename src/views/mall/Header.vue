@@ -90,7 +90,7 @@ export default {
     const products = reactive({
       list: [],
     });
-    const selectedCategory = reactive(null)
+    let selectedCategory = reactive(null)
     //切换id
     function shift(category) {
       selectedCategory = category;

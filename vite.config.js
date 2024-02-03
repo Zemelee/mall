@@ -9,4 +9,13 @@ export default defineConfig({
       '@': 'src', 
     },
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8081', //这里填写你的API服务器地址
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, "")
+      }
+    }
+  }
 });

@@ -17,9 +17,9 @@
       </el-main>
 
 
-      <el-footer class="el-footer">
+      <!-- <el-footer class="el-footer">
         <Footer />
-      </el-footer>
+      </el-footer> -->
 
 
     </el-container>
@@ -56,6 +56,7 @@ onMounted(async () => {
 
 
 async function shift(category) {
+  console.log(111);
   // 按种类请求product
   await service
     .get(`/mall/product/category=${category}`)
