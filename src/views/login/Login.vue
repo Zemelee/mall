@@ -12,8 +12,8 @@
       <el-form-item prop="password">
         <div style="display: flex; align-items: center; justify-content: flex-end">
           <div class="code-left">
-            <el-input v-model="Bcode" placeholder="请输入验证码" />
-          </div>
+            <el-input v-model="Bcode" @keydown.enter="login" placeholder="请输入验证码" />
+          </div>  
           <div class="code-right" style="margin-left: 20px">
             <img :src="codeImg" @click="createCode" />
           </div>
@@ -119,7 +119,7 @@ function dialog() {
 </script>
 
 
-<style>
+<style scoped>
 .login {
   width: 400px;
   margin: 100px auto;

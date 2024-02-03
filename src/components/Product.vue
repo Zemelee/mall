@@ -13,7 +13,7 @@
           <!-- <span class="product-price">已售：{{ product.sales }}</span> -->
         </p>
         <p class="product-price">{{ formatPrice(product.price) }}</p>
-        <button @click="addToCart" class="add-to-cart-btn">Add to Cart</button>
+        <button @click.prevent="addToCart" class="add-to-cart-btn">Add to Cart</button>
       </div>
     </div>
   </el-card>

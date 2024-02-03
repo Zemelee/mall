@@ -29,7 +29,6 @@
 
 <script setup>
 import service from "../../request/index.js";
-import axios from 'axios';
 import Header from "./Header.vue";
 import Footer from "./Footer.vue";
 import Product from "../../components/Product.vue";
