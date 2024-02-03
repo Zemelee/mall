@@ -20,7 +20,6 @@ public class JwtInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 拦截器逻辑
         String authHeader = request.getHeader("Authorization");
-        System.out.println(authHeader);
         if (authHeader == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
