@@ -11,8 +11,8 @@
 </template>
 
 <script setup>
-import service from "@/request/index";
-import axios from "axios";
+import service from "../../request/index";
+import axios from "axios";  
 import { ElMessage } from "element-plus";
 import { onMounted } from "vue";
 </script>

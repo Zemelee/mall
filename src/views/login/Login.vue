@@ -32,7 +32,7 @@
     </el-form>
 
     <el-dialog title="新用户注册" ref="dialogRef" v-model="showDialog">
-      十分抱歉，持续关注，感谢理解
+      新用户注册  
       <br />
       <br />
       <br />
@@ -46,7 +46,7 @@
 import { generateCodeImg, generateCode } from "../../utils/code";
 import { User, Lock } from "@element-plus/icons-vue";
 import service from "../../request/index";
-import Dialog from "./Dialog.vue";
+import Dialog from "./Register.vue";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";

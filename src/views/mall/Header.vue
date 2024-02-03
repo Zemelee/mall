@@ -7,53 +7,30 @@
       </div>
       <div class="breadcrumb">
         <el-breadcrumb separator="/">
-          <el-breadcrumb-item
-            v-for="breadcrumb in breadcrumbs"
-            :key="breadcrumb.text"
-            :to="breadcrumb.to"
-          >
+          <el-breadcrumb-item v-for="breadcrumb in breadcrumbs" :key="breadcrumb.text" :to="breadcrumb.to">
             {{ breadcrumb.text }}
           </el-breadcrumb-item>
         </el-breadcrumb>
       </div>
     </div>
-    <div class="header-center">
-      <el-button
-        v-for="button in buttons"
-        :key="button.text"
-        :type="button.type"
-        @click="shift(button.category)"
-        link
-        >{{ button.text }}</el-button
-      >
-    </div>
+      <div class="header-center">
+        <el-button v-for="button in buttons" :key="button.text" :type="button.type"
+          :class="{ 'highlighted': button.category === selectedCategory }" @click="shift(button.category)" link>{{
+            button.text }}</el-button>
+      </div>
 
     <div class="header-right">
       <el-dropdown>
         <span class="el-dropdown-link">
-          <img
-            :src="avatarGif"
-            style="border: 1px solid black"
-            class="avatar"
-          />
+          <img :src="avatarGif" style="border: 1px solid black" class="avatar" />
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item @click="newtab('/chat')"
-              >智能客服</el-dropdown-item
-            >
-            <el-dropdown-item @click="newtab('profile/self')"
-              >个人中心</el-dropdown-item
-            >
+            <el-dropdown-item @click="newtab('/chat')">智能客服</el-dropdown-item>
+            <el-dropdown-item @click="newtab('profile/self')">个人中心</el-dropdown-item>
             <el-dropdown-item>
-              <el-popconfirm
-                confirm-button-text="Yes"
-                cancel-button-text="No"
-                :icon="InfoFilled"
-                icon-color="#626AEF"
-                title="确认退出?"
-                @confirm="logout"
-              >
+              <el-popconfirm confirm-button-text="Yes" cancel-button-text="No" :icon="InfoFilled" icon-color="#626AEF"
+                title="确认退出?" @confirm="logout">
                 <template #reference> 退出登录 </template>
               </el-popconfirm>
             </el-dropdown-item>
@@ -113,15 +90,12 @@ export default {
     const products = reactive({
       list: [],
     });
+    const selectedCategory = reactive(null)
     //切换id
     function shift(category) {
+      selectedCategory = category;
       context.emit("send-category", category);
     }
-    onMounted(()=>{
-      console.log(1);
-    })
-      
-
     return {
       breadcrumbs,
       avatarGif,
@@ -139,6 +113,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.highlighted {
+  background-color: #409eff; // 高亮时的背景颜色
+  color: #ffffff; // 高亮时的文字颜色
+}
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -146,11 +125,15 @@ export default {
 }
 
 .header-left {
-  display: flex; /* 使用flex来控制内部div */
+  display: flex;
+  /* 使用flex来控制内部div */
   width: 20%;
+
   .logo {
-    margin-right: 10px; /* 调整logo和breadcrumb之间的间距 */
+    margin-right: 10px;
+    /* 调整logo和breadcrumb之间的间距 */
     width: 80px;
+
     .logo-img {
       width: 80px;
       height: 40px;
@@ -159,10 +142,14 @@ export default {
 }
 
 .breadcrumb {
-  flex-grow: 1; /* 允许breadcrumb占据剩余空间 */
-  text-align: center; /*水平居中*/
-  align-items: center; /*垂直居中*/
-  display: flex; /*使用flex布局 */
+  flex-grow: 1;
+  /* 允许breadcrumb占据剩余空间 */
+  text-align: center;
+  /*水平居中*/
+  align-items: center;
+  /*垂直居中*/
+  display: flex;
+  /*使用flex布局 */
 }
 
 .active {
@@ -173,14 +160,18 @@ export default {
   display: flex;
   align-items: center;
   width: 10%;
-  justify-content: flex-end; /* 将内容推到右侧 */
+  justify-content: flex-end;
+  /* 将内容推到右侧 */
   height: 100%;
-  position: relative; /* 添加相对定位 */
+  position: relative;
+
+  /* 添加相对定位 */
   .avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    margin-top: 5px; /* 调整垂直居中的位置 */
+    margin-top: 5px;
+    /* 调整垂直居中的位置 */
   }
 }
 

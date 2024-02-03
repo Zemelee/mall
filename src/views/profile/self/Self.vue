@@ -56,7 +56,7 @@
 
 
 <script setup>
-import service from "@/request/index";
+import service from "../../../request/index";
 import axios from "axios";
 import { ElMessage } from "element-plus";
 import { onMounted, computed, ref, reactive } from "vue";

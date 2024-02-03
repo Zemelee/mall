@@ -4,7 +4,7 @@
 
 
       <el-header style="height: 10%">
-        <Header @send-category="shift" />
+        <Header @send-category="shift"></Header>
       </el-header>
 
 
