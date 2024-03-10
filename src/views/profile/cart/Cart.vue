@@ -29,7 +29,7 @@
           <span>总价</span>
           <span>{{ totalPrice.toFixed(2) }}</span>
         </div>
-        <el-button type="submit">提交订单</el-button>
+        <el-button type="submit" @click="submitOrder">提交订单</el-button>
       </form>
     </main>
   </div>
@@ -37,7 +37,7 @@
 
 <script setup>
 import { useRoute, useRouter } from "vue-router";
-import { useCartStore } from "../../../store/cart.js";
+import { useCartStore } from "@/store/cart.js";
 import { ref, computed } from "vue";
 import { ElMessage } from "element-plus";
 const route = useRoute();
@@ -45,15 +45,14 @@ const router = useRouter();
 
 const Cart = useCartStore();
 const cartList = JSON.parse(Cart.cartList);  // 商品、属性、数量
-console.log("cartList:", cartList)
 const ids = [...new Set(cartList.map((item) => item.productid))];
-const products = Cart.products;  // 商品的详细信息
+console.log("ids:", ids);
 
 // 获取商品列表
 Cart.fetchProducts(ids).then(() => {
+  console.log("ids:", ids);
   //获取到了购物车的详细数据数据products
   Cart.updateProducts(cartList)
-  console.log("products:", products);
 });
 
 

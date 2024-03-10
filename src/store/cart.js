@@ -3,6 +3,7 @@ import service from "../request/index.js";
 import { ElMessage } from "element-plus";
 export const useCartStore = defineStore('cartList', {
     state: () => ({
+        // const Cart = useCartStore(); Cart.cartList
         cartList: localStorage.getItem('cartList') || [],//获取购物车列表
         products: []
     }),

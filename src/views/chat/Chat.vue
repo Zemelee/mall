@@ -14,7 +14,7 @@
         <div class="chat-page reply-left" style="border: 1px solid red">
           <!-- logo -->
           <img style="width: 100px; margin-left: 20px; border-radius: 4px"
-            src="https://aixfyun.cn-bj.ufileos.com/bbs/86027.81886259101/logo.svg" />
+            src="https://xinghuo.xfyun.cn/static/media/sparkdesk.34d76de5c2313b16ec3beacbe4269b9f.svg" />
           <div class="message-container">
             <div style="display: flex; align-items: center" v-for="(item, index) in messages" :key="index" class="message"
               :style="{
@@ -86,8 +86,8 @@ export default {
   data() {
     return {
       appId: "ff4c471e",
-      apiKey: "",
-      apiSecret: "",
+      apiKey: "8055ecee3d710fd9f099fa7c6198cd99",
+      apiSecret: "Y2VhMmI1ZmZjYTc3OWE2ZjY3NDgyOGQy",
       status: "init",
       avavatar: "",
       sparkWS: null,
@@ -128,20 +128,20 @@ export default {
     // 挂载时从本地存储获取记录
     this.messages =
       JSON.parse(localStorage.getItem("history")) || this.messages;
-    const that = this;
-    that.getip();
-    try {
-      axios
-        .get(`http://ip-api.com/json/${this.ip}`)
-        .then((res) => {
-          this.userinfo = res.data;
-        })
-        .catch((err) => {
-          ElMessage.error("地理信息失败：", JSON.stringify(err));
-        });
-    } catch (error) {
-      ElMessage.error("用户ip获取失败:", JSON.stringify(error));
-    }
+    // const that = this;
+    // that.getip();
+    // try {
+    //   axios
+    //     .get(`http://ip-api.com/json/${this.ip}`)
+    //     .then((res) => {
+    //       this.userinfo = res.data;
+    //     })
+    //     .catch((err) => {
+    //       ElMessage.error("地理信息失败：", JSON.stringify(err));
+    //     });
+    // } catch (error) {
+    //   ElMessage.error("用户ip获取失败:", JSON.stringify(error));
+    // }
 
   },
   watch: {
@@ -171,7 +171,7 @@ export default {
         const authorizationOrigin = `api_key="${this.apiKey}", algorithm="${algorithm}", headers="${headers}", signature="${signature}"`;
         const authorization = window.btoa(authorizationOrigin);
         const finalUrl = `${url}?authorization=${authorization}&date=${date}&host=${host}`;
-        // console.log("finalUrl:", finalUrl);
+        console.log("finalUrl:", finalUrl);
         resolve(finalUrl);
       });
     },
@@ -188,7 +188,7 @@ export default {
           chat: {
             domain: "general",
             temperature: 1, //最高
-            max_tokens: 1024,
+            max_tokens: 4096,
           },
         },
         payload: {
@@ -197,7 +197,6 @@ export default {
           },
         },
       };
-      console.log("params", params);
       this.sparkWS.send(JSON.stringify(params));
     },
     //将数据保存到+=replys中，挂载到outputText上，恰当处关闭连接

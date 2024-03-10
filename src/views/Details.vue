@@ -27,7 +27,7 @@
       <el-button @click="addCart"> 加入购物车 </el-button>
     </div>
     <div>
-      <el-button @click="router.push('/cart')"> 去购物车 </el-button>
+      <el-button @click="router.push('/profile/cart')"> 去购物车 </el-button>
     </div>
   </div>
 </template>
@@ -35,11 +35,12 @@
 <script setup>
 import service from "../request/index.js";
 import { ref, watch, reactive, onMounted } from "vue";
+import { useCartStore } from "@/store/cart.js";
 import { useRoute, useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 const route = useRoute();
 const router = useRouter();
-
+const Cart = useCartStore();
 const details = ref(null);
 onMounted(async () => {
   //route关注当前路由的参数，路径
@@ -47,9 +48,7 @@ onMounted(async () => {
 });
 
 const attrid = ref(0); // 用户选择
-// watch(attrid, (n, o) => {
-//   console.log(n);
-// });
+
 const numSelect = ref(1); // 数量选择
 
 async function getById(id) {
@@ -94,8 +93,8 @@ function addCart() {
       cartList.push(newGoods);
       ElMessage.success("添加成功");
     }
-
     localStorage.setItem("cartList", JSON.stringify(cartList));
+    Cart.updateProducts(cartList)
   }, 300);
 }
 </script>

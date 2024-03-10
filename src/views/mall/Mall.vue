@@ -4,22 +4,21 @@
 
 
       <el-header style="height: 10%">
-        <Header @send-category="shift"></Header>
+        <Header @send-category="shift" @send-keyword="searchProduction"></Header>
       </el-header>
 
 
       <el-main style="border: 1px solid red;">
-        点击右上角头像--智能客服可以体验对话，还可以通过预设对话设置大模型人格
-        <br />注意：任何人格嘻嘻
+
         <div class="products-display">
           <Product v-for="(item, index) in products.list" :product="item" :key="index" @click="goDetails(item.id)" />
         </div>
       </el-main>
 
 
-      <!-- <el-footer class="el-footer">
+      <el-footer class="el-footer">
         <Footer />
-      </el-footer> -->
+      </el-footer>
 
 
     </el-container>
@@ -32,6 +31,7 @@ import service from "../../request/index.js";
 import Header from "./Header.vue";
 import Footer from "./Footer.vue";
 import Product from "../../components/Product.vue";
+// import Product from "@/components/Product.vue";
 import { ref, reactive, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
@@ -54,9 +54,25 @@ onMounted(async () => {
   }
 });
 
+async function searchProduction(keyword) {
+  console.log(keyword.value);
+  // 按关键字请求product
+  await service
+    .get(`/mall/product/search=${keyword.value}`)
+    .then((res) => {
+      products.list = res.data;
+    })
+    .catch((err) => {
+      if (err.response.status == 401) {
+        ElMessage.error("非法登录");
+        router.push("/login");
+      }else if(err.response.status == 404){
+        ElMessage.error("查无此商品，后续上线...");
+      }
+    });
+}
 
 async function shift(category) {
-  console.log(111);
   // 按种类请求product
   await service
     .get(`/mall/product/category=${category}`)

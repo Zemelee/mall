@@ -13,28 +13,16 @@
           <span class="product-price">已售：{{ product.sales }}</span>
         </p>
         <p class="product-price">{{ formatPrice(product.price) }}</p>
-        <button @click.prevent="addToCart" class="add-to-cart-btn">Add to Cart</button>
       </div>
     </div>
   </el-card>
 </template>
-
 <script setup>
 import { onMounted, ref ,defineProps} from "vue";
-
-
-//  defineProps({
-//   product: {
-//     type: Object,
-//     required: true,
-//   },
-// })
 const { product } = defineProps(["product"]);  // 使用defineProps获取props对象
-
 const refLazyImg = ref(null);
 const lazyLoadImage = () => {
   const observer = new IntersectionObserver((entries) => {
-    // console.log(entries);
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         const lazyImage = new Image();
