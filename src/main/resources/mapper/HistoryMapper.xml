@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mall.mapper.HistoryMapper">
+
+    <!--mybatis-->
+    <select id="getHistory" resultType="com.example.mall.entity.History">
+        SELECT r.product_id, p.`name`, a.attrval,r.quantity, a.more+p.price, r.order_time
+        FROM record r
+                 JOIN product p ON r.product_id = p.id
+                 JOIN attribution a ON r.attrid = a.id
+        WHERE r.user_id = #{userid};
+    </select>
+
+    <update id="addHistory" parameterType="com.example.mall.entity.History">
+
+    </update>
+
+
+
+
+</mapper>

@@ -2,7 +2,6 @@ package com.example.mall.mapper;
 
 import com.example.mall.entity.User;
 import com.example.mall.entity.UserFeedback;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
