@@ -20,6 +20,14 @@
                  LEFT JOIN attribution ON product.id = attribution.product_id
         WHERE product.id = #{productId}
     </select>
+
+    <select id="searchProduct" resultType="com.example.mall.entity.Product">
+        select *
+        from product
+        WHERE name LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+
+
     <resultMap id="productWithAttributesResultMap" type="com.example.mall.entity.Product">
         <id property="id" column="id"/>
         <result property="name" column="name"/>

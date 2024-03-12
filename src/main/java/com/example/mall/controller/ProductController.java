@@ -39,6 +39,16 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/search={keyword}")
+    public ResponseEntity<List<Product>> searchProduct(@PathVariable String keyword) {
+        List<Product> products = productService.searchProduct(keyword);
+        if (!products.isEmpty()) {
+            return new ResponseEntity<>(products, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Void> addProduct(@RequestBody Product product) {
         // 打印前端发送的product参数
@@ -46,8 +56,4 @@ public class ProductController {
         productService.addProductWithAttributes(product);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
-
-
-
 }

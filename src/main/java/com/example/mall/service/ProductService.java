@@ -43,6 +43,10 @@ public class ProductService {
         return productMapper.getProductByCategory(category);
     }
 
+    public List<Product> searchProduct(String keyword) {
+        return productMapper.searchProduct(keyword);
+    }
+
     public Product getProductWithAttributes(int productId) {
         return productMapper.getProductWithAttributes(productId);
     }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Date;
 
 
@@ -77,7 +78,7 @@ public class UserController {
         return userService.recharge(recharge.getId(), recharge.getAmount());
     }
 
-    @PostMapping("/user/feedback")
+    @PostMapping("/user/feedback/post")
     public ResponseEntity<String> registerUser(@RequestBody UserFeedback userFeedback) {
         System.out.println(userFeedback);
         UserFeedback newFeedback = new UserFeedback();
@@ -90,6 +91,22 @@ public class UserController {
         // 调用服务层完成反馈保存
         userService.addFeedback(newFeedback);
         return new ResponseEntity<>("feedback successfully", HttpStatus.OK);
+    }
+
+    @GetMapping("/user/feedback/get")
+    public List<UserFeedback> getAllFeedback() {
+        return userService.getFeedback();
+    }
+
+    @PostMapping("/user/update/{user_id}")
+    public ResponseEntity<String> updateUserInfo(@PathVariable int user_id,
+                                                 @RequestBody User user) {
+        boolean isUpdated = userService.updateUserInfo(user_id, user.getUsername(), user.getPassword(), user.getAddress(), user.getPhone());
+        if (isUpdated) {
+            return new ResponseEntity<>("ok", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Failed", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 

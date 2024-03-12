@@ -6,6 +6,8 @@ import com.example.mall.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     @Autowired
@@ -34,8 +36,29 @@ public class UserService {
         return userMapper.recharge(id, amount);
     }
 
-    public void addFeedback(UserFeedback userFeedback){
+    public void addFeedback(UserFeedback userFeedback) {
         userMapper.addFeedback(userFeedback);
     }
+
+    public List<UserFeedback> getFeedback() {
+
+        return userMapper.getFeedback();
+    }
+
+
+
+    public boolean updateUserInfo(int user_id, String username, String password, String address, String phone) {
+        User user = new User();
+        user.setUser_id(user_id);
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setAddress(address);
+        user.setPhone(phone);
+        user.setToken(null);
+        return userMapper.updateUserInfo(user);
+    }
+
+
+
 
 }

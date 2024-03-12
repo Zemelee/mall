@@ -18,7 +18,6 @@
         UPDATE user
         SET balance = balance + #{amount}
         WHERE user_id = #{id};
-
         <selectKey keyProperty="balance" resultType="float" order="AFTER">
             SELECT balance FROM user WHERE user_id = #{id}
         </selectKey>
@@ -39,5 +38,21 @@
         insert into feedback (username, email, feedback, submittime)
         values (#{username}, #{email}, #{feedback}, #{submitTime})
     </insert>
+
+    <select id="getFeedback" resultType="com.example.mall.entity.UserFeedback">
+        SELECT *
+        FROM feedback
+        ORDER BY id DESC
+    </select>
+
+    <update id="updateUserInfo" parameterType="com.example.mall.entity.User">
+        UPDATE user
+        SET username = #{username},
+            password = #{password},
+            address = #{address},
+            phone = #{phone}
+        WHERE user_id = #{user_id};
+    </update>
+
 
 </mapper>

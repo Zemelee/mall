@@ -22,6 +22,7 @@ public interface ProductMapper {
     void addProductAttribution(Attribution attr);
 
     Product getProductWithAttributes(int productId);
+    List<Product> searchProduct(String keyword);
 
 
 }
