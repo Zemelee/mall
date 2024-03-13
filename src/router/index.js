@@ -4,6 +4,7 @@ import Mall from '../views/mall/Mall.vue'
 import Login from '../views/login/Login.vue'
 import Chat from '../views/chat/Chat.vue'
 import Details from '../views/Details.vue'
+import Pay from '../views/pay/Pay.vue'
 import Cart from '../views/profile/cart/Cart.vue'
 import Profile from '../views/profile/Profile.vue'
 import Self from '../views/profile/self/Self.vue'
@@ -38,9 +39,9 @@ const routes = [
     component: Chat,
   },
   {
-    path: '/cart',
-    name: 'cart',
-    component: Cart,
+    path: '/pay', //
+    name: 'pay',
+    component: Pay,
   },
   {
     path: '/profile',

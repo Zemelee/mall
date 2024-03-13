@@ -105,7 +105,7 @@ export default {
     })
 
     //切换id
-    function shift() {
+    function shift(category) {
       //自定义事件-数据 
       context.emit("send-category", category);
     }

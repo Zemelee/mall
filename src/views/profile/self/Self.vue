@@ -1,4 +1,7 @@
 <template>
+
+  <el-button @click="showUpdate = true" >修改</el-button>
+
   <el-descriptions
       class="margin-top"
       title="基本信息"
@@ -50,15 +53,43 @@
         </template>
         <el-tag size="small">{{ profile.balance }}</el-tag>
       </el-descriptions-item>
+      <el-descriptions-item>
+        <template #label>
+          <div class="cell-item">
+            <el-icon :style="iconStyle">
+              <location />
+            </el-icon>
+            累计消费
+          </div>
+        </template>
+        100万
+      </el-descriptions-item>
+      <el-descriptions-item>
+        <template #label>
+          <div class="cell-item">
+            <el-icon :style="iconStyle">
+              <location />
+            </el-icon>
+            等级
+          </div>
+        </template>
+        黄金会员
+      </el-descriptions-item>
     </el-descriptions>
+    <el-dialog style="width: 500px"  v-model="showUpdate">
+
+      <updateInfo :info="profile"></updateInfo>
+    </el-dialog>
+
+
 </template>
 
 
 
 <script setup>
-import service from "../../../request/index";
-import axios from "axios";
+import service from "@/request/index";
 import { ElMessage } from "element-plus";
+import updateInfo from './updateInfo'
 import { onMounted, computed, ref, reactive } from "vue";
 import {
   Iphone,
@@ -67,7 +98,7 @@ import {
   Tickets,
   User,
 } from "@element-plus/icons-vue";
-var profile = reactive({
+const profile = reactive({
   username: "",
   address: "",
   balance: 0,
@@ -91,7 +122,7 @@ onMounted(() => {
       console.log(profile);
     })
     .catch((err) => {
-      ElMessage.error("数据渲染失败，原因：", err);
+      ElMessage.error("数据渲染失败:", JSON.stringify(err));
       console.error("err:", err);
     });
 });
@@ -117,6 +148,13 @@ const blockMargin = computed(() => {
     marginTop: marginMap[size.value] || marginMap.default,
   };
 });
+
+// 更新用户信息
+const showUpdate = ref(false);
+
+
+
+
 </script>
 
 <style>

@@ -1,11 +1,13 @@
 <template>
-    <div>
-        pay
-    </div>
+  
 </template>
 
-<script setup>
+<script>
+export default {
 
+}
 </script>
 
-<style></style>
+<style>
+
+</style>

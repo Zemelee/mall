@@ -30,6 +30,23 @@ export default {
     AIservice:"智能客服",
     center:"个人中心",
     logout:"退出登录"
+  },
+  Pay:{
+    product:{ 
+      title:"商品",
+      price:"价格",
+      quantity:"数量",
+      subtotal:"小计",
+    },
+    title:"支付",
+    pay:"支付",
+    paySuccess:"支付成功",
+    payFail:"支付失败",
+    payCancel:"支付取消",
+    payError:"支付错误",
+    payInfo:"支付信息",
+    payInfoTitle:"支付信息",
+    payInfoContent:"请在手机上完成支付"
   }
 
 }

@@ -8,15 +8,13 @@
             <div v-if="attr.num" class="product">
               <hr>
               <input type="checkbox"
-                :value="{ productid: product.id, attrid: attr.id, inventory: attr.inventory, num: attr.num, price: attr.more + product.price }"
+                :value="{ productid: product.id, name: product.name, attrid: attr.id, attrval: attr.attrval, inventory: attr.inventory, num: attr.num, price: attr.more + product.price }"
                 v-model="selectedItems" />
               <img :src="product.picsrc" :alt="product.description" />
               <div class="product-info">
                 <span>{{ product.name }}</span>-<span>{{ attr.attrval }}</span> -
                 <span>{{ (attr.more + product.price).toFixed(2) }} * {{ attr.num }}
-                  = {{ (attr.num * (product.price +
-                    attr.more)).toFixed(2)
-                  }}</span>
+                  = {{ (attr.num * (product.price + attr.more)).toFixed(2) }}</span>
               </div>
               <el-button class="add" @click="add(attr.id)">+</el-button>
               <el-button class="sub" @click="sub(attr.id)">-</el-button>
@@ -32,22 +30,27 @@
         <el-button type="submit" @click="submitOrder">提交订单</el-button>
       </form>
     </main>
+
+    <el-dialog v-model="showPay" title="支付订单" width="800">
+      总价格：{{ totalPrice.toFixed(2) }}
+      <el-button type="primary" @click="pay">支付</el-button>
+    </el-dialog>
+
   </div>
 </template>
 
 <script setup>
 import { useRoute, useRouter } from "vue-router";
 import { useCartStore } from "@/store/cart.js";
+import service from "@/request/index";
 import { ref, computed } from "vue";
 import { ElMessage } from "element-plus";
 const route = useRoute();
 const router = useRouter();
-
+const userid = localStorage.getItem("userid");
 const Cart = useCartStore();
 const cartList = JSON.parse(Cart.cartList);  // 商品、属性、数量
 const ids = [...new Set(cartList.map((item) => item.productid))];
-console.log("ids:", ids);
-
 // 获取商品列表
 Cart.fetchProducts(ids).then(() => {
   console.log("ids:", ids);
@@ -63,8 +66,8 @@ const add = (attrid) => {
     item.num += 1;
     Cart.addProduct(attrid);
   }
-   else if (item && item.num >= item.inventory) {
-  ElMessage.warning("库存不足");
+  else if (item && item.num >= item.inventory) {
+    ElMessage.warning("库存不足");
   }
 };
 const sub = (attrid) => {
@@ -81,15 +84,6 @@ const del = (attrid) => {
   selectedItems.value = selectedItems.value.filter(item => item.attrid !== attrid);
 };
 
-
-
-
-const selectedItems = ref([]);
-const submitOrder = () => {
-  console.log('Selected items:', selectedItems.value);
-
-};
-
 const totalPrice = computed(() => {
   let sum = 0;
   selectedItems.value.forEach(item => {
@@ -99,6 +93,56 @@ const totalPrice = computed(() => {
   return sum;
 });
 
+
+const selectedItems = ref([]);
+const showPay = ref(false);
+const submitOrder = () => {
+  console.log('Selected items:', selectedItems.value);
+  if (selectedItems.value.length === 0) {
+    ElMessage.warning("请选择商品");
+    return;
+  }
+  service
+    .get(`/user/id=${userid}`)
+    .then((res) => {
+      console.log(res.data);
+      if (!res.data.address || !res.data.phone) {
+        ElMessage.warning("先完善个人信息");
+        setTimeout(() => {
+          router.push("/profile/self");
+        }, 1000);
+        return
+      }
+    })
+  showPay.value = true;
+};
+
+
+const pay = () => {
+  const orderItems = []
+  selectedItems.value.forEach(item => {
+    orderItems.push({
+      userid: userid,
+      product_id: item.productid,
+      name: item.name,
+      attrval: item.attrval,
+      attrid: item.attrid,
+      quantity: item.num,
+      price: item.price,
+      order_time: new Date().getTime()
+    })
+  })
+  console.log("orderItems:", orderItems);
+  service
+    .post(`/mall/history/add`, orderItems)
+    .then((res) => {
+      console.log(res.data);
+    });
+  // ElMessage.success("支付成功");
+  // showPay.value = false;
+  // selectedItems.value = [];
+  // router.push("/profile/history");
+};
 
 
 </script>

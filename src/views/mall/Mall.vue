@@ -4,12 +4,11 @@
 
 
       <el-header style="height: 10%">
-        <Header @send-category="shift" @send-keyword="searchProduction"></Header>
+        <Header style="border:1px solid blue;" @send-category="shift" @send-keyword="searchProduction"></Header>
       </el-header>
 
 
       <el-main style="border: 1px solid red;">
-
         <div class="products-display">
           <Product v-for="(item, index) in products.list" :product="item" :key="index" @click="goDetails(item.id)" />
         </div>
@@ -95,6 +94,7 @@ const goDetails = (id) => {
 <style scoped>
 .el-container {
   width: 90vw;
+
 }
 
 .el-footer {
