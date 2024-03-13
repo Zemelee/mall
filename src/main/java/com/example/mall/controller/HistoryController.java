@@ -17,6 +17,7 @@ public class HistoryController {
     public HistoryController(HistoryService historyService) {
         this.historyService = historyService;
     }
+
     @GetMapping("/get/{userid}")
     public List<History> getHistory(@PathVariable int userid) {
         return historyService.getHistory(userid);
@@ -24,7 +25,8 @@ public class HistoryController {
 
     @PostMapping("/add")
     public ResponseEntity<String> addHistory(@RequestBody List<History> histories) {
-        if (historyService.addHistory(histories)){
+//        System.out.println(userid);
+        if (historyService.addHistory(histories)) {
             return new ResponseEntity<>("ok", HttpStatus.OK);
         }
         return null;

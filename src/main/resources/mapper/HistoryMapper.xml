@@ -4,16 +4,17 @@
 
     <!--mybatis-->
     <select id="getHistory" resultType="com.example.mall.entity.History">
-        SELECT r.product_id, p.`name`, a.attrval,r.quantity, a.more+p.price, r.order_time
+        SELECT r.product_id, p.`name`, a.id, a.attrval, r.quantity, a.more + p.price, r.order_time
         FROM record r
                  JOIN product p ON r.product_id = p.id
                  JOIN attribution a ON r.attrid = a.id
         WHERE r.user_id = #{userid};
     </select>
 
-    <update id="addHistory" parameterType="com.example.mall.entity.History">
-
-    </update>
+    <insert id="addHistory" parameterType="com.example.mall.entity.History">
+        INSERT INTO record (user_id, product_id, attrid, quantity, order_time, price)
+        VALUES (#{userid}, #{product_id}, #{attrid}, #{quantity}, #{order_time},#{price})
+    </insert>
 
 
 
