@@ -1,0 +1,11 @@
+INSERT INTO `attribution`(`id`, `product_id`, `attrval`, `inventory`, `more`) VALUES (1, 1, '12GB 1TB 幻影黑', 10, 32.22);
+INSERT INTO `attribution`(`id`, `product_id`, `attrval`, `inventory`, `more`) VALUES (2, 1, '12GB 512GB 星空彩', 9, 41.21);
+INSERT INTO `attribution`(`id`, `product_id`, `attrval`, `inventory`, `more`) VALUES (3, 2, '12GB 512GB 星钻黑', 11, 234.00);
+INSERT INTO `attribution`(`id`, `product_id`, `attrval`, `inventory`, `more`) VALUES (4, 2, '12GB 512GB 零度白', 21, 44.33);
+INSERT INTO `attribution`(`id`, `product_id`, `attrval`, `inventory`, `more`) VALUES (5, 3, '12GB 512GB 蜜桃金', 3, 33.00);
+INSERT INTO `attribution`(`id`, `product_id`, `attrval`, `inventory`, `more`) VALUES (6, 3, '12GB 512GB 液态银河', 3, 434.44);
+INSERT INTO `attribution`(`id`, `product_id`, `attrval`, `inventory`, `more`) VALUES (10, 8, '200g', 10, 43.08);
+INSERT INTO `attribution`(`id`, `product_id`, `attrval`, `inventory`, `more`) VALUES (11, 8, '300g', 20, 64.00);
+INSERT INTO `attribution`(`id`, `product_id`, `attrval`, `inventory`, `more`) VALUES (12, 10, '24GB 1TB 大漠银月', 20, 15.00);
+INSERT INTO `attribution`(`id`, `product_id`, `attrval`, `inventory`, `more`) VALUES (13, 10, '24GB 1TB 海阔天空', 11, 90.00);
+INSERT INTO `attribution`(`id`, `product_id`, `attrval`, `inventory`, `more`) VALUES (14, 9, '12GB 256GB 流沙金', 12, 220.00);
