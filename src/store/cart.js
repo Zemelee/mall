@@ -12,7 +12,6 @@ export const useCartStore = defineStore('cartList', {
             for (let id of ids) {
                 const product = await service.get(`/mall/product/id=${id}`);
                 this.products.push(product.data);
-                console.log("product", product.data);
             }
         },
         updateProducts(cartList) {

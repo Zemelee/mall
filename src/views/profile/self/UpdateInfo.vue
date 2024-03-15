@@ -28,7 +28,6 @@
 import { ref, onMounted  } from 'vue';
 import service from '@/request';
 const { info } = defineProps(['info']);
-console.log("111: ", info);
 const user = ref({
     user_id: localStorage.getItem('userid'),
     username: '',

@@ -119,11 +119,9 @@ onMounted(() => {
       profile.phone = data.phone;
       profile.token = data.token;
       profile.userid = data.user_id;
-      console.log(profile);
     })
     .catch((err) => {
       ElMessage.error("数据渲染失败:", JSON.stringify(err));
-      console.error("err:", err);
     });
 });
 

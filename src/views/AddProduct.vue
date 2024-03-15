@@ -77,11 +77,9 @@
         service
           .post("/mall/product/add", this.product)
           .then((response) => {
-            console.log(response.data);
             // handle success, e.g., redirect to another page
           })
           .catch((error) => {
-            console.error(error);
             // handle error
           });
       },
@@ -93,10 +91,8 @@
             amount: 100,
           })
           .then((e) => {
-            console.log(res);
           })
           .catch((e) => {
-            console.log(e);
           });
       },
     },

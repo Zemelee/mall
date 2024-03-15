@@ -55,7 +55,6 @@ async function getById(id) {
   return service
     .get(`/mall/product/id=${id}`)
     .then((res) => {
-      console.log(res.data);
       return res.data;
     })
     .catch((err) => {

@@ -67,14 +67,12 @@ const changeLocale = (lang) => {
 //验证码逻辑
 var Acode = ref(generateCode()); //系统生成的code
 var Bcode = ref(""); //用户输入的code
-console.log(Acode.value);
 const codeImg = ref(generateCodeImg(Acode.value));
 const createCode = () => {
   var newCodeText = generateCode();
   Acode.value = newCodeText;
   var newCode = generateCodeImg(newCodeText);
   codeImg.value = newCode;
-  console.log(newCodeText);
 };
 
 // 获取用户信息
@@ -85,7 +83,6 @@ async function login() {
     ElMessage.error("请输入验证码！");
     return;
   } else if (Bcode.value != Acode.value) {
-    console.log(Acode.value, Bcode.value);
     ElMessage.error("验证码不正确！");
     return;
   }
@@ -95,7 +92,6 @@ async function login() {
       password: password.value,
     })
     .then((res) => {
-      console.log("res:", res);
       if (res.data.success == false) {
         ElMessage.error("用户名或密码错误！");
       } else {
@@ -105,23 +101,9 @@ async function login() {
       }
     })
     .catch((err) => {
-      console.log(err);
-    });
-}
-function test() {
-  service
-    .get("/test")
-    .then((res) => {
-      console.log("res:", res);
-    })
-    .catch((err) => {
-      console.log(err);
     });
 }
 
-function register() {
-  console.log("register");
-}
 
 // 弹出框逻辑
 const showDialog = ref(false);

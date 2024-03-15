@@ -53,7 +53,6 @@ const cartList = JSON.parse(Cart.cartList);  // 商品、属性、数量
 const ids = [...new Set(cartList.map((item) => item.productid))];
 // 获取商品列表
 Cart.fetchProducts(ids).then(() => {
-  console.log("ids:", ids);
   //获取到了购物车的详细数据数据products
   Cart.updateProducts(cartList)
 });
@@ -97,7 +96,6 @@ const totalPrice = computed(() => {
 const selectedItems = ref([]);
 const showPay = ref(false);
 const submitOrder = () => {
-  console.log('Selected items:', selectedItems.value);
   if (selectedItems.value.length === 0) {
     ElMessage.warning("请选择商品");
     return;
@@ -105,7 +103,6 @@ const submitOrder = () => {
   service
     .get(`/user/id=${userid}`)
     .then((res) => {
-      console.log(res.data);
       if (!res.data.address || !res.data.phone) {
         ElMessage.warning("先完善个人信息");
         setTimeout(() => {
@@ -118,7 +115,7 @@ const submitOrder = () => {
 };
 
 
-const pay = () => {
+const pay = async () => {
   const orderItems = []
   selectedItems.value.forEach(item => {
     orderItems.push({
@@ -132,16 +129,36 @@ const pay = () => {
       order_time: new Date().getTime()
     })
   })
-  console.log("orderItems:", orderItems);
-  service
-    .post(`/mall/history/add`, orderItems)
-    .then((res) => {
-      console.log(res.data);
-    });
+  let consume = await service.post("/user/consume", {
+    id: userid,
+    amount: totalPrice.value,
+  });
+  if (!consume.data.status) {
+    ElMessage.error("余额不足");
+    return;
+  } else {
+    // 增加订单记录
+    service
+      .post(`/mall/history/add`, orderItems)
+      .then((res) => {
+        ElMessage.success("支付成功");
+        showPay.value = false;
+        selectedItems.value = [];
+        setTimeout(() => {
+          router.push("/profile/history");
+        }, 3000);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+
   // ElMessage.success("支付成功");
   // showPay.value = false;
   // selectedItems.value = [];
   // router.push("/profile/history");
+
 };
 
 

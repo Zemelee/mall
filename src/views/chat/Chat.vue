@@ -171,7 +171,6 @@ export default {
         const authorizationOrigin = `api_key="${this.apiKey}", algorithm="${algorithm}", headers="${headers}", signature="${signature}"`;
         const authorization = window.btoa(authorizationOrigin);
         const finalUrl = `${url}?authorization=${authorization}&date=${date}&host=${host}`;
-        console.log("finalUrl:", finalUrl);
         resolve(finalUrl);
       });
     },
