@@ -1,5 +1,6 @@
 package com.example.mall.controller;
 
+import com.example.mall.entity.ResponseData;
 import com.example.mall.entity.User;
 import com.example.mall.entity.UserFeedback;
 import com.example.mall.entity.UserRegistrationRequest;
@@ -46,7 +47,6 @@ public class UserController {
 
     @PostMapping("/user/register")
     public ResponseEntity<String> registerUser(@RequestBody UserRegistrationRequest registrationRequest) {
-        System.out.println("username:" + registrationRequest.getUsername());
         if (userMapper.getUserByName(registrationRequest.getUsername()) != null) {
             return new ResponseEntity<>("User " + registrationRequest.getUsername() + " has existed", HttpStatus.CONFLICT);
         }
@@ -68,21 +68,33 @@ public class UserController {
 
     @Getter
     static
-    class RechargeRequest {
+    class RechargeOrConsumptionRequest {
         int id;
         float amount;
     }
 
     @PostMapping("/user/recharge")
-    public Float recharge(@RequestBody RechargeRequest recharge) {
+    public Float recharge(@RequestBody RechargeOrConsumptionRequest recharge) {
         return userService.recharge(recharge.getId(), recharge.getAmount());
+    }
+
+    @PostMapping("/user/consume")
+    public ResponseData consumption(@RequestBody RechargeOrConsumptionRequest consumption) {
+        ResponseData responseData = new ResponseData("pay fail", 0, false);
+        int userid = consumption.getId();
+        float balance = userService.getBalance(userid);
+        if (consumption.getAmount() < balance) {
+            responseData.setMsg("pay success");
+            responseData.setNumCode(userService.consumption(consumption.getId(), consumption.getAmount()));
+            responseData.setStatus(true);
+        }
+        return responseData;
+
     }
 
     @PostMapping("/user/feedback/post")
     public ResponseEntity<String> registerUser(@RequestBody UserFeedback userFeedback) {
-        System.out.println(userFeedback);
         UserFeedback newFeedback = new UserFeedback();
-        System.out.println(userFeedback.getFeedback() + " | " + userFeedback.getUsername() + " | " + userFeedback.getSubmitTime() + " | " + userFeedback.getEmail());
         newFeedback.setUsername(userFeedback.getUsername());
         newFeedback.setFeedback(userFeedback.getFeedback());
         newFeedback.setEmail(userFeedback.getEmail());

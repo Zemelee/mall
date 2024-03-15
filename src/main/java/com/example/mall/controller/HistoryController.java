@@ -25,7 +25,6 @@ public class HistoryController {
 
     @PostMapping("/add")
     public ResponseEntity<String> addHistory(@RequestBody List<History> histories) {
-//        System.out.println(userid);
         if (historyService.addHistory(histories)) {
             return new ResponseEntity<>("ok", HttpStatus.OK);
         }

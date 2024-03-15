@@ -23,6 +23,24 @@
         </selectKey>
     </update>
 
+    <update id="consumption">
+        UPDATE user
+        SET balance = balance - #{amount},
+        accumulated = accumulated + #{amount}
+        WHERE user_id = #{id};
+        <selectKey keyProperty="balance" resultType="float" order="AFTER">
+            SELECT balance FROM user WHERE user_id = #{id}
+        </selectKey>
+    </update>
+
+
+    <select id="getBalance" resultType="java.lang.Float">
+        select balance
+        from user
+        where user_id = #{id}
+    </select>
+
+
     <select id="getUserByName" resultType="com.example.mall.entity.User">
         select *
         from user
@@ -44,6 +62,8 @@
         FROM feedback
         ORDER BY id DESC
     </select>
+
+
 
     <update id="updateUserInfo" parameterType="com.example.mall.entity.User">
         UPDATE user
