@@ -1,6 +1,6 @@
 <template>
   <div class="feedback">
-    <h1>用户反馈</h1>
+    <h4>用户反馈</h4>
     <form @submit.prevent="submitForm">
       <div>
         <label for="name">姓名：</label>

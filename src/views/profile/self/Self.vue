@@ -1,87 +1,86 @@
 <template>
 
-  <el-button @click="showUpdate = true" >修改</el-button>
 
-  <el-descriptions
-      class="margin-top"
-      title="基本信息"
-      :column="3"
-      :size="size"
-      border
-    >
-      <el-descriptions-item>
-        <template #label>
-          <div class="cell-item">
-            <el-icon :style="iconStyle">
-              <user />
-            </el-icon>
-            昵称
-          </div>
-        </template>
-        {{ profile.username }}
-      </el-descriptions-item>
-      <el-descriptions-item>
-        <template #label>
-          <div class="cell-item">
-            <el-icon :style="iconStyle">
-              <iphone />
-            </el-icon>
-            电话
-          </div>
-        </template>
-        {{ profile.phone }}
-      </el-descriptions-item>
-      <el-descriptions-item>
-        <template #label>
-          <div class="cell-item">
-            <el-icon :style="iconStyle">
-              <location />
-            </el-icon>
-            地址
-          </div>
-        </template>
-        {{ profile.address }}
-      </el-descriptions-item>
-      <el-descriptions-item>
-        <template #label>
-          <div class="cell-item">
-            <el-icon :style="iconStyle">
-              <tickets />
-            </el-icon>
-            余额
-          </div>
-        </template>
-        <el-tag size="small">{{ profile.balance }}</el-tag>
-      </el-descriptions-item>
-      <el-descriptions-item>
-        <template #label>
-          <div class="cell-item">
-            <el-icon :style="iconStyle">
-              <location />
-            </el-icon>
-            累计消费
-          </div>
-        </template>
-        100万
-      </el-descriptions-item>
-      <el-descriptions-item>
-        <template #label>
-          <div class="cell-item">
-            <el-icon :style="iconStyle">
-              <location />
-            </el-icon>
-            等级
-          </div>
-        </template>
-        黄金会员
-      </el-descriptions-item>
-    </el-descriptions>
-    <el-dialog style="width: 500px"  v-model="showUpdate">
-
-      <updateInfo :info="profile"></updateInfo>
-    </el-dialog>
-
-
+  <el-descriptions class="margin-top" title="基本信息" :column="3" :size="size" border>
+    <el-descriptions-item>
+      <template #label>
+        <div class="cell-item">
+          <el-icon :style="iconStyle">
+            <user />
+          </el-icon>
+          昵称
+        </div>
+      </template>
+      {{ profile.username }}
+    </el-descriptions-item>
+    <el-descriptions-item>
+      <template #label>
+        <div class="cell-item">
+          <el-icon :style="iconStyle">
+            <iphone />
+          </el-icon>
+          电话
+        </div>
+      </template>
+      {{ profile.phone }}
+    </el-descriptions-item>
+    <el-descriptions-item>
+      <template #label>
+        <div class="cell-item">
+          <el-icon :style="iconStyle">
+            <location />
+          </el-icon>
+          地址
+        </div>
+      </template>
+      {{ profile.address }}
+    </el-descriptions-item>
+    <el-descriptions-item>
+      <template #label>
+        <div class="cell-item">
+          <el-icon :style="iconStyle">
+            <tickets />
+          </el-icon>
+          余额
+        </div>
+      </template>
+      <el-tag size="small">{{ profile.balance }}</el-tag>
+    </el-descriptions-item>
+    <el-descriptions-item>
+      <template #label>
+        <div class="cell-item">
+          <el-icon :style="iconStyle">
+            <location />
+          </el-icon>
+          累计消费
+        </div>
+      </template>
+      {{ profile.accumulated }}
+    </el-descriptions-item>
+    <el-descriptions-item>
+      <template #label>
+        <div class="cell-item">
+          <el-icon :style="iconStyle">
+            <location />
+          </el-icon>
+          等级
+        </div>
+      </template>
+      <span v-if="profile.accumulated < 1000">普通会员</span>
+      <span v-else-if="profile.accumulated >= 1000">黄金会员</span>
+      <span v-else-if="profile.accumulated >= 5000">黑金会员</span>
+    </el-descriptions-item>
+  </el-descriptions>
+  <el-dialog style="width: 500px" v-model="showUpdate">
+    <updateInfo :info="profile"></updateInfo>
+  </el-dialog>
+  <el-dialog style="width: 500px" v-model="showRecharge">
+    <Recharge></Recharge>
+  </el-dialog>
+  <br>
+  <el-button @click="showUpdate = true">修改</el-button>
+  <el-button @click="showRecharge = true">充值</el-button>
+  <br>
 </template>
 
 
@@ -90,6 +89,7 @@
 import service from "@/request/index";
 import { ElMessage } from "element-plus";
 import updateInfo from './updateInfo'
+import Recharge from './Recharge'
 import { onMounted, computed, ref, reactive } from "vue";
 import {
   Iphone,
@@ -119,6 +119,7 @@ onMounted(() => {
       profile.phone = data.phone;
       profile.token = data.token;
       profile.userid = data.user_id;
+      profile.accumulated = data.accumulated;
     })
     .catch((err) => {
       ElMessage.error("数据渲染失败:", JSON.stringify(err));
@@ -149,12 +150,11 @@ const blockMargin = computed(() => {
 
 // 更新用户信息
 const showUpdate = ref(false);
+const showRecharge = ref(false);
 
 
 
 
 </script>
 
-<style>
-/* 个人中心样式 */
-</style>
+<style scoped></style>

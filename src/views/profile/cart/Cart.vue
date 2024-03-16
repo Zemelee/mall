@@ -6,19 +6,27 @@
         <div v-for="product in Cart.products" :key="product.id">
           <div v-for="attr in product.attributions" :key="attr.id">
             <div v-if="attr.num" class="product">
-              <hr>
-              <input type="checkbox"
-                :value="{ productid: product.id, name: product.name, attrid: attr.id, attrval: attr.attrval, inventory: attr.inventory, num: attr.num, price: attr.more + product.price }"
-                v-model="selectedItems" />
-              <img :src="product.picsrc" :alt="product.description" />
+              <div>
+                <input type="checkbox"
+                  :value="{ productid: product.id, name: product.name, attrid: attr.id, attrval: attr.attrval, inventory: attr.inventory, num: attr.num, price: attr.more + product.price }"
+                  v-model="selectedItems" />
+                <img :src="product.picsrc" :alt="product.description" />
+              </div>
               <div class="product-info">
-                <span>{{ product.name }}</span>-<span>{{ attr.attrval }}</span> -
+                <span>{{ product.name }}</span>
+                <br>
+                <span>{{ attr.attrval }}</span>
+                <br>
                 <span>{{ (attr.more + product.price).toFixed(2) }} * {{ attr.num }}
                   = {{ (attr.num * (product.price + attr.more)).toFixed(2) }}</span>
               </div>
-              <el-button class="add" @click="add(attr.id)">+</el-button>
-              <el-button class="sub" @click="sub(attr.id)">-</el-button>
-              <el-button class="sub" @click="del(attr.id)">删除</el-button>
+              <div class="product-action">
+                <el-button class="add" @click="add(attr.id)">+</el-button>
+                <el-button class="sub" @click="sub(attr.id)">-</el-button>
+                <div style="margin: 5px;">
+                  <el-button class="sub" @click="del(attr.id)">删除</el-button>
+                </div>
+              </div>
             </div>
 
           </div>
@@ -61,6 +69,10 @@ Cart.fetchProducts(ids).then(() => {
 
 const add = (attrid) => {
   const item = selectedItems.value.find(item => item.attrid === attrid);
+  if (!item) {
+    ElMessage.warning("未选中!");
+    return;
+  }
   if (item && item.num < item.inventory) {
     item.num += 1;
     Cart.addProduct(attrid);
@@ -71,6 +83,10 @@ const add = (attrid) => {
 };
 const sub = (attrid) => {
   const item = selectedItems.value.find(item => item.attrid === attrid)
+  if (!item) {
+    ElMessage.warning("未选中!");
+    return;
+  }
   if (item && item.num > 1) {
     Cart.subtractProduct(attrid);
     item.num -= 1;
@@ -137,7 +153,8 @@ const pay = async () => {
     ElMessage.error("余额不足");
     return;
   } else {
-    // 增加订单记录
+    // 扣费成功，增加订单记录
+    console.log(orderItems,2);
     service
       .post(`/mall/history/add`, orderItems)
       .then((res) => {
@@ -168,5 +185,24 @@ const pay = async () => {
 img {
   width: 75px;
   height: 75px;
+}
+
+.product {
+  display: flex;
+  border: 1px solid rgb(18, 11, 11);
+  justify-content: space-between;
+
+  width: 100%;
+
+  .product-info {
+    width: 50%;
+    border: 1px solid rgb(13, 96, 34);
+  }
+
+  .product-action {
+    width: 30%;
+    border: 1px solid red;
+    margin: auto;
+  }
 }
 </style>

@@ -1,38 +1,31 @@
 <template>
   <div>
-    <h2>历史订单</h2>
-    <div v-for="(item, index) in histories" :key="index">
-      <div class="order-item">
-        <div class="order-item__header">
-          <div class="order-item__header__title">
-            <span>商品：{{ item.name }}</span>
-          </div>
-          <div class="order-item__header__status">
-            <span>数量{{ item.quantity }}</span>
-          </div>
-          <div class="order-item__header__status">
-            <span>时间{{ item.order_time }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
+
+    <el-table :data="histories" stripe style="width: 100%">
+      <el-table-column prop="order_time" label="Date" width="180">
+        <template #default="scope">
+          {{ new Date(scope.row.order_time).toISOString().slice(0, 19).replace("T", " ") }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="name" label="Name" width="100" />
+      <el-table-column prop="attrval" label="规格" />
+      <el-table-column prop="quantity" label="数量" />
+    </el-table>
+
   </div>
 </template>
-
 <script setup>
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import service from "@/request/index.js";
-let histories = reactive([]);
+let histories = ref([]);
+
 const userid = localStorage.getItem("userid");
 service.get(`/mall/history/get/${userid}`)
   .then((res) => {
-    histories = res.data;
+    histories.value = res.data; // 更新 ref 数据需访问 value 属性
+    console.log(histories.value);
   })
   .catch((err) => {
     console.error(err);
   });
 </script>
-
-<style>
-/* 订单项样式 */
-</style>
