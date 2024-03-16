@@ -22,7 +22,7 @@ public interface UserMapper {
 
     float getBalance(int id);
 
-    float recharge(@Param("id") int id, @Param("amount") float amount);
+    int recharge(@Param("id") int id, @Param("amount") float amount);
     int consumption(@Param("id") int id, @Param("amount") float amount);
 
     void addFeedback(UserFeedback feedback);

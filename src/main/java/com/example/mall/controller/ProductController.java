@@ -56,4 +56,9 @@ public class ProductController {
         productService.addProductWithAttributes(product);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+//    增加销量、减少库存
+//    @PostMapping("/consume/sub")
+//    public ResponseEntity<Void> addSalesAndSubInventory(@RequestBody Product product) {
+//
+//    }
 }

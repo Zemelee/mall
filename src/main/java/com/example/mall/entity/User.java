@@ -10,6 +10,7 @@ public class User {
     private String password;
     private String address;
     private float balance;
+    private float accumulated;
     private String phone;
     private String token;
 }

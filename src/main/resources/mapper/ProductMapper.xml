@@ -85,9 +85,22 @@
         INSERT INTO product (name, price, category, description, picsrc)
         VALUES (#{name}, #{price}, #{category}, #{description}, #{picsrc})
     </insert>
+
+
+    <update id="addSalesAndSubInventory" parameterType="int">
+        UPDATE product p
+            INNER JOIN attribution a ON p.id = a.product_id
+            SET p.sales = p.sales + #{quantity}, a.inventory = a.inventory - #{quantity}
+        WHERE p.id = #{product_id} AND a.id = #{attribution_id};
+    </update>
+
+
     <!-- 插入商品规格 -->
     <insert id="addProductAttribution" parameterType="com.example.mall.entity.Attribution">
         INSERT INTO attribution (product_id, attrval, inventory,more)
         VALUES (#{product_id}, #{attrval}, #{inventory},#{more})
     </insert>
+
+
+
 </mapper>
