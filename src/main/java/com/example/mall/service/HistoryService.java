@@ -1,6 +1,7 @@
 package com.example.mall.service;
 
 import com.example.mall.entity.History;
+import com.example.mall.entity.HistoryResponse;
 import com.example.mall.mapper.HistoryMapper;
 import com.example.mall.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +43,7 @@ public class HistoryService {
                 });
     }
 
-
+    public List<HistoryResponse> getHistoryByPid(int pid){
+        return historyMapper.getHistoryByPid(pid);
+    }
 }

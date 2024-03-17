@@ -2,6 +2,7 @@ package com.example.mall.controller;
 
 
 import com.example.mall.entity.History;
+import com.example.mall.entity.HistoryResponse;
 import com.example.mall.service.HistoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,5 +30,10 @@ public class HistoryController {
             return new ResponseEntity<>("ok", HttpStatus.OK);
         }
         return null;
+    }
+
+    @GetMapping("/get/product/{pid}")
+    public List<HistoryResponse> getHistoryByPid(@PathVariable int pid) {
+        return historyService.getHistoryByPid(pid);
     }
 }

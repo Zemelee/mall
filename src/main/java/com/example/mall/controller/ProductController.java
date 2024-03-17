@@ -2,6 +2,7 @@ package com.example.mall.controller;
 
 import com.example.mall.entity.Product;
 import com.example.mall.service.ProductService;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,16 +50,30 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<Void> addProduct(@RequestBody Product product) {
-        // 打印前端发送的product参数
-        System.out.println("Received Product: " + product);
-        productService.addProductWithAttributes(product);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    @Getter
+    static
+    class PageInfo {
+        int start;
+        int number;
     }
-//    增加销量、减少库存
-//    @PostMapping("/consume/sub")
-//    public ResponseEntity<Void> addSalesAndSubInventory(@RequestBody Product product) {
-//
-//    }
+
+    @PostMapping("/add")
+    public ResponseEntity<String> addProduct(@RequestBody Product product) {
+        // 调用 productService 方法
+        boolean ok = productService.addProductWithAttributes(product);
+        if (ok) {
+            // 返回 ResponseEntity 对象，包含状态码和 JSON 信息
+            return new ResponseEntity<>("ok", HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>("fail", HttpStatus.BAD_REQUEST);
+
+        }
+    }
+
+    @PostMapping("/get") //偏移量+显示数据
+    public List<Product> getProductByPage(@RequestBody PageInfo pageInfo) {
+        return productService.getProduct(pageInfo.getStart(), pageInfo.getNumber());
+    }
+
+
 }

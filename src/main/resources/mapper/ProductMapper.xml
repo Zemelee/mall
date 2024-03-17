@@ -89,18 +89,30 @@
 
     <update id="addSalesAndSubInventory" parameterType="int">
         UPDATE product p
-            INNER JOIN attribution a ON p.id = a.product_id
+            INNER JOIN attribution a
+        ON p.id = a.product_id
             SET p.sales = p.sales + #{quantity}, a.inventory = a.inventory - #{quantity}
-        WHERE p.id = #{product_id} AND a.id = #{attribution_id};
+        WHERE p.id = #{product_id}
+          AND a.id = #{attribution_id};
     </update>
 
 
-    <!-- 插入商品规格 -->
     <insert id="addProductAttribution" parameterType="com.example.mall.entity.Attribution">
-        INSERT INTO attribution (product_id, attrval, inventory,more)
-        VALUES (#{product_id}, #{attrval}, #{inventory},#{more})
+        INSERT INTO attribution (product_id, attrval, inventory, more)
+        VALUES (#{product_id}, #{attrval}, #{inventory}, #{more})
     </insert>
 
 
+    <select id="getProduct" resultType="com.example.mall.entity.Product">
+        SELECT product.*,
+               attribution.id as attr_id,
+               attribution.product_id,
+               attribution.attrval,
+               attribution.inventory,
+               attribution.more
+        FROM product
+                 LEFT JOIN attribution ON product.id = attribution.product_id
+            LIMIT #{number} OFFSET #{start}
+    </select>
 
 </mapper>

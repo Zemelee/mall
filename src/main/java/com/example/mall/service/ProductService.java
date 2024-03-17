@@ -51,7 +51,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void addProductWithAttributes(Product product) {
+    public boolean addProductWithAttributes(Product product) {
         // 先插入商品信息
         productMapper.addProduct(product);
         // 获取插入商品后的ID
@@ -63,13 +63,18 @@ public class ProductService {
                     attribution.setProduct_id(productId);
                     attribution.setProduct_id(productId);
                     // 插入商品规格信息
-                    productMapper.addProductAttribution(attribution);
+                    return productMapper.addProductAttribution(attribution);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace(); // 或者使用日志库记录错误信息
             throw e; // 重新抛出异常
         }
+        return false;
+    }
+
+    public List<Product> getProduct(int start, int number) {
+        return productMapper.getProduct(start, number);
     }
 
 }

@@ -20,10 +20,11 @@ public interface ProductMapper {
     void addProduct(Product product);
 
     // 新增商品属性
-    void addProductAttribution(Attribution attr);
+    boolean addProductAttribution(Attribution attr);
 
     Product getProductWithAttributes(int productId);
     List<Product> searchProduct(String keyword);
+    List<Product> getProduct(int start, int number);
 
 
 }
