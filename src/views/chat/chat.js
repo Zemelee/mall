@@ -10,9 +10,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // 创建数据库连接
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: '784397',
-    database: 'mall'
+    user: '',
+    password: '',
+    database: ''
 });
 
 // 添加记录的接口

@@ -1,25 +1,17 @@
 <template>
   <div>
-    <el-container style="height: 100vh;">
-
-
+    <el-container class="el-container" style="height: 100vh;">
       <el-header style="height: 10%">
         <Header style="border:1px solid blue;" @send-category="shift" @send-keyword="searchProduction"></Header>
       </el-header>
-
-
-      <el-main style="border: 1px solid red;">
+      <el-main class="el-main" style="border: 1px solid red;">
         <div class="products-display">
           <Product v-for="(item, index) in products.list" :product="item" :key="index" @click="goDetails(item.id)" />
         </div>
       </el-main>
-
-
       <el-footer class="el-footer">
         <Footer />
       </el-footer>
-
-
     </el-container>
   </div>
 </template>
@@ -65,7 +57,7 @@ async function searchProduction(keyword) {
       if (err.response.status == 401) {
         ElMessage.error("非法登录");
         router.push("/login");
-      }else if(err.response.status == 404){
+      } else if (err.response.status == 404) {
         ElMessage.error("查无此商品，后续上线...");
       }
     });
@@ -93,7 +85,7 @@ const goDetails = (id) => {
 
 <style scoped>
 .el-container {
-  width: 90vw;
+  /* width: 90vw; */
 
 }
 
@@ -102,15 +94,17 @@ const goDetails = (id) => {
   background-color: aliceblue;
 }
 
-.product {
-  width: 20%;
-  height: 350px;
-  /* 设置产品之间的间距 */
+
+.el-main {
+  .products-display {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
 }
 
-.products-display {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+.el-main::after {
+  content: "";
+  flex: auto;
 }
 </style>

@@ -8,19 +8,19 @@
       </div>
       <p>{{ details.description }}</p>
       <!-- 将 id 的值和 attrid 绑定-->
-      <el-select v-model="attrid" placeholder="选择规格">
+      <el-select v-model="attrid" @change="changeAttr" placeholder="选择规格">
         <el-option v-for="attr in details.attributions" :key="attr.id" :label="attr.attrval" :value="attr.id" />
       </el-select>
       <!-- 通过 find 方法和 id 匹配来获取对应的 attributions 对象 -->
       <div>
         {{
-          attrid == 0
-          ? details.price
-          : details.price +
-          details.attributions.find((a) => a.id === attrid).more
-        }}
+      attrid == 0
+        ? details.price
+        : details.price +
+        details.attributions.find((a) => a.id === attrid).more
+    }}
       </div>
-      <el-input-number v-model="numSelect" :min="1" :max="10" />
+      <el-input-number v-model="numSelect" @change="debouncedAddNumSelect" :min="1" />
     </div>
 
     <div>
@@ -34,7 +34,7 @@
 
 <script setup>
 import service from "../request/index.js";
-import { ref, watch, reactive, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { useCartStore } from "@/store/cart.js";
 import { useRoute, useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
@@ -43,14 +43,20 @@ const router = useRouter();
 const Cart = useCartStore();
 const details = ref(null);
 onMounted(async () => {
-  //route关注当前路由的参数，路径
   details.value = await getById(route.params.id);
 });
-
+// 防抖函数
+const debounce = (func, delay) => {
+  let timerId;
+  return function (...args) {
+    clearTimeout(timerId);
+    timerId = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
+}
 const attrid = ref(0); // 用户选择
-
 const numSelect = ref(1); // 数量选择
-
 async function getById(id) {
   return service
     .get(`/mall/product/id=${id}`)
@@ -61,7 +67,26 @@ async function getById(id) {
       console.log("err:", err);
     });
 }
-
+const addNumSelect = () => {
+  if (attrid.value == 0) {
+    ElMessage.warning("未选择规格");
+    return;
+  }
+  console.log(details.value.attributions, attrid.value);
+  const targetSelect = details.value.attributions.find((a) => a.id == attrid.value)
+  if (targetSelect.inventory > numSelect.value) {
+    numSelect.value++;
+  } else {
+    ElMessage.warning("库存不足");
+    numSelect.value = targetSelect.inventory;
+    return
+  }
+};
+const debouncedAddNumSelect = debounce(addNumSelect, 300); // 创建防抖函数
+const changeAttr = () => {
+  // 防止超过规格库存
+  numSelect.value = 1;
+};
 // 防抖函数
 let cartTimeout;
 function addCart() {
@@ -76,7 +101,6 @@ function addCart() {
       attrid: attrid.value,
       num: numSelect.value,
     };
-    console.log("newGoods:", newGoods);
     let cartList = JSON.parse(localStorage.getItem("cartList")) || [];
     // 查找购物车是否已存在该商品(判断商品ID + 规格ID)
     let productInCart = cartList.find((item) => {
