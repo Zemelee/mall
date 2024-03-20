@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div v-if="details">
       <h1>{{ details.name }}</h1>
       <div>
@@ -70,9 +69,9 @@ async function getById(id) {
 const addNumSelect = () => {
   if (attrid.value == 0) {
     ElMessage.warning("未选择规格");
+    numSelect.value = 1;
     return;
   }
-  console.log(details.value.attributions, attrid.value);
   const targetSelect = details.value.attributions.find((a) => a.id == attrid.value)
   if (targetSelect.inventory > numSelect.value) {
     numSelect.value++;

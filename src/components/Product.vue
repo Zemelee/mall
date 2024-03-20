@@ -3,7 +3,7 @@
   <el-card shadow="hover" :body-style="{ padding: '0px' }">
     <div class="product">
       <div class="goods">
-        <img :src="null" :data-src="product.picsrc" ref="refLazyImg" class="goods-img" />
+        <img :src="product.picsrc" :data-src="product.picsrc" ref="refLazyImg" class="goods-img" />
       </div>
       <div class="product-info">
         <h3 class="product-title">{{ product.name }}</h3>
@@ -39,7 +39,7 @@ const lazyLoadImage = () => {
 };
 
 onMounted(() => {
-  lazyLoadImage();
+  // lazyLoadImage();
 });
 
 const addToCart = () => {
