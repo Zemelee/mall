@@ -23,11 +23,21 @@ export default {
       discount: "discount",
       casual: "casual",
     },
+    
     search:"search...",
     title: "MALL",
     AIservice: "AIservice",
     center: "ME>",
     logout: "logout"
-  }
+  },
+  Mall: {
+    aes: "aes",
+    des: "des",
+    priceRange: "priceRange",
+    minPrice: "minPrice",
+    maxPrice: "maxPrice",
+    reset: "reset",
+    filter: "filter"
+  },
   
   }

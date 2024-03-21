@@ -50,7 +50,6 @@
 
 <script>
 import { ref, watch, reactive, computed } from "vue";
-import service from "../../request/index.js";
 import { useRoute, useRouter } from "vue-router";
 import avatarGif from "@/assets/avatar.gif";
 import { ArrowDown, InfoFilled, Search } from "@element-plus/icons-vue";

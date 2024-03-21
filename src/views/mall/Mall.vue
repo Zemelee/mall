@@ -6,19 +6,33 @@
       </el-header>
       <el-main class="el-main" style="border: 1px solid red;">
         <el-form :inline="true">
-          <el-radio-group v-model="sortParam" style="margin: 0 10px 0 10px;">
-            <el-radio label="asc" size="large">价格升序</el-radio>
-            <el-radio label="des" size="large">价格降序</el-radio>
-          </el-radio-group>
-          <el-input v-model="minPrice" placeholder="最低价"  size="small"/>
-          <el-input v-model="maxPrice" placeholder="最高价"  size="small"/>
-          <el-button @click="reset">重置</el-button>
-          <el-button @click="filterByPrice">过滤</el-button>
+          <el-form-item style="margin-right: 20px;">
+            <el-radio-group v-model="sortParam">
+              <el-radio label="asc" size="large">{{ $t("Mall.aes") }}</el-radio>
+              <el-radio label="des" size="large">{{ $t("Mall.des") }}</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item :label="$t('Mall.priceRange')" prop="priceRange">
+            <el-row type="flex" justify="start">
+              <el-col :span="8">
+                <el-input v-model="minPrice" :placeholder="$t('Mall.minPrice')" size="small" />
+              </el-col>
+              <el-col :span="1" style="line-height: 36px; text-align: center;">-</el-col>
+              <el-col :span="8">
+                <el-input v-model="maxPrice" :placeholder="$t('Mall.maxPrice')" size="small" />
+              </el-col>
+            </el-row>
+          </el-form-item>
+          <el-form-item>
+            <el-button @click="reset">{{ $t("Mall.reset") }}</el-button>
+            <el-button @click="filterByPrice">{{ $t("Mall.filter") }}</el-button>
+          </el-form-item>
         </el-form>
         <div class="products-display">
           <Product v-for="(item, index) in products.list" :product="item" :key="index" @click="goDetails(item.id)" />
         </div>
       </el-main>
+
       <el-footer class="el-footer">
         <Footer />
       </el-footer>
@@ -34,10 +48,10 @@ import Footer from "./Footer.vue";
 import Product from "../../components/Product.vue";
 // import Product from "@/components/Product.vue";
 import { ref, reactive, onMounted, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
-
-const route = useRoute();
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 const router = useRouter();
 const products = reactive({
   list: [],
@@ -73,11 +87,11 @@ watch(sortParam, (newValue) => {
 const minPrice = ref(0);
 const maxPrice = ref(99999);
 const filterByPrice = () => {
-  if(minPrice.value && maxPrice.value){
+  if (minPrice.value && maxPrice.value) {
     products.list = products.list.filter((item) => item.price >= minPrice.value && item.price <= maxPrice.value);
-  }else if(minPrice.value){
+  } else if (minPrice.value) {
     products.list = products.list.filter((item) => item.price >= minPrice.value);
-  }else if(maxPrice.value){
+  } else if (maxPrice.value) {
     products.list = products.list.filter((item) => item.price <= maxPrice.value);
   }
 };
@@ -86,6 +100,7 @@ const filterByPrice = () => {
 const reset = async () => {
   const res = await service.get(`/mall/product/category=${headCategory.value}`);
   products.list = res.data;
+  maxPrice.value = 99999;
 };
 
 async function searchProduction(keyword) {

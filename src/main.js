@@ -10,16 +10,16 @@ import en from './locals/en.js';
 import zh from './locals/zh.js';
 // 组合语言包对象
 const messages = {
-    en,
-    zh
+  en,
+  zh
 }
 // 创建实例对象
 const i18n = createI18n({
-    legacy: false,  // 设置为 false，启用 composition API 模式
-    messages,
-    locale: navigator.language === 'zh-CN' ? 'zh' : 'en',
-  })
-  
+  legacy: false,  // 设置为 false，启用 composition API 模式
+  messages,
+  locale: navigator.language === 'zh-CN' ? 'zh' : 'en',
+})
+
 
 const app = createApp(App)
 const pinia = createPinia()
