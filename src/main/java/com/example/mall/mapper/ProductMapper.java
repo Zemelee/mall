@@ -1,7 +1,6 @@
 package com.example.mall.mapper;
 
 import com.example.mall.entity.Attribution;
-import com.example.mall.entity.History;
 import com.example.mall.entity.Product;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -24,7 +23,7 @@ public interface ProductMapper {
 
     Product getProductWithAttributes(int productId);
     List<Product> searchProduct(String keyword);
-    List<Product> getProduct(int start, int number);
+    List<Product> getProduct(int page, int size);
 
 
 }

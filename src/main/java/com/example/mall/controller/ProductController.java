@@ -50,12 +50,6 @@ public class ProductController {
         }
     }
 
-    @Getter
-    static
-    class PageInfo {
-        int start;
-        int number;
-    }
 
     @PostMapping("/add")
     public ResponseEntity<String> addProduct(@RequestBody Product product) {
@@ -70,9 +64,21 @@ public class ProductController {
         }
     }
 
+    @Getter
+    static
+    class PageInfo {
+        int page;
+        int size;
+    }
+
     @PostMapping("/get") //偏移量+显示数据
-    public List<Product> getProductByPage(@RequestBody PageInfo pageInfo) {
-        return productService.getProduct(pageInfo.getStart(), pageInfo.getNumber());
+    public ResponseEntity<List<Product>> getProductByPage(@RequestBody PageInfo pageInfo) {
+        List<Product> products = productService.getProduct(pageInfo.getPage(), pageInfo.getSize());
+        if (!products.isEmpty()) {
+            return new ResponseEntity<>(products, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 

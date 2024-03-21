@@ -103,7 +103,7 @@
     </insert>
 
 
-    <select id="getProduct" resultType="com.example.mall.entity.Product">
+    <select id="getProduct" resultMap="productWithAttributionsResultMap">
         SELECT product.*,
                attribution.id as attr_id,
                attribution.product_id,
@@ -112,7 +112,7 @@
                attribution.more
         FROM product
                  LEFT JOIN attribution ON product.id = attribution.product_id
-            LIMIT #{number} OFFSET #{start}
+            LIMIT #{size} OFFSET #{page}
     </select>
 
 </mapper>

@@ -73,8 +73,8 @@ public class ProductService {
         return false;
     }
 
-    public List<Product> getProduct(int start, int number) {
-        return productMapper.getProduct(start, number);
+    public List<Product> getProduct(int page, int size) {
+        return productMapper.getProduct(page, size);
     }
 
 }
