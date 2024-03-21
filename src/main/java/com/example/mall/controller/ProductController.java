@@ -81,5 +81,16 @@ public class ProductController {
         }
     }
 
+    @PostMapping("/del")
+    public ResponseEntity<String> delByIds(@RequestBody List<Integer> ids) {
+        for (Integer id : ids) {
+            boolean res = productService.delById(id);
+            if (res) {
+                System.out.println(id);
+            }
+        }
+        return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
+    }
+
 
 }

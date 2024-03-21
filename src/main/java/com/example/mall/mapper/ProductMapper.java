@@ -26,4 +26,6 @@ public interface ProductMapper {
     List<Product> getProduct(int page, int size);
 
 
+    boolean delById(Integer id);
+
 }

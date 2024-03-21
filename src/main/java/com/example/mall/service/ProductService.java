@@ -77,4 +77,8 @@ public class ProductService {
         return productMapper.getProduct(page, size);
     }
 
+    public boolean delById(Integer id){
+        return productMapper.delById(id);
+    }
+
 }
