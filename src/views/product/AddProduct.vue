@@ -38,7 +38,6 @@
     <h3>规格设置</h3>
     <hr>
     <div v-for="(attribution, index) in product.attributions" :key="index">
-
       <el-form-item label="规格名称" :prop="'attributions.' + index + '.attrval'">
         <el-input v-model="attribution.attrval"></el-input>
       </el-form-item>
@@ -46,7 +45,7 @@
         <el-input-number v-model="attribution.inventory" :min="1" :max="1000"></el-input-number>
       </el-form-item>
       <el-form-item label="差价" :prop="'attributions.' + index + '.more'">
-        <el-input-number v-model="attribution.more" :min="0" :max="10000"></el-input-number>
+        <el-input-number v-model="attribution.more"></el-input-number>
       </el-form-item>
     </div>
     <el-form-item>
@@ -66,32 +65,21 @@ export default {
         price: 0,
         category: 0,
         description: "",
-        picsrc: "",
+        picsrc: "https://img0.baidu.com/it/u=3570662280,3859669424&fm=253&fmt=auto&app=138&f=PNG?w=500&h=500",
         attributions: [{ attrval: "", inventory: 1, more: 0 }],
       },
       rules: {
-        name: [
-          { required: true, message: '输入商品名称', trigger: 'blur' },
-        ],
-        price: [
-          { required: true, message: '输入商品最低价', trigger: 'change' }
-        ],
-        category: [
-          { required: true, message: '选择商品种类', trigger: 'change' }
-        ],
+        name: [{ required: true, message: '输入商品名称', trigger: 'blur' },],
+        price: [{ required: true, message: '输入商品最低价', trigger: 'change' }],
+        category: [{ required: true, message: '选择商品种类', trigger: 'change' }],
         description: [
           { required: true, message: '至少一句简单描述', trigger: 'blur' },
           { min: 5, message: '至少5个字符', trigger: 'blur' }
         ],
-        picsrc: [
-          { required: true, message: '图片链接为必填', trigger: 'blur' }
-        ],
-        'attributions.*.attrval': [
-          { required: true, message: '规格属性为必填', trigger: 'blur' },
-        ],
-        'attributions.*.inventory': [
-          { required: true, message: '库存为必填', trigger: 'blur' },
-        ]
+        picsrc: [{ required: true, message: '图片链接为必填', trigger: 'blur' }],
+        'attributions.*.attrval': [{ required: true, message: '规格属性为必填', trigger: 'blur' },],
+        'attributions.*.inventory': [{ type: 'number', min: 1, max: 1000, message: '库存应在1-1000之间', trigger: 'blur' }],
+        'attributions.*.more': [{ type: 'number', message: '差价必填', trigger: 'blur' }]
       }
     };
   },
