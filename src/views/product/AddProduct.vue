@@ -4,11 +4,11 @@
 
   </div>
   <hr>
-  <el-form ref="form" :inline="true" :model="product" label-width="80px">
-    <el-form-item label="商品名称">
+  <el-form ref="form" :inline="true" :rules="rules" :model="product" label-width="80px">
+    <el-form-item label="商品名称" prop="name">
       <el-input v-model="product.name"></el-input>
     </el-form-item>
-    <el-form-item label="商品种类">
+    <el-form-item label="商品种类" prop="category">
       <el-select v-model="product.category" placeholder="选择种类">
         <el-option label="电子设备" value="1"></el-option>
         <el-option label="食品" value="2"></el-option>
@@ -22,14 +22,14 @@
       </el-select>
     </el-form-item>
 
-    <el-form-item label="最低价">
-      <el-input-number v-model="product.price" :min="1" :max="10000"></el-input-number>
+    <el-form-item label="最低价" prop="price">
+      <el-input-number v-model="product.price" :min="1" :max="99999"></el-input-number>
     </el-form-item>
     <br>
-    <el-form-item label="商品图片">
+    <el-form-item label="商品图片" prop="picsrc">
       <el-input v-model="product.picsrc"></el-input>
     </el-form-item>
-    <el-form-item label="商品描述">
+    <el-form-item label="商品描述" prop="description">
       <el-input type="textarea" v-model="product.description"></el-input>
     </el-form-item>
     <el-button type="primary" @click="addAttribution">添加规格</el-button>
@@ -38,13 +38,14 @@
     <h3>规格设置</h3>
     <hr>
     <div v-for="(attribution, index) in product.attributions" :key="index">
-      <el-form-item label="规格名称">
+
+      <el-form-item label="规格名称" :prop="'attributions.' + index + '.attrval'">
         <el-input v-model="attribution.attrval"></el-input>
       </el-form-item>
-      <el-form-item label="现有库存">
+      <el-form-item label="现有库存" :prop="'attributions.' + index + '.inventory'">
         <el-input-number v-model="attribution.inventory" :min="1" :max="1000"></el-input-number>
       </el-form-item>
-      <el-form-item label="差价">
+      <el-form-item label="差价" :prop="'attributions.' + index + '.more'">
         <el-input-number v-model="attribution.more" :min="0" :max="10000"></el-input-number>
       </el-form-item>
     </div>
@@ -66,33 +67,70 @@ export default {
         category: 0,
         description: "",
         picsrc: "",
-        attributions: [{ attrval: "", inventory: 0, more: 0 }],
+        attributions: [{ attrval: "", inventory: 1, more: 0 }],
+      },
+      rules: {
+        name: [
+          { required: true, message: '输入商品名称', trigger: 'blur' },
+        ],
+        price: [
+          { required: true, message: '输入商品最低价', trigger: 'change' }
+        ],
+        category: [
+          { required: true, message: '选择商品种类', trigger: 'change' }
+        ],
+        description: [
+          { required: true, message: '至少一句简单描述', trigger: 'blur' },
+          { min: 5, message: '至少5个字符', trigger: 'blur' }
+        ],
+        picsrc: [
+          { required: true, message: '图片链接为必填', trigger: 'blur' }
+        ],
+        'attributions.*.attrval': [
+          { required: true, message: '规格属性为必填', trigger: 'blur' },
+        ],
+        'attributions.*.inventory': [
+          { required: true, message: '库存为必填', trigger: 'blur' },
+        ]
       }
     };
   },
   methods: {
     addAttribution() {
-      this.product.attributions.push({ attrval: "", inventory: 0, more: 0 });
+      this.product.attributions.push({ attrval: "", inventory: 1, more: 0 });
     },
     subAttribution() {
-      this.product.attributions.pop();
+      if (this.product.attributions.length <= 1) {
+        this.$message.warning("至少一个规格");
+      } else {
+        this.product.attributions.pop();
+      }
     },
 
     submitForm() {
-      console.log("this.product", this.product);
-      service
-        .post("/mall/product/add", this.product)
-        .then((response) => {
-          if (response == "ok"){
-              this.$message.success("添加成功");
-              setTimeout(() => {
-                this.$router.push("/home/all");
-              }, 2000);
-          }
-        })
-        .catch((error) => {
-        });
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          console.log("表单校验通过");
+          console.log("this.product", this.product);
+          service.post("/mall/product/add", this.product)
+            .then((response) => {
+              if (response === "ok") {
+                this.$message.success("添加成功");
+                setTimeout(() => {
+                  this.$router.push("/home/all");
+                }, 2000);
+              }
+            })
+            .catch((error) => {
+              this.$message.error("添加失败", JSON.stringify(error));
+            });
+        } else {
+          console.log("表单校验不通过");
+          return false;
+        }
+      });
     },
+
   },
 };
 </script>

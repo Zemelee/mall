@@ -81,7 +81,7 @@ export default {
     }
   },
   created() {
-    service.post("/mall/product/get", { page: 6, size: 10 }).then((response) => {
+    service.post("/mall/product/get", { page: 2, size: 100 }).then((response) => {
       this.productions = response;
     });
   },
