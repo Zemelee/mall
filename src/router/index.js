@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import NotFound from '../views/frame/NotFound.vue'
 import addProduct from '../views/product/AddProduct.vue'
 import allProduct from '../views/product/AllProduct.vue'
+import allFeedback from '../views/AllFeedback.vue'
 
 const routes = [
   {
@@ -31,6 +32,12 @@ const routes = [
         path: 'all',
         name: 'allProduct',
         component: allProduct,
+        hidden: true  //隐藏
+      },
+      {
+        path: 'feedback',
+        name: 'allFeedback',
+        component: allFeedback,
         hidden: true  //隐藏
       },
     ]

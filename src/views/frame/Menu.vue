@@ -11,9 +11,15 @@
           <el-menu-item index="2-1">上新</el-menu-item>
         </el-menu-item>
       </router-link>
+      
       <router-link :to="{ path: '/home/all' }">
         <el-menu-item index="3">
           <el-menu-item index="3-2">全部</el-menu-item>
+        </el-menu-item>
+      </router-link>
+      <router-link :to="{ path: '/home/feedback' }">
+        <el-menu-item index="4">
+          <el-menu-item index="4-1">用户反馈</el-menu-item>
         </el-menu-item>
       </router-link>
     </el-menu>
