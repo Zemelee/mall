@@ -154,7 +154,12 @@ export default {
           if (res == "ok") {
             this.$message({
               type: 'success',
-              message: '处理成功'
+              message: '删除成功'
+            });
+          } else {
+            this.$message({
+              type: 'error',
+              message: '删除失败'
             });
           }
         })
@@ -171,7 +176,9 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
+          console.log(this.times);
           service.post("/user/feedback/handle", this.times).then(res => {
+            console.log(res);
             if (res == "ok") {
               this.$message({
                 type: 'success',

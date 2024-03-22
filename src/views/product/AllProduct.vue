@@ -48,6 +48,9 @@
     <!-- Form -->
     <el-dialog v-model="editForm" title="编辑商品" width="70%">
       <el-form :model="currentRow" ref="productForm" label-width="120px">
+        <el-form-item label="ID" prop="id">
+          <el-input v-model="currentRow.id" disabled></el-input>
+        </el-form-item>
         <el-form-item label="商品名称" prop="name">
           <el-input v-model="currentRow.name" placeholder="请输入商品名称"></el-input>
         </el-form-item>
@@ -87,9 +90,6 @@
               </template>
             </el-table-column>
             <el-table-column label="操作">
-              <!-- <template slot="header" v-slot="scope">
-                <el-input v-model="search" size="mini" placeholder="输入关键字搜索" />
-              </template> -->
               <template v-slot="scope">
                 <el-button size="mini" type="danger" @click="delAttribution(scope.$index, scope.row)">删除</el-button>
               </template>
@@ -169,9 +169,12 @@ export default {
       let delMsg;
       try {
         delMsg = await service.post("/mall/product/del", this.ids);
-        if (delMsg === "ok") {
-          const response = await service.post("/mall/product/get", { page: 1, size: 10 });
-          this.productions = response;
+        if (delMsg == "ok") {
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          });
+          this.$router.go(0);
         } else {
           throw new Error("删除失败");
         }
@@ -197,7 +200,26 @@ export default {
       this.currentRow.attributions.push({ attrval: "默认规格", inventory: 1, more: 0 });
     },
     handleDelete(index, row) {
-      console.log(index, row);
+      this.$confirm('是否删除此商品?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        const delMsg = await service.post("/mall/product/del", [row.id])
+        console.log("delMsg", delMsg)
+        if (delMsg == "ok") {
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          });
+          setTimeout(() => {
+            this.$router.go(0);
+          }, 1000);
+        } else {
+          throw new Error("删除失败");
+        }
+
+      })
     },
     delAttribution(index, row) {
       this.currentRow.attributions.splice(index, 1);
@@ -205,7 +227,8 @@ export default {
     },
     confirmModify() {
       console.log(this.currentRow);
-      service.post(`/mall/product/modify/${this.currentRow.id}`, this.currentRow).then((response) => {
+      service.post(`/mall/product/modify`, this.currentRow).then((response) => {
+        console.log(response);
         if (response === "ok") {
           this.$message.success("修改成功");
           this.editForm = false;

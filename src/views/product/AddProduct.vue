@@ -98,7 +98,6 @@ export default {
     submitForm() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          console.log("表单校验通过");
           console.log("this.product", this.product);
           service.post("/mall/product/add", this.product)
             .then((response) => {
