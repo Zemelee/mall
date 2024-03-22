@@ -5,6 +5,7 @@ import com.example.mall.entity.UserFeedback;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -30,5 +31,7 @@ public interface UserMapper {
     List<UserFeedback> getFeedback();
 
     boolean updateUserInfo(User user);
+
+    boolean updateFeedback(Date submitTime);
 
 }

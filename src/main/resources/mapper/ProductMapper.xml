@@ -116,13 +116,17 @@
         OFFSET #{page}
     </select>
 
-    <delete id="delById" parameterType="int">
-        DELETE
-        product, attribution
-        FROM product
-        JOIN attribution ON product.id = attribution.product_id
-        WHERE product.id = #{id};
+    <delete id="delAttributionsById" parameterType="int">
+        DELETE FROM attribution WHERE product_id = #{id};
     </delete>
+
+    <delete id="delProductById" parameterType="int">
+        DELETE FROM product WHERE id = #{id};
+    </delete>
+
+
+
+
 
 
 </mapper>

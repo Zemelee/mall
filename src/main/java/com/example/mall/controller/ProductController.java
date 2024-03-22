@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -83,14 +84,31 @@ public class ProductController {
 
     @PostMapping("/del")
     public ResponseEntity<String> delByIds(@RequestBody List<Integer> ids) {
+        List<Integer> failedIds = new ArrayList<>();
         for (Integer id : ids) {
             boolean res = productService.delById(id);
-            if (res) {
-                System.out.println(id);
+            if (!res) {
+                failedIds.add(id);
             }
         }
-        return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
+        if (!failedIds.isEmpty()) {
+            String message = "Deletion failed for IDs: " + failedIds;
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 
+    @PostMapping("/modify")
+    public ResponseEntity<String> confirmModify(@RequestBody Product product) {
+        //删除商品规格和本体
+        productService.delById(product.getId());
+        //添加商品
+        boolean ok = productService.addProductWithAttributes(product);
+        if (ok) {
+            return new ResponseEntity<>("ok", HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>("fail", HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }

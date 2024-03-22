@@ -13,6 +13,7 @@ public class UserFeedback {
     private String email;
     private String feedback;
     private Date submitTime;
+    private int status;
 
     @Override
     public String toString() {
@@ -21,6 +22,7 @@ public class UserFeedback {
                 ", email='" + email + '\'' +
                 ", feedback='" + feedback + '\'' +
                 ", submitTime=" + submitTime +
+                ", status=" + status +
                 '}';
     }
 

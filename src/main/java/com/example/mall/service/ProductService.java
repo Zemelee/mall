@@ -56,6 +56,7 @@ public class ProductService {
         productMapper.addProduct(product);
         // 获取插入商品后的ID
         int productId = product.getId();
+        System.out.println("productId:" + productId);
         try {
             // 再设置商品规格：attribution 表的外键约束依赖于 product 表的存在
             if (product.getAttributions() != null) {
@@ -77,8 +78,10 @@ public class ProductService {
         return productMapper.getProduct(page, size);
     }
 
-    public boolean delById(Integer id){
-        return productMapper.delById(id);
+    public boolean delById(Integer id) {
+        productMapper.delAttributionsById(id);
+        return productMapper.delProductById(id);
     }
+
 
 }

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 
@@ -119,6 +120,22 @@ public class UserController {
         } else {
             return new ResponseEntity<>("Failed", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping("user/feedback/handle")
+    public ResponseEntity<String> updateFeedback(@RequestBody List<Date> times){
+        List<Date> failedTimes = new ArrayList<>();
+        for (Date time : times) {
+            boolean res = userService.updateFeedback(time);
+            if (!res) {
+                failedTimes.add(time);
+            }
+        }
+        if (!failedTimes.isEmpty()) {
+            String message = "handle failed for Times: " + failedTimes;
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 
 

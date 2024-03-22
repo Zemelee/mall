@@ -74,5 +74,11 @@
         WHERE user_id = #{user_id};
     </update>
 
+    <update id="updateFeedback">
+        UPDATE feedback
+        SET status = 1
+        WHERE submittime = #{submitTime};
+    </update>
+
 
 </mapper>

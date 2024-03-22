@@ -6,6 +6,7 @@ import com.example.mall.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -63,6 +64,11 @@ public class UserService {
         user.setPhone(phone);
         user.setToken(null);
         return userMapper.updateUserInfo(user);
+    }
+
+
+    public boolean updateFeedback(Date submitTime) {
+        return userMapper.updateFeedback(submitTime);
     }
 
 
