@@ -31,7 +31,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="sales" label="已售" width="160">
+      <el-table-column prop="sales" label="已售" width="100">
       </el-table-column>
       <el-table-column label="操作">
         <template v-slot="scope">
@@ -46,20 +46,62 @@
     </Box>
 
     <!-- Form -->
-    <el-dialog title="收货地址" v-model="editForm">
-      <el-form :model="form">
-        <el-form-item label="活动名称" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
+    <el-dialog v-model="editForm" title="编辑商品" width="70%">
+      <el-form :model="currentRow" ref="productForm" label-width="120px">
+        <el-form-item label="商品名称" prop="name">
+          <el-input v-model="currentRow.name" placeholder="请输入商品名称"></el-input>
         </el-form-item>
-        <el-form-item label="活动区域" :label-width="formLabelWidth">
-          <el-select v-model="form.region" placeholder="请选择活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
+        <el-form-item label="商品图片" prop="picsrc">
+          <el-input v-model="currentRow.picsrc" placeholder="请输入商品图片链接"></el-input>
+        </el-form-item>
+        <el-form-item label="商品最低价" prop="price">
+          <el-input v-model="currentRow.price" placeholder="请输入商品最低价"></el-input>
+        </el-form-item>
+        <el-form-item label="商品种类" prop="category">
+          <el-select v-model="currentRow.category" placeholder="请选择商品种类">
+            <el-option label="电子设备" value="1"></el-option>
+            <el-option label="食品" value="2"></el-option>
+            <el-option label="服装" value="3"></el-option>
+            <el-option label="问卷" value="4"></el-option>
+            <el-option label="其他" value="5"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="商品描述" prop="description">
+          <el-input v-model="currentRow.description" placeholder="请输入商品描述"></el-input>
+        </el-form-item>
+        <el-form-item label="规格属性" prop="attributions">
+          <el-table :data="currentRow.attributions" border style="width: 100%">
+            <el-table-column prop="attrval" label="规格属性" width="160">
+              <template v-slot="scope">
+                <el-input v-model="scope.row.attrval" placeholder="请输入规格属性"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column prop="inventory" label="库存" width="100">
+              <template v-slot="scope">
+                <el-input v-model="scope.row.inventory" placeholder="请输入库存"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column prop="more" label="差价" width="100">
+              <template v-slot="scope">
+                <el-input v-model="scope.row.more" placeholder="请输入差价"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作">
+              <!-- <template slot="header" v-slot="scope">
+                <el-input v-model="search" size="mini" placeholder="输入关键字搜索" />
+              </template> -->
+              <template v-slot="scope">
+                <el-button size="mini" type="danger" @click="delAttribution(scope.$index, scope.row)">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-form-item>
       </el-form>
-      <div class="dialog-footer">
-      </div>
+
+      <Box>
+        <el-button type="primary" @click="addAttribution">新增属性</el-button>
+        <el-button type="primary" @click="confirmModify">确 定</el-button>
+      </Box>
     </el-dialog>
   </div>
 
@@ -96,7 +138,8 @@ export default {
       },
       layout: "total, sizes, prev, pager, next, jumper, ->, slot", //分页组件会展示的功能项
       ids: [],//表格多选时的数据id
-      loading: false
+      loading: false,
+      currentRow: {},
     }
   },
   created() {
@@ -147,12 +190,30 @@ export default {
       }
     },
     handleEdit(index, row) {
-      console.log(index, row);
+      this.currentRow = row;
       this.editForm = true;
+    },
+    addAttribution() {
+      this.currentRow.attributions.push({ attrval: "默认规格", inventory: 1, more: 0 });
     },
     handleDelete(index, row) {
       console.log(index, row);
     },
+    delAttribution(index, row) {
+      this.currentRow.attributions.splice(index, 1);
+      console.log(this.currentRow.attributions);
+    },
+    confirmModify() {
+      console.log(this.currentRow);
+      service.post(`/mall/product/modify/${this.currentRow.id}`, this.currentRow).then((response) => {
+        if (response === "ok") {
+          this.$message.success("修改成功");
+          this.editForm = false;
+          const response = service.post("/mall/product/get", { page: 1, size: 10 });
+        }
+      })
+    }
   }
+
 }
 </script>
