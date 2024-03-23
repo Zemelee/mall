@@ -30,5 +30,5 @@ public interface ProductMapper {
 
     boolean delProductById(Integer id);
 
-
+    boolean setProductId(int pid,int oldPid);
 }

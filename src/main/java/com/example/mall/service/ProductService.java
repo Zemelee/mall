@@ -51,21 +51,26 @@ public class ProductService {
     }
 
     @Transactional
-    public boolean addProductWithAttributes(Product product) {
+    public boolean addProductWithAttributes(Product product, Integer oldPid) {
         // 先插入商品信息
         productMapper.addProduct(product);
-        // 获取插入商品后的ID
-        int productId = product.getId();
-        System.out.println("productId:" + productId);
+        int pid = product.getId();//拿到了插入后的id值
+        if (oldPid != null) {
+            productMapper.setProductId(pid, oldPid);
+        }
         try {
             // 再设置商品规格：attribution 表的外键约束依赖于 product 表的存在
             if (product.getAttributions() != null) {
                 for (Attribution attribution : product.getAttributions()) {
-                    attribution.setProduct_id(productId);
-                    attribution.setProduct_id(productId);
+                    if (oldPid != null) {
+                        attribution.setProduct_id(oldPid);
+                    } else {
+                        attribution.setProduct_id(pid);
+                    }
                     // 插入商品规格信息
-                    return productMapper.addProductAttribution(attribution);
+                    productMapper.addProductAttribution(attribution);
                 }
+                return true;
             }
         } catch (Exception e) {
             e.printStackTrace(); // 或者使用日志库记录错误信息

@@ -2,9 +2,11 @@ package com.example.mall.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class Attribution {
     private int id;
     private int product_id;

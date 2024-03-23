@@ -3,6 +3,7 @@ package com.example.mall.controller;
 import com.example.mall.entity.Product;
 import com.example.mall.service.ProductService;
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,8 +55,8 @@ public class ProductController {
 
     @PostMapping("/add")
     public ResponseEntity<String> addProduct(@RequestBody Product product) {
-        // 调用 productService 方法
-        boolean ok = productService.addProductWithAttributes(product);
+        // 调用 productService 方法,直接添加新product
+        boolean ok = productService.addProductWithAttributes(product, null);
         if (ok) {
             // 返回 ResponseEntity 对象，包含状态码和 JSON 信息
             return new ResponseEntity<>("ok", HttpStatus.CREATED);
@@ -66,6 +67,7 @@ public class ProductController {
     }
 
     @Getter
+    @ToString
     static
     class PageInfo {
         int page;
@@ -101,9 +103,10 @@ public class ProductController {
     @PostMapping("/modify")
     public ResponseEntity<String> confirmModify(@RequestBody Product product) {
         //删除商品规格和本体
-        productService.delById(product.getId());
+        int pid = product.getId();
+        productService.delById(pid);
         //添加商品
-        boolean ok = productService.addProductWithAttributes(product);
+        boolean ok = productService.addProductWithAttributes(product, pid);
         if (ok) {
             return new ResponseEntity<>("ok", HttpStatus.CREATED);
         } else {

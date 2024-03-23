@@ -124,9 +124,10 @@
         DELETE FROM product WHERE id = #{id};
     </delete>
 
-
-
-
-
+    <update id="setProductId">
+        UPDATE product
+        SET id = #{oldPid}
+        WHERE id = #{pid}
+    </update>
 
 </mapper>
