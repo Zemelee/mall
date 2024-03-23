@@ -29,9 +29,14 @@ public interface UserMapper {
     void addFeedback(UserFeedback feedback);
 
     List<UserFeedback> getFeedback();
+    List<UserFeedback> searchFeedback(String keyword,Integer type);
 
     boolean updateUserInfo(User user);
 
     boolean updateFeedback(Date submitTime);
+
+
+
+
 
 }

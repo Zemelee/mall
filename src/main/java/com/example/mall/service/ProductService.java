@@ -55,6 +55,7 @@ public class ProductService {
         // 先插入商品信息
         productMapper.addProduct(product);
         int pid = product.getId();//拿到了插入后的id值
+        System.out.println("oldPid:"+oldPid);
         if (oldPid != null) {
             productMapper.setProductId(pid, oldPid);
         }

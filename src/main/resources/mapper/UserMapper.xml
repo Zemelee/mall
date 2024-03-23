@@ -57,6 +57,24 @@
         values (#{username}, #{email}, #{feedback}, #{submitTime})
     </insert>
 
+    <select id="searchFeedback" resultType="com.example.mall.entity.UserFeedback">
+        SELECT *
+        FROM feedback
+        <if test="keyword != null and keyword != ''">
+            WHERE feedback LIKE CONCAT('%', #{keyword}, '%')
+            <if test="type != null">
+                AND status = #{type}
+            </if>
+        </if>
+        <if test="keyword == null or keyword == ''">
+            <if test="type != null">
+                WHERE status = #{type}
+            </if>
+        </if>
+    </select>
+
+
+
     <select id="getFeedback" resultType="com.example.mall.entity.UserFeedback">
         SELECT *
         FROM feedback

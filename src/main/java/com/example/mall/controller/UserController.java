@@ -9,6 +9,7 @@ import com.example.mall.response.LoginResponse;
 import com.example.mall.service.UserService;
 import com.example.mall.utils.JwtUtil;
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -111,6 +112,20 @@ public class UserController {
         return userService.getFeedback();
     }
 
+    @Getter
+    @ToString
+    static
+    class SearchParam {
+        private String keyword;
+        private List<Integer> handleType;
+    }
+
+    @PostMapping("/user/feedback/search")
+    public List<UserFeedback> searchFeedback(@RequestBody SearchParam searchParam) {
+        System.out.println("searchParam:" + searchParam);
+        return userService.searchFeedback(searchParam.getKeyword(), searchParam.getHandleType());
+    }
+
     @PostMapping("/user/update/{user_id}")
     public ResponseEntity<String> updateUserInfo(@PathVariable int user_id,
                                                  @RequestBody User user) {
@@ -123,7 +138,7 @@ public class UserController {
     }
 
     @PostMapping("user/feedback/handle")
-    public ResponseEntity<String> updateFeedback(@RequestBody List<Date> times){
+    public ResponseEntity<String> updateFeedback(@RequestBody List<Date> times) {
         List<Date> failedTimes = new ArrayList<>();
         for (Date time : times) {
             boolean res = userService.updateFeedback(time);

@@ -6,6 +6,7 @@ import com.example.mall.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -50,8 +51,22 @@ public class UserService {
     }
 
     public List<UserFeedback> getFeedback() {
-
         return userMapper.getFeedback();
+    }
+
+    public List<UserFeedback> searchFeedback(String keyword, List<Integer> handleType) {
+        System.out.println("keyword:" + keyword);
+        System.out.println("handleType:" + handleType);
+        List<UserFeedback> resFeedback = new ArrayList<>();
+        if (handleType != null && !handleType.isEmpty()) {
+            for (Integer type : handleType) {
+                resFeedback.addAll(userMapper.searchFeedback(keyword, type));
+            }
+        } else {
+            // 如果处理类型列表为空，则只根据关键字进行搜索
+            resFeedback = userMapper.searchFeedback(keyword, null);
+        }
+        return resFeedback;
     }
 
 
