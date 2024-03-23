@@ -145,12 +145,14 @@ export default {
   created() {
     service.post("/mall/product/get", { page: 1, size: 10 }).then((response) => {
       this.productions = response;
+      // this.page.total = response.length;
     });
   },
   methods: {
     pageFunc(pageInfo) {
       // 偏移量
-      service.post("/mall/product/get", { page: (pageInfo.pageNum) * pageInfo.pageSize, size: pageInfo.pageSize }).then((response) => {
+      console.log({ page: (pageInfo.pageNum) * pageInfo.pageSize, size: pageInfo.pageSize })
+      service.post("/mall/product/get", { page: (pageInfo.pageNum) * pageInfo.pageSize, size: pageInfo.pageSize + 110 }).then((response) => {
         this.productions = response;
       });
     },
@@ -197,7 +199,7 @@ export default {
       this.editForm = true;
     },
     addAttribution() {
-      this.currentRow.attributions.push({ attrval: "默认规格", inventory: 1, more: 0 });
+      this.currentRow.attributions.push({ product_id: this.currentRow.id, attrval: "默认规格", inventory: 1, more: 0 });
     },
     handleDelete(index, row) {
       this.$confirm('是否删除此商品?', '提示', {
@@ -231,8 +233,10 @@ export default {
         console.log(response);
         if (response === "ok") {
           this.$message.success("修改成功");
+          service.post("/mall/product/get", { page: 1, size: 10 }).then((response) => {
+            this.productions = response;
+          });
           this.editForm = false;
-          const response = service.post("/mall/product/get", { page: 1, size: 10 });
         }
       })
     }

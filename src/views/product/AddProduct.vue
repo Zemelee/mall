@@ -61,12 +61,12 @@ export default {
   data() {
     return {
       product: {
-        name: "",
-        price: 0,
+        name: "默认名称",
+        price: 1,
         category: 0,
-        description: "",
+        description: "默认描述",
         picsrc: "https://img0.baidu.com/it/u=3570662280,3859669424&fm=253&fmt=auto&app=138&f=PNG?w=500&h=500",
-        attributions: [{ attrval: "", inventory: 1, more: 0 }],
+        attributions: [{ attrval: "默认规格", inventory: 1, more: 0 }],
       },
       rules: {
         name: [{ required: true, message: '输入商品名称', trigger: 'blur' },],
@@ -74,7 +74,7 @@ export default {
         category: [{ required: true, message: '选择商品种类', trigger: 'change' }],
         description: [
           { required: true, message: '至少一句简单描述', trigger: 'blur' },
-          { min: 5, message: '至少5个字符', trigger: 'blur' }
+          { min: 4, message: '至少4个字符', trigger: 'blur' }
         ],
         picsrc: [{ required: true, message: '图片链接为必填', trigger: 'blur' }],
         'attributions.*.attrval': [{ required: true, message: '规格属性为必填', trigger: 'blur' },],
@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     addAttribution() {
-      this.product.attributions.push({ attrval: "", inventory: 1, more: 0 });
+      this.product.attributions.push({ attrval: "默认规格", inventory: 1, more: 0 });
     },
     subAttribution() {
       if (this.product.attributions.length <= 1) {
