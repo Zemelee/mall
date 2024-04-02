@@ -142,7 +142,7 @@ const goDetails = (id) => {
 }
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .el-container {
   /* width: 90vw; */
 

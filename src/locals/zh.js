@@ -1,6 +1,6 @@
 // 定义中文语言包对象
 export default {
-
+  
   Login: {
     title: '皆有杂货铺',
     username: '用户名',

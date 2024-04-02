@@ -1,17 +1,25 @@
 import { defineStore } from 'pinia';
-import service from "../request/index.js";
+import { reactive } from 'vue';
 import { ElMessage } from "element-plus";
+import service from "../request/index.js";
 export const useCartStore = defineStore('cartList', {
     state: () => ({
-        // const Cart = useCartStore(); Cart.cartList
-        cartList: localStorage.getItem('cartList') || [],//获取购物车列表
-        products: []
+        cartList: JSON.parse(localStorage.getItem('cartList') || []),//获取购物车列表
+        products: reactive([])
     }),
     actions: {
         async fetchProducts(ids) {
             for (let id of ids) {
-                const product = await service.get(`/mall/product/id=${id}`);
-                this.products.push(product.data);
+                try {
+                    const product = await service.get(`/mall/product/id=${id}`);
+                    this.products.push(product.data);
+                } catch (error) {
+                    if (error.response && (error.response.status === 404)) {
+                        ElMessage.error(`商品id ${id} 请求失败: ${error.response.status}`);
+                    } else {
+                        throw error;
+                    }
+                }
             }
         },
         updateProducts(cartList) {

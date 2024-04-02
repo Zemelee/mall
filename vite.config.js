@@ -1,27 +1,38 @@
 // vite.config.js
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import {resolve} from 'path'
+import { resolve } from 'path'
 export default defineConfig({
-  publicPath: './',
+  base: './',
   plugins: [vue()],
+  build: {
+    target: 'es2015',
+    outDir: 'dist',
+    rollupOptions: {
+      output: {
+        entryFileNames: '[name]-[hash].js', // 引入文件名的名称
+        chunkFileNames: '[name]-[hash].js', // 包的入口文件名称
+        assetFileNames: '[name]-[hash].[ext]'  // 资源文件像 字体，图片等
+      }
+    }
+  },
   resolve: {
     alias: {
-      "@": resolve(__dirname, 'src'), 
+      "@": resolve(__dirname, 'src'),
     },
-    extensions: ['.vue','.js'] // 导入时想要省略的扩展名列表
+    extensions: ['.vue', '.js'] // 导入时想要省略的扩展名列表
   },
   server: {
-    proxy: {
-      '/api': {
-        target: 'http://sugarblack.top:8081',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, "")
-      }
-    },
+    // proxy: {
+    //   '/api': {
+    //     target: 'http://sugarblack.top:8081',
+    //     changeOrigin: true,
+    //     rewrite: (path) => path.replace(/^\/api/, "")
+    //   }
+    // },
     fsServe: {
       root: '.' // 指定静态资源的根目录
     }
   },
-  
+
 });

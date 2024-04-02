@@ -48,24 +48,21 @@
 </template>
 
 <script setup>
-import { useRoute, useRouter } from "vue-router";
-import { useCartStore } from "@/store/cart.js";
+import { useRouter } from "vue-router";
 import service from "@/request/index";
 import { ref, computed } from "vue";
 import { ElMessage } from "element-plus";
-const route = useRoute();
+import { useCartStore } from "@/store/cart.js";
 const router = useRouter();
 const userid = localStorage.getItem("userid");
 const Cart = useCartStore();
-const cartList = JSON.parse(Cart.cartList);  // 商品、属性、数量
+const cartList = Cart.cartList  // 商品、属性、数量
 const ids = [...new Set(cartList.map((item) => item.productid))];
 // 获取商品列表
 Cart.fetchProducts(ids).then(() => {
   //获取到了购物车的详细数据数据products
   Cart.updateProducts(cartList)
 });
-
-
 
 const add = (attrid) => {
   const item = selectedItems.value.find(item => item.attrid === attrid);
@@ -154,7 +151,6 @@ const pay = async () => {
     return;
   } else {
     // 扣费成功，增加订单记录
-    console.log(orderItems,2);
     service
       .post(`/mall/history/add`, orderItems)
       .then((res) => {
