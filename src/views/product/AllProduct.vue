@@ -66,7 +66,11 @@
             <el-option label="食品" value="2"></el-option>
             <el-option label="服装" value="3"></el-option>
             <el-option label="问卷" value="4"></el-option>
-            <el-option label="其他" value="5"></el-option>
+            <el-option label="周边" value="5"></el-option>
+            <el-option label="服饰" value="6"></el-option>
+            <el-option label="信息" value="7"></el-option>
+            <el-option label="二手" value="8"></el-option>
+            <el-option label="折扣" value="9"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="商品描述" prop="description">

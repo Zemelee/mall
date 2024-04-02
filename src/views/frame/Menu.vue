@@ -1,11 +1,10 @@
 <template>
   <div class="menu">
     <el-menu background-color="" :default-active="activeIndex" class="el-menu-demo" mode="horizontal">
-      <el-menu-item index="1">
+      
         <router-link :to="{ path: '/home/echarts' }">
           <el-menu-item index="1-1">首页</el-menu-item>
         </router-link>
-      </el-menu-item>
       <router-link :to="{ path: '/home/add' }">
         <el-menu-item index="2">
           <el-menu-item index="2-1">上新</el-menu-item>

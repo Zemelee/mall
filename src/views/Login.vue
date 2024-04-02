@@ -2,7 +2,8 @@
   <div class="login">
     <div class="up">
       <el-card>
-        <h2 style="margin-bottom: 20px 30px 50px 30px">主办单位：合作伙伴</h2>
+        <h2 style="margin-bottom: 20px 30px 50px 30px">MALL后台管理系统</h2>
+
         <el-form label-position="left" :model="user" class="demo-form-inline">
           <el-form-item>
             <el-input prefix-icon="User" v-model="user.username" placeholder="请输入账号">
@@ -62,7 +63,6 @@
 
 
 <script>
-import { mapState } from "vuex";
 export default {
   data() {
     return {

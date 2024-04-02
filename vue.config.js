@@ -1,17 +1,14 @@
 const { defineConfig } = require('@vue/cli-service')
-// const { resolve } = require('core-js/fn/promise')
 
 module.exports = defineConfig({
   transpileDependencies: true,
-  // resolve: {
-    // alias: {
-      // '@': resolve(__dirname, './src')
-    // },
-  // },
+  publicPath: './', // 基本路径
+  outputDir: 'dist', // 输出文件目录
+  assetsDir: 'assets', //静态资源文件夹
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8081',
+        target: 'http://sugarblack.top:8081',
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''

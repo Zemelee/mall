@@ -2,7 +2,7 @@
   <div class="header">
     <div class="title">MALL管理系统</div>
     <div>
-      <el-container>
+      <el-container> 
         <Menu></Menu>
       </el-container>
     </div>
@@ -14,7 +14,7 @@
           confirm-button-text="退出"
           cancel-button-text="取消"
           confirm-button-type="danger"
-          @confirm="logout"
+          @confirm="this.$router.push('/')"
           icon-color="#626AEF"
           title="确认退出登录？"
         >
@@ -28,7 +28,7 @@
           </template>
           
         </el-popconfirm>
-        <span>超级管理员  </span>
+        <span>  超级管理员  </span>
       </div>
     </div>
   </div>
@@ -40,21 +40,9 @@ export default {
   components: {
     Menu,
   },
-  data() {
-    return {
-      identity: -1,
-    };
-  },
-  mounted() {
-    //每次进入该页面均从localStorage中获取搜索记录
-    this.identity = localStorage.getItem("identity") || -1; //json转对象
-  },
-  methods: {
-    logout() {
-      localStorage.setItem("identity", -1);
-      this.$router.push("/");
-    },
-  },
+
+
+
 };
 </script>
 

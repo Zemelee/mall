@@ -23,7 +23,7 @@
         <div class="no">
           <div class="no-hd">
             <ul>
-              <li>3734</li>
+              <li>{{ userOnline }}</li>
               <li>9999</li>
             </ul>
           </div>
@@ -68,10 +68,14 @@ export default {
     return {
       t: 0,
       time1: 0,
+      userOnline: 0
     };
   },
   created() {
     this.t = setTimeout(this.time, 1000);
+    this.userOnline = setInterval(() => {
+      this.userOnline = Math.floor(Math.random() * 9000) + 1000;
+    }, 5000);
   },
   mounted() {
     var option1 = {
@@ -238,7 +242,7 @@ export default {
           title: {
             offsetCenter: [0, "-10%"],
             fontSize: 10,
-            color:"#fff"
+            color: "#fff"
           },
           detail: {
             fontSize: 30,
@@ -526,30 +530,36 @@ export default {
   li {
     list-style: none;
   }
+
   // 生命字体
   @font-face {
     font-family: electronicFont;
     src: url("../../../public/DS-DIGIT.TTF");
   }
+
   margin: 0;
   padding: 0;
   height: auto;
   box-sizing: border-box;
+
   .echarts {
     background: url("../../../public/bg.jpg") no-repeat center top;
     background-size: 100% 100%;
+
     header {
       position: relative;
       height: 1.25rem;
       line-height: 1.25rem;
       background: url("../../../public/head_bg.png");
       background-size: 100% 100%;
+
       h1 {
         font-size: 0.475rem;
         color: #fff;
         text-align: center;
         line-height: 1rem;
       }
+
       .showTime {
         position: absolute;
         right: 0.375rem;
@@ -559,19 +569,24 @@ export default {
         font-size: 0.25rem;
       }
     }
+
     .mainBox {
       display: flex;
       min-width: 1024px;
       max-width: 1920px;
       margin: 0 auto;
       padding: 0.125rem 0.125rem 0;
+
       .column {
         flex: 3;
+
         .no {
           background-color: rgba(101, 132, 226, 0.1);
           padding: 0.1875rem;
+
           .no-hd {
             position: relative;
+
             &::before {
               position: absolute;
               top: 0;
@@ -582,6 +597,7 @@ export default {
               border-top: 2px solid #02a6b5;
               border-left: 2px solid #02a6b5;
             }
+
             &::after {
               position: absolute;
               bottom: 0;
@@ -592,8 +608,10 @@ export default {
               border-bottom: 2px solid #02a6b5;
               border-right: 2px solid #02a6b5;
             }
+
             ul {
               display: flex;
+
               li {
                 position: relative;
                 flex: 1;
@@ -603,6 +621,7 @@ export default {
                 text-align: center;
                 font-family: "electronicFont";
               }
+
               &::after {
                 position: absolute;
                 top: 25%;
@@ -614,9 +633,11 @@ export default {
               }
             }
           }
+
           .no-bd {
             ul {
               display: flex;
+
               li {
                 flex: 1;
                 text-align: center;
@@ -629,9 +650,11 @@ export default {
             }
           }
         }
+
         .map {
           position: relative;
           height: 8.375rem;
+
           .map1 {
             width: 6.457rem;
             height: 6.457rem;
@@ -643,6 +666,7 @@ export default {
             background-size: 100%;
             opacity: 0.3;
           }
+
           .map2 {
             width: 8.0367rem;
             height: 8.0367rem;
@@ -655,6 +679,7 @@ export default {
             animation: rotate1 15s linear infinite;
             background-size: 100% 100%;
           }
+
           .map3 {
             width: 7.075rem;
             height: 7.075rem;
@@ -668,40 +693,48 @@ export default {
             opacity: 0.6;
             background-size: 100% 100%;
           }
+
           .map4 {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 8.375rem;
+
             .map44 {
               z-index: 1;
               width: 100%;
               height: 100%;
             }
           }
+
           @keyframes rotate1 {
             from {
               transform: translate(-50%, -50%) rotate(0deg);
             }
+
             to {
               transform: translate(-50%, -50%) rotate(360deg);
             }
           }
+
           @keyframes rotate2 {
             from {
               transform: translate(-50%, -50%) rotate(360deg);
             }
+
             to {
               transform: translate(-50%, -50%) rotate(0deg);
             }
           }
         }
       }
+
       .column:nth-child(2) {
         flex: 5;
         margin: 0 0.125rem 0.1875rem;
       }
+
       .panel {
         position: relative;
         height: 4.375rem;
@@ -709,10 +742,12 @@ export default {
         border: 1px solid rgba(25, 186, 139, 0.17);
         margin-bottom: 0.1875rem;
         background: url("../../../public/line.png");
+
         .chart1 {
           width: 100%;
           height: 100%;
         }
+
         &::before {
           position: absolute;
           top: 0;
@@ -723,6 +758,7 @@ export default {
           border-left: 2px solid #02a6b5;
           border-top: 2px solid #02a6b5;
         }
+
         &::after {
           position: absolute;
           top: 0;
@@ -733,6 +769,7 @@ export default {
           border-right: 2px solid #02a6b5;
           border-top: 2px solid #02a6b5;
         }
+
         h2 {
           height: 0.6rem;
           color: #fff;
@@ -741,14 +778,17 @@ export default {
           font-size: 0.25rem;
           font-weight: 400;
         }
+
         .chart {
           height: 3rem;
         }
+
         .panel-footer {
           position: absolute;
           bottom: 0;
           left: 0;
           width: 100%;
+
           &::before {
             position: absolute;
             bottom: 0;
@@ -759,6 +799,7 @@ export default {
             border-left: 2px solid #02a6b5;
             border-bottom: 2px solid #02a6b5;
           }
+
           &::after {
             position: absolute;
             bottom: 0;
