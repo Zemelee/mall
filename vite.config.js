@@ -23,13 +23,13 @@ export default defineConfig({
     extensions: ['.vue', '.js'] // 导入时想要省略的扩展名列表
   },
   server: {
-    // proxy: {
-    //   '/api': {
-    //     target: 'http://sugarblack.top:8081',
-    //     changeOrigin: true,
-    //     rewrite: (path) => path.replace(/^\/api/, "")
-    //   }
-    // },
+    proxy: {
+      '/api': {
+        target: 'http://sugarblack.top:8081',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, "")
+      }
+    },
     fsServe: {
       root: '.' // 指定静态资源的根目录
     }

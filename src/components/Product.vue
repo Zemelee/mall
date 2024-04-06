@@ -21,31 +21,6 @@
 import { onMounted, ref ,defineProps} from "vue";
 const { product } = defineProps(["product"]);  // 使用defineProps获取props对象
 const refLazyImg = ref(null);
-// const lazyLoadImage = () => {
-//   const observer = new IntersectionObserver((entries) => {
-//     entries.forEach((entry) => {
-//       if (entry.isIntersecting) {
-//         const lazyImage = new Image();
-//         lazyImage.src = product.picsrc;
-//         lazyImage.onload = () => {
-//           refLazyImg.value.src = lazyImage.src;
-//           observer.disconnect();
-//         };
-//       }
-//     });
-//   });
-
-//   observer.observe(refLazyImg.value);
-// };
-
-// onMounted(() => {
-//   // lazyLoadImage();
-// });
-
-// const addToCart = () => {
-//   // 可以通过 $emit 触发事件，父组件监听该事件并处理添加到购物车的逻辑
-//   this.$emit("add-to-cart", this.product);
-// }
 const formatPrice = (price) => {
   // 可以根据需要进行价格格式化，比如添加货币符号等
   return `$${price.toFixed(2)}`;
