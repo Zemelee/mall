@@ -4,6 +4,9 @@ import NotFound from '../views/frame/NotFound.vue'
 import addProduct from '../views/product/AddProduct.vue'
 import allProduct from '../views/product/AllProduct.vue'
 import allFeedback from '../views/AllFeedback.vue'
+import User from '../views/user/UserManage.vue'
+import Order from '../views/order/OrderManage.vue'
+import Test from '../components/Test/Test.vue'
 
 const routes = [
   {
@@ -38,6 +41,24 @@ const routes = [
         path: 'feedback',
         name: 'allFeedback',
         component: allFeedback,
+        hidden: true  //隐藏
+      },
+      {
+        path: 'user',
+        name: 'user',
+        component: User,
+        hidden: true  //隐藏
+      },
+      {
+        path: 'order',
+        name: 'order',
+        component: Order,
+        hidden: true  //隐藏
+      },
+      {
+        path: 'test',
+        name: 'Test',
+        component: Test,
         hidden: true  //隐藏
       },
     ]

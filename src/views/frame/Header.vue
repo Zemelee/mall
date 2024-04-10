@@ -7,7 +7,7 @@
       </el-container>
     </div>
 
-    <div style="margin-left: 420px">
+    <div style="margin-left: 220px">
       <div style="display: flex">
         <el-popconfirm
           width="220"

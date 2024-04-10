@@ -16,9 +16,21 @@
           <el-menu-item index="3-2">全部</el-menu-item>
         </el-menu-item>
       </router-link>
+      
       <router-link :to="{ path: '/home/feedback' }">
         <el-menu-item index="4">
           <el-menu-item index="4-1">用户反馈</el-menu-item>
+        </el-menu-item>
+      </router-link>
+
+
+      <router-link :to="{ path: '/home/user' }">
+        <el-menu-item index="5">
+          <el-menu-item index="5-1">用户管理</el-menu-item>
+        </el-menu-item>
+      </router-link><router-link :to="{ path: '/home/order' }">
+        <el-menu-item index="6">
+          <el-menu-item index="6-1">订单管理</el-menu-item>
         </el-menu-item>
       </router-link>
     </el-menu>
