@@ -87,17 +87,18 @@ function md5Test() {
   console.log(md5);
 }
 async function login() {
-  if (Bcode.value == "") {
-    ElMessage.error("请输入验证码！");
-    return;
-  } else if (Bcode.value != Acode.value) {
-    ElMessage.error("验证码不正确！");
-    return;
-  }
+  // if (Bcode.value == "") {
+  //   ElMessage.error("请输入验证码！");
+  //   return;
+  // } else if (Bcode.value != Acode.value) {
+  //   ElMessage.error("验证码不正确！");
+  //   return;
+  // }
   await service
     .post("/user/login", {
       username: username.value,
-      password: crypto.MD5(password.value).toString(),
+      // password: crypto.MD5(password.value).toString(),
+      password: password.value,
     })
     .then((res) => {
       if (res.data.success == false) {
@@ -105,6 +106,7 @@ async function login() {
       } else {
         localStorage.setItem("token", JSON.stringify(res.data.user.token));
         localStorage.setItem("userid", JSON.stringify(res.data.user.user_id));
+        localStorage.setItem("username", res.data.user.username);
         router.push("/mall");
       }
     })

@@ -60,8 +60,9 @@ const headCategory = ref(1);
 onMounted(async () => {
   try {
     // 按种类请求product
-    const res = await service.get(`/mall/product/category=1`);
+    const res = await service.get(`/mall/product/recommend/uid=${localStorage.getItem("userid")}`);
     products.list = res.data;
+    service.post("mall/history/get/products",{page:1,size:10}).then(e=>{console.log(e);})
   } catch (err) {
     if (err.response.status == 401) {
       ElMessage.error("非法登录");
@@ -138,16 +139,12 @@ async function shift(category) {
 }
 
 const goDetails = (id) => {
+  service.post(`/user/click`, { uid: localStorage.getItem("userid"), pid: id })
   router.push({ name: "details", params: { id: id }, target: "_blank" });
 }
 </script>
 
 <style scoped lang="less">
-.el-container {
-  /* width: 90vw; */
-
-}
-
 .el-footer {
   position: relative;
   background-color: aliceblue;

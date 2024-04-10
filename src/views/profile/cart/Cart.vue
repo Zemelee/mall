@@ -1,6 +1,12 @@
 <template>
   <div>
     <h3>MALL-CART</h3>
+    <strong>商品名</strong>&nbsp;&nbsp;
+    <strong>商品规格</strong>&nbsp;&nbsp;
+    <strong>商品单价</strong>&nbsp;&nbsp;
+    <strong>商品数量</strong>&nbsp;&nbsp;&nbsp;&nbsp;
+    <strong>小计</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <strong>管理</strong>
     <main>
       <form @submit.prevent="submitOrder">
         <div v-for="product in Cart.products" :key="product.id">
@@ -12,20 +18,17 @@
                   v-model="selectedItems" />
                 <img :src="product.picsrc" :alt="product.description" />
               </div>
-              <div class="product-info">
-                <span>{{ product.name }}</span>
-                <br>
-                <span>{{ attr.attrval }}</span>
-                <br>
-                <span>{{ (attr.more + product.price).toFixed(2) }} * {{ attr.num }}
-                  = {{ (attr.num * (product.price + attr.more)).toFixed(2) }}</span>
-              </div>
+              <div class="product-info"> {{ product.name }} </div>
+              <div class="product-info">{{ attr.attrval }}</div>
+              <div class="product-info">{{ (attr.more + product.price).toFixed(2) }}</div>
+              <div class="product-info">{{ attr.num }}</div>
+              <div class="product-info">{{ (attr.num * (product.price + attr.more)).toFixed(2) }}</div>
+
+              <br>
               <div class="product-action">
                 <el-button class="add" @click="add(attr.id)">+</el-button>
                 <el-button class="sub" @click="sub(attr.id)">-</el-button>
-                <div style="margin: 5px;">
-                  <el-button class="sub" @click="del(attr.id)">删除</el-button>
-                </div>
+                <el-button class="sub" @click="del(attr.id)">删除</el-button>
               </div>
             </div>
 
@@ -38,12 +41,6 @@
         <el-button type="submit" @click="submitOrder">提交订单</el-button>
       </form>
     </main>
-
-    <el-dialog v-model="showPay" title="支付订单" width="800">
-      总价格：{{ totalPrice.toFixed(2) }}
-      <el-button type="primary" @click="pay">支付</el-button>
-    </el-dialog>
-
   </div>
 </template>
 
@@ -51,8 +48,8 @@
 import { useRouter } from "vue-router";
 import service from "@/request/index";
 import { ref, computed } from "vue";
-import { ElMessage } from "element-plus";
 import { useCartStore } from "@/store/cart.js";
+import { ElMessage, ElMessageBox } from 'element-plus'
 const router = useRouter();
 const userid = localStorage.getItem("userid");
 const Cart = useCartStore();
@@ -124,8 +121,45 @@ const submitOrder = () => {
         return
       }
     })
-  showPay.value = true;
+  open()
 };
+
+const open = () => {
+  ElMessageBox.confirm(
+    `总价格为${totalPrice.value.toFixed(2)},确认提交订单吗?`,
+    'Warning',
+    {
+      confirmButtonText: '提交',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  )
+    .then(() => {
+      ElMessageBox.prompt('输入支付密码', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+      })
+        .then(async ({ value }) => {
+          const loginResponse = await service.post("/user/login", {
+            username: localStorage.getItem("username"),
+            password: value
+          })
+          console.log(loginResponse.data);
+          if (loginResponse.data.success) {
+            pay()
+          } else {
+            console.log(localStorage.getItem("username"),value)
+            ElMessage.error("支付密码错误")
+          }
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: '取消支付',
+          })
+        })
+    })
+}
 
 
 const pay = async () => {
@@ -166,12 +200,6 @@ const pay = async () => {
       });
   }
 
-
-  // ElMessage.success("支付成功");
-  // showPay.value = false;
-  // selectedItems.value = [];
-  // router.push("/profile/history");
-
 };
 
 
@@ -192,12 +220,12 @@ img {
 
   .product-info {
     width: 50%;
+    margin: 1px;
     border: 1px solid rgb(13, 96, 34);
   }
 
   .product-action {
-    width: 30%;
-    border: 1px solid red;
+    width: 90%;
     margin: auto;
   }
 }
