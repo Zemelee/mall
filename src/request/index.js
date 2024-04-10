@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const service = axios.create({
-    baseURL: '/api',
+    baseURL: 'http://sugarblack.top:8081',
     timeout: 5000,
 });
 

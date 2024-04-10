@@ -21,7 +21,7 @@ export default {
       message: "msg",
       secondHand: "used",
       discount: "discount",
-      casual: "casual",
+      recommend: "recommend",
     },
     
     search:"search...",

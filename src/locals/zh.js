@@ -22,7 +22,7 @@ export default {
       message: "信息",
       secondHand: "二手",
       discount: "超低价",
-      casual: "随便",
+      recommend: "智能推荐",
     },
 
     search: "搜索商品...",

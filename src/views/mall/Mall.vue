@@ -4,8 +4,12 @@
       <el-header style="height: 10%">
         <Header style="border:1px solid blue;" @send-category="shift" @send-keyword="searchProduction"></Header>
       </el-header>
+
       <el-main class="el-main" style="border: 1px solid red;">
         <el-form :inline="true">
+          <el-form-item style="margin-right: 20px;">
+            <el-switch size="small" v-model="showCarousel" :active-action-icon="View" :inactive-action-icon="Hide" />&nbsp;&nbsp;{{ $t("Head.category.recommend") }}
+          </el-form-item>
           <el-form-item style="margin-right: 20px;">
             <el-radio-group v-model="sortParam">
               <el-radio label="asc" size="large">{{ $t("Mall.aes") }}</el-radio>
@@ -28,6 +32,17 @@
             <el-button @click="filterByPrice">{{ $t("Mall.filter") }}</el-button>
           </el-form-item>
         </el-form>
+        <transition name="fade">
+          <el-carousel v-show="showCarousel" :interval="4000" type="card" height="200px">
+            <el-carousel-item v-for="(recommendItem, index) in recommendList" :key="index"
+              @click="goDetails(recommendItem.id)">
+              <div>
+                <div> <img :src="recommendItem.picsrc" style="max-width: 100%; max-height: 100%;"></div>
+                <div class="recommend-text" style="color:blue">{{ recommendItem.name }}</div>
+              </div>
+            </el-carousel-item>
+          </el-carousel>
+        </transition>
         <div class="products-display">
           <Product v-for="(item, index) in products.list" :product="item" :key="index" @click="goDetails(item.id)" />
         </div>
@@ -46,7 +61,7 @@ import service from "../../request/index.js";
 import Header from "./Header.vue";
 import Footer from "./Footer.vue";
 import Product from "../../components/Product.vue";
-// import Product from "@/components/Product.vue";
+import { Hide, View } from '@element-plus/icons-vue'
 import { ref, reactive, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
@@ -56,20 +71,26 @@ const router = useRouter();
 const products = reactive({
   list: [],
 });
+const recommendList = ref([]);
 const headCategory = ref(1);
 onMounted(async () => {
   try {
     // 按种类请求product
-    const res = await service.get(`/mall/product/recommend/uid=${localStorage.getItem("userid")}`);
-    products.list = res.data;
-    service.post("mall/history/get/products",{page:1,size:10}).then(e=>{console.log(e);})
+    const res1 = await service.get(`/mall/product/recommend/uid=${localStorage.getItem("userid")}`);
+    console.log(res1)
+    recommendList.value = res1.data;
+    const res2 = await service.get(`/mall/product/category=1`);
+    products.list = res2.data;
   } catch (err) {
+    console.log(err);
     if (err.response.status == 401) {
       ElMessage.error("非法登录");
       router.push("/login");
     }
   }
 });
+
+const showCarousel = ref(true)
 // 排序、过滤、重置
 const sortParam = ref("asc");
 const sortByPrice = (param) => {
@@ -162,5 +183,16 @@ const goDetails = (id) => {
 .el-main::after {
   content: "";
   flex: auto;
+}
+
+/* 过渡动画样式 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

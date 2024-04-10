@@ -2,7 +2,9 @@
   <div class="outLogin">
     <div class="login" style="background-color: aliceblue;">
       <h2>{{ $t('Login.title') }}</h2>
-
+      <vuetyped :showCursor="false" :smart-backspace="false" :strings="writeTextArr" :type-speed="50" :loop="true">
+        <div class="typing" />
+      </vuetyped>
       <el-form ref="form">
         <el-form-item prop="username">
           <el-input v-model="username" :placeholder="$t('Login.username')" :prefix-icon="User"></el-input>
@@ -49,7 +51,6 @@
 
 <script setup>
 import { generateCodeImg, generateCode } from "../../utils/code";
-import { User, Lock } from "@element-plus/icons-vue";
 import crypto from 'crypto-js';
 import service from "../../request/index";
 import Dialog from "./Register.vue";
@@ -65,7 +66,7 @@ const changeLocale = (lang) => {
   locale.value = lang;
 };
 
-
+const writeTextArr = ref(["MALL，世界，触手可及...", "这是一个最好的时代，科技的发展给予了每个人创造价值的可能性；这也是一个最充满想象的时代，每一位心怀梦想的人，终会奔向星辰大海..."]);
 
 //验证码逻辑
 var Acode = ref(generateCode()); //系统生成的code

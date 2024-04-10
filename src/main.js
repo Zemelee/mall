@@ -4,6 +4,7 @@ import App from './App.vue'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import { createPinia } from 'pinia'
+import vuetyped from 'vue3typed'
 import router from './router'
 import { createI18n } from 'vue-i18n';
 import en from './locals/en.js';
@@ -26,5 +27,6 @@ const pinia = createPinia()
 app.use(pinia)
 app.use(router)
 app.use(i18n)
+app.use(vuetyped)
 app.use(ElementPlus)
 app.mount('#app')

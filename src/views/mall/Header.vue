@@ -99,7 +99,7 @@ export default {
         { type: "info", category: 7, text: t('Head.category.message') },
         { type: "info", category: 8, text: t('Head.category.secondHand') },
         { type: "info", category: 9, text: t('Head.category.discount') },
-        { type: "info", category: 10, text: t('Head.category.casual') },
+        { type: "info", category: 10, text: t('Head.category.recommend') },
       ];
     })
 
