@@ -69,8 +69,7 @@ public class UserController {
 
 
     @Getter
-    static
-    class RechargeOrConsumptionRequest {
+    static class RechargeOrConsumptionRequest {
         int id;
         float amount;
     }
@@ -162,6 +161,11 @@ public class UserController {
     @PostMapping("/user/click")
     public boolean addClicks(@RequestBody Click click) {
         return userService.addClicks(click.getUid(), click.getPid());
+    }
+
+    @GetMapping("/user/get")
+    public List<User> getAllUser() {
+        return userService.getAllUser();
     }
 
 

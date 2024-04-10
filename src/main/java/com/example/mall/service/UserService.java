@@ -3,6 +3,7 @@ package com.example.mall.service;
 import com.example.mall.entity.User;
 import com.example.mall.entity.UserFeedback;
 import com.example.mall.mapper.UserMapper;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -88,6 +89,12 @@ public class UserService {
 
     public boolean addClicks(int uid, int pid) {
         return userMapper.addClicks(uid, pid);
+    }
+
+
+
+    public List<User> getAllUser() {
+        return userMapper.getAllUser();
     }
 
 }

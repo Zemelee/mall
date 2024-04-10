@@ -39,5 +39,9 @@ public interface UserMapper {
 
     boolean addClicks(int uid, int pid);
 
+    List<User> getAllUser();
+
+
+
 
 }

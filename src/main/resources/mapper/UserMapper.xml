@@ -104,5 +104,9 @@
             ON DUPLICATE KEY UPDATE clicks = clicks + 1;
     </update>
 
+    <select id="getAllUser" resultType="com.example.mall.entity.User">
+        SELECT user_id,username,address,phone,balance,accumulated FROM user
+    </select>
+
 
 </mapper>
