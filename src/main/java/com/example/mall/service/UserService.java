@@ -86,5 +86,8 @@ public class UserService {
         return userMapper.updateFeedback(submitTime);
     }
 
+    public boolean addClicks(int uid, int pid) {
+        return userMapper.addClicks(uid, pid);
+    }
 
 }

@@ -98,5 +98,11 @@
         WHERE submittime = #{submitTime};
     </update>
 
+    <update id="addClicks">
+        INSERT INTO recommend (user_id, product_id, clicks)
+        VALUES (#{uid}, #{pid}, 1)
+            ON DUPLICATE KEY UPDATE clicks = clicks + 1;
+    </update>
+
 
 </mapper>

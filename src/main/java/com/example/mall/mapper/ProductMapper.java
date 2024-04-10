@@ -31,4 +31,6 @@ public interface ProductMapper {
     boolean delProductById(Integer id);
 
     boolean setProductId(int pid,int oldPid);
+
+    List<Product> getRecommend(int uid);
 }

@@ -7,6 +7,7 @@ import com.example.mall.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -43,7 +44,15 @@ public class HistoryService {
                 });
     }
 
-    public List<HistoryResponse> getHistoryByPid(int pid){
+    public List<HistoryResponse> getHistoryByPid(int pid) {
         return historyMapper.getHistoryByPid(pid);
+    }
+
+    public List<HistoryResponse> getAllHistory(int page, int size) {
+        return historyMapper.getAllHistory((page - 1) * size, size);
+    }
+
+    public boolean delHistoryByTime(Date orderTime) {
+        return historyMapper.delHistoryByTime(orderTime);
     }
 }

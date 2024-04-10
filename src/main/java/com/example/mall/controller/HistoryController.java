@@ -4,10 +4,13 @@ package com.example.mall.controller;
 import com.example.mall.entity.History;
 import com.example.mall.entity.HistoryResponse;
 import com.example.mall.service.HistoryService;
+import lombok.Getter;
+import lombok.ToString;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -35,5 +38,22 @@ public class HistoryController {
     @GetMapping("/get/product/{pid}")
     public List<HistoryResponse> getHistoryByPid(@PathVariable int pid) {
         return historyService.getHistoryByPid(pid);
+    }
+
+    @Getter
+    @ToString
+    static class PageInfo {
+        int page;
+        int size;
+    }
+
+    @PostMapping("/get")
+    public List<HistoryResponse> getAllHistory(@RequestBody PageInfo pageInfo) {
+        return historyService.getAllHistory(pageInfo.getPage(), pageInfo.getSize());
+    }
+
+    @PostMapping("/delete")
+    public boolean delHistoryByTime(@RequestBody Date orderTime) {
+        return historyService.delHistoryByTime(orderTime);
     }
 }

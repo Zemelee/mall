@@ -114,8 +114,7 @@ public class UserController {
 
     @Getter
     @ToString
-    static
-    class SearchParam {
+    static class SearchParam {
         private String keyword;
         private List<Integer> handleType;
     }
@@ -151,6 +150,18 @@ public class UserController {
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("ok", HttpStatus.OK);
+    }
+
+    @Getter
+    @ToString
+    static class Click {
+        private int uid;
+        private int pid;
+    }
+
+    @PostMapping("/user/click")
+    public boolean addClicks(@RequestBody Click click) {
+        return userService.addClicks(click.getUid(), click.getPid());
     }
 
 

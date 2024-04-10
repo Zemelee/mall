@@ -24,19 +24,20 @@ public interface UserMapper {
     float getBalance(int id);
 
     int recharge(@Param("id") int id, @Param("amount") float amount);
+
     int consumption(@Param("id") int id, @Param("amount") float amount);
 
     void addFeedback(UserFeedback feedback);
 
     List<UserFeedback> getFeedback();
-    List<UserFeedback> searchFeedback(String keyword,Integer type);
+
+    List<UserFeedback> searchFeedback(String keyword, Integer type);
 
     boolean updateUserInfo(User user);
 
     boolean updateFeedback(Date submitTime);
 
-
-
+    boolean addClicks(int uid, int pid);
 
 
 }

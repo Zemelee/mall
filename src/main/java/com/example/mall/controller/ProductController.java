@@ -68,8 +68,7 @@ public class ProductController {
 
     @Getter
     @ToString
-    static
-    class PageInfo {
+    static class PageInfo {
         int page;
         int size;
     }
@@ -114,4 +113,8 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/recommend/uid={uid}")
+    public ResponseEntity<List<Product>> getRecommend(@PathVariable int uid) {
+        return new ResponseEntity<>(productService.getRecommend(uid), HttpStatus.CREATED);
+    }
 }

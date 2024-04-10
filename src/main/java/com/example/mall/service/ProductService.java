@@ -89,5 +89,9 @@ public class ProductService {
         return productMapper.delProductById(id);
     }
 
+    public List<Product> getRecommend(int uid){
+        return productMapper.getRecommend(uid);
+    }
+
 
 }

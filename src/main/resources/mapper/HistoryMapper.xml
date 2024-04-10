@@ -4,7 +4,7 @@
 
     <!--mybatis-->
     <select id="getHistory" resultType="com.example.mall.entity.History">
-        SELECT r.product_id, p.`name`, a.id, a.attrval, r.quantity, a.more + p.price, r.order_time
+        SELECT r.product_id, p.`name`, a.id, a.attrval, r.quantity, (a.more + p.price) as price, r.order_time
         FROM record r
                  JOIN product p ON r.product_id = p.id
                  JOIN attribution a ON r.attrid = a.id
@@ -24,7 +24,16 @@
         WHERE r.product_id = #{pid};
     </select>
 
+    <select id="getAllHistory" resultType="com.example.mall.entity.HistoryResponse">
+        SELECT r.product_id, p.`name`, r.quantity, a.more + p.price, r.order_time
+        FROM record r
+                 JOIN product p ON r.product_id = p.id
+                 JOIN attribution a ON r.attrid = a.id
+        LIMIT #{size} OFFSET #{page}
+    </select>
 
-
+    <delete id="delHistoryByTime">
+        DELETE FROM record WHERE order_time = #{orderTime}
+    </delete>
 
 </mapper>

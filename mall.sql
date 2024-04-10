@@ -11,7 +11,7 @@
  Target Server Version : 50717
  File Encoding         : 65001
 
- Date: 26/03/2024 13:33:34
+ Date: 10/04/2024 10:12:58
 */
 
 SET NAMES utf8mb4;
@@ -35,7 +35,7 @@ CREATE TABLE `attribution`  (
 -- Records of attribution
 -- ----------------------------
 INSERT INTO `attribution` VALUES (1, 1, '12GB 1TB 幻影黑', 10, 32.22);
-INSERT INTO `attribution` VALUES (2, 1, '12GB 512GB 星空彩', 9, 41.21);
+INSERT INTO `attribution` VALUES (2, 1, '12GB 512GB 星空彩', 7, 41.21);
 INSERT INTO `attribution` VALUES (5, 3, '12GB 512GB 蜜桃金', -1, 33.00);
 INSERT INTO `attribution` VALUES (6, 3, '12GB 512GB 液态银河', 3, 434.44);
 INSERT INTO `attribution` VALUES (10, 8, '200g', 9, 43.08);
@@ -43,7 +43,7 @@ INSERT INTO `attribution` VALUES (11, 8, '300g', 20, 64.00);
 INSERT INTO `attribution` VALUES (12, 10, '24GB 1TB 大漠银月', 20, 15.00);
 INSERT INTO `attribution` VALUES (13, 10, '24GB 1TB 海阔天空', 11, 90.00);
 INSERT INTO `attribution` VALUES (14, 9, '12GB 256GB 流沙金', 12, 220.00);
-INSERT INTO `attribution` VALUES (19, 42, '111', 4, 3.00);
+INSERT INTO `attribution` VALUES (19, 42, '111', -6, 3.00);
 INSERT INTO `attribution` VALUES (23, 46, '111', 4, 3.00);
 INSERT INTO `attribution` VALUES (24, 47, 'qqqq', 1, 0.00);
 INSERT INTO `attribution` VALUES (25, 48, 'wwww', 4, 3.00);
@@ -127,12 +127,12 @@ CREATE TABLE `product`  (
   `sales` int(255) NOT NULL DEFAULT 0 COMMENT '已售',
   `state` int(255) NOT NULL DEFAULT 0 COMMENT '上架状态',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 62 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 60 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of product
 -- ----------------------------
-INSERT INTO `product` VALUES (1, 'mate60', 6500.00, 1, '遥遥领先！', 'https://a.appsimg.com/upload/brand/upcb/2023/01/16/33/ias_d3c86667f9697bd2298fe532baf579ae.jpg!75.webp', 2, 0);
+INSERT INTO `product` VALUES (1, 'mate60', 6500.00, 1, '遥遥领先！', 'https://a.appsimg.com/upload/brand/upcb/2023/01/16/33/ias_d3c86667f9697bd2298fe532baf579ae.jpg!75.webp', 4, 0);
 INSERT INTO `product` VALUES (2, '一加ACE', 1900.00, 1, '高能竞速 满血出击\r\n', 'https://img.oppojia.com/m00/3f/a4/8b05a90f1376f7657a4a80b6df68ce83_c_440_440.png', 0, 0);
 INSERT INTO `product` VALUES (3, '魅族NOTE', 1111.11, 1, '为梦想而生', 'https://openfile.meizu.com/group1/M00/0B/51/Cgbj0WTaGlqAFe_JAAamAtPecfY183.png@480x480.jpg', 6, 1);
 INSERT INTO `product` VALUES (8, '辣条', 12.00, 2, '好辣！', 'https://snackhome.store/wp-content/uploads/2022/09/16-2.jpg', 5, 0);
@@ -154,7 +154,7 @@ INSERT INTO `product` VALUES (23, 'OPPO Pencil\r\n\r\n', 499.00, 1, '舒适持�
 INSERT INTO `product` VALUES (24, 'OPPO Pad 2 智能触控键盘\r\n\r\n', 599.00, 1, '全域触控板\r\n\r\n', 'https://image.oppo.com/content/dam/oppo/common/mkt/v2-2/oppo-pad-2-cn/listpage/oppo-pad-2-smart-touchpad-keyboard-gray.png.thumb.webp', 0, 0);
 INSERT INTO `product` VALUES (25, 'OPPO Enco Air2 Pro\r\n\r\n', 499.00, 1, 'AI主动降噪', 'https://image.oppo.com/content/dam/oppo/common/mkt/v2-2/enco-air2-pro/navigation/gray_inavigation_600_490.png.thumb.webp', 0, 0);
 INSERT INTO `product` VALUES (26, 'OPPO Enco Free3\r\n\r\n', 599.00, 1, '竹制原生，自然好声\r\n\r\n', 'https://image.oppo.com/content/dam/oppo/common/mkt/v2-2/list-page-new/cn/oppo-enco-free3-kv-1304_732.jpg.thumb.webp', 0, 0);
-INSERT INTO `product` VALUES (42, '111', 111.00, 1, '11111110000', 'https://img0.baidu.com/it/u=3570662280,3859669424&fm=253&fmt=auto&app=138&f=PNG?w=500&h=500', 0, 0);
+INSERT INTO `product` VALUES (42, '111', 111.00, 1, '11111110000', 'https://img0.baidu.com/it/u=3570662280,3859669424&fm=253&fmt=auto&app=138&f=PNG?w=500&h=500', 10, 0);
 INSERT INTO `product` VALUES (46, '44-44', 1111.00, 2, '1111111000011111', 'https://img0.baidu.com/it/u=3570662280,3859669424&fm=253&fmt=auto&app=138&f=PNG?w=500&h=500', 0, 0);
 INSERT INTO `product` VALUES (47, 'qqq', 3.00, 5, 'qqqqqq', 'https://img0.baidu.com/it/u=3570662280,3859669424&fm=253&fmt=auto&app=138&f=PNG?w=500&h=500', 0, 0);
 INSERT INTO `product` VALUES (48, 'www', 3.00, 6, 'wwwwwww', 'https://img0.baidu.com/it/u=3570662280,3859669424&fm=253&fmt=auto&app=138&f=PNG?w=500&h=500', 0, 0);
@@ -163,6 +163,27 @@ INSERT INTO `product` VALUES (50, '默认名称', 1.00, 3, '默认描述', 'http
 INSERT INTO `product` VALUES (52, '默认名称', 1.00, 4, '默认描述', 'https://img0.baidu.com/it/u=3570662280,3859669424&fm=253&fmt=auto&app=138&f=PNG?w=500&h=500', 0, 0);
 INSERT INTO `product` VALUES (56, 'add', 4.00, 3, '默认描述', 'https://img0.baidu.com/it/u=3570662280,3859669424&fm=253&fmt=auto&app=138&f=PNG?w=500&h=500', 0, 0);
 INSERT INTO `product` VALUES (59, '默认名称22', 4.00, 5, '默认描述', 'https://img0.baidu.com/it/u=3570662280,3859669424&fm=253&fmt=auto&app=138&f=PNG?w=500&h=500', 0, 0);
+
+-- ----------------------------
+-- Table structure for recommend
+-- ----------------------------
+DROP TABLE IF EXISTS `recommend`;
+CREATE TABLE `recommend`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NULL DEFAULT NULL,
+  `product_id` int(11) NULL DEFAULT NULL,
+  `clicks` int(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `unique_user_product`(`user_id`, `product_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of recommend
+-- ----------------------------
+INSERT INTO `recommend` VALUES (1, 2, 1, 5);
+INSERT INTO `recommend` VALUES (4, 2, 2, 3);
+INSERT INTO `recommend` VALUES (6, 2, 3, 2);
+INSERT INTO `recommend` VALUES (10, 2, 13, 1);
 
 -- ----------------------------
 -- Table structure for record
@@ -182,19 +203,13 @@ CREATE TABLE `record`  (
 -- Records of record
 -- ----------------------------
 INSERT INTO `record` VALUES (1, 1, 1, '1', '2023-09-06 13:50:46', 0.00);
-INSERT INTO `record` VALUES (2, 2, 3, '1', '2024-03-13 21:11:06', 2134.00);
-INSERT INTO `record` VALUES (2, 8, 10, '2', '2024-03-13 21:11:06', 55.08);
 INSERT INTO `record` VALUES (2, 2, 3, '2', '2024-03-15 13:55:14', 2134.00);
-INSERT INTO `record` VALUES (2, 1, 1, '3', '2024-03-15 20:27:12', 6532.22);
-INSERT INTO `record` VALUES (2, 8, 10, '2', '2024-03-15 20:27:12', 55.08);
-INSERT INTO `record` VALUES (2, 3, 5, '1', '2024-03-16 09:22:31', 1144.11);
-INSERT INTO `record` VALUES (2, 8, 10, '1', '2024-03-16 09:22:31', 55.08);
-INSERT INTO `record` VALUES (2, 8, 10, '1', '2024-03-16 10:00:45', 55.08);
-INSERT INTO `record` VALUES (2, 3, 5, '1', '2024-03-16 10:00:45', 1144.11);
-INSERT INTO `record` VALUES (2, 8, 10, '1', '2024-03-16 10:06:53', 55.08);
-INSERT INTO `record` VALUES (2, 3, 5, '1', '2024-03-16 10:06:53', 1144.11);
 INSERT INTO `record` VALUES (2, 3, 5, '2', '2024-03-16 10:07:52', 1144.11);
-INSERT INTO `record` VALUES (2, 3, 5, '1', '2024-03-16 10:08:42', 1144.11);
+INSERT INTO `record` VALUES (2, 42, 19, '3', '2024-04-10 09:51:38', 114.00);
+INSERT INTO `record` VALUES (2, 1, 2, '1', '2024-04-10 09:51:58', 6541.21);
+INSERT INTO `record` VALUES (2, 42, 19, '3', '2024-04-10 10:01:13', 114.00);
+INSERT INTO `record` VALUES (2, 1, 2, '1', '2024-04-10 10:01:13', 6541.21);
+INSERT INTO `record` VALUES (2, 42, 19, '2', '2024-04-10 10:02:26', 114.00);
 
 -- ----------------------------
 -- Table structure for user
@@ -215,7 +230,7 @@ CREATE TABLE `user`  (
 -- Records of user
 -- ----------------------------
 INSERT INTO `user` VALUES (1, '钟天宇', '784397', '青青草原', '15917428280', 710.11, 0);
-INSERT INTO `user` VALUES (2, '12', '21', '111', '111', 1020621.88, 29190.2);
+INSERT INTO `user` VALUES (2, '12', '21', '111', '111', 1006399.50, 43412.6);
 INSERT INTO `user` VALUES (3, '123', '321', 'ds', '2121', 22.00, 0);
 INSERT INTO `user` VALUES (4, '来证明', '123', '123', '123', 0.00, 0);
 INSERT INTO `user` VALUES (5, '111', '111', '111', '111', 0.00, 0);

@@ -130,4 +130,18 @@
         WHERE id = #{pid}
     </update>
 
+    <select id="getRecommend" resultMap="productWithAttributesResultMap">
+        SELECT product.*,
+               attribution.id         as attr_id,
+               attribution.product_id as attr_product_id,
+               attribution.attrval,
+               attribution.inventory,
+               attribution.more
+        FROM product,
+             recommend,
+             attribution
+        WHERE product.id = attribution.product_id
+          AND product.id IN (SELECT id FROM product WHERE id = recommend.product_id)
+    </select>
+
 </mapper>
