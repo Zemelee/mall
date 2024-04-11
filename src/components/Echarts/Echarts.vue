@@ -24,7 +24,7 @@
           <div class="no-hd">
             <ul>
               <li>{{ userOnline }}</li>
-              <li>9999</li>
+              <li>{{userCount}}</li>
             </ul>
           </div>
           <div class="no-bd">
@@ -62,19 +62,25 @@
 </template>
 
 <script>
+import service from '@/request/index.js';
 import { Echart } from "./Echart.js";
 export default {
   data() {
     return {
+      userCount:0,
       t: 0,
       time1: 0,
       userOnline: 0
     };
   },
-  created() {
+  async created() {
+    
+
+    const count = await service.get("/user/count")
+    this.userCount = count
     this.t = setTimeout(this.time, 1000);
     this.userOnline = setInterval(() => {
-      this.userOnline = Math.floor(Math.random() * 9000) + 1000;
+      this.userOnline =  Math.floor(Math.random() * (count)) + 1;
     }, 5000);
   },
   mounted() {

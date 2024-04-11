@@ -1,7 +1,7 @@
 <template>
   <div>
     <Box>
-      <el-button @click="delMul">批量删除</el-button>
+      <el-button @click="delMul" type="danger" >批量删除</el-button>
     </Box>
     <el-table v-loading="loading" border ref="multipleTable" :data="productions" tooltip-effect="dark"
       style="width: 100%" @selection-change="handleSelectionChange">
