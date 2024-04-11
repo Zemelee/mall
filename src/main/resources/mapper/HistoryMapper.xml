@@ -4,7 +4,15 @@
 
     <!--mybatis-->
     <select id="getHistory" resultType="com.example.mall.entity.History">
-        SELECT r.product_id, p.`name`, a.id, a.attrval, r.quantity, (a.more + p.price) as price, r.order_time
+        SELECT r.product_id,
+               (r.user_id) as userid,
+               p.`name`,
+               (a.id) as attrid,
+               a.attrval,
+               r.quantity,
+               (a.more + p.price) as price,
+               r.order_time,
+               r.status
         FROM record r
                  JOIN product p ON r.product_id = p.id
                  JOIN attribution a ON r.attrid = a.id
@@ -17,7 +25,7 @@
     </insert>
 
     <select id="getHistoryByPid" resultType="com.example.mall.entity.HistoryResponse">
-        SELECT r.product_id, p.`name`, r.quantity, a.more + p.price, r.order_time
+        SELECT r.product_id, p.`name`, r.quantity, (a.more + p.price) as price, r.order_time
         FROM record r
                  JOIN product p ON r.product_id = p.id
                  JOIN attribution a ON r.attrid = a.id
@@ -25,15 +33,21 @@
     </select>
 
     <select id="getAllHistory" resultType="com.example.mall.entity.HistoryResponse">
-        SELECT r.product_id, p.`name`, r.quantity, a.more + p.price, r.order_time
+        SELECT r.product_id,r.user_id, p.`name`, r.quantity, (a.more + p.price) as price, r.order_time,a.attrval,r.status
         FROM record r
                  JOIN product p ON r.product_id = p.id
                  JOIN attribution a ON r.attrid = a.id
-        LIMIT #{size} OFFSET #{page}
+        LIMIT #{size} OFFSET #{offset}
     </select>
 
     <delete id="delHistoryByTime">
         DELETE FROM record WHERE order_time = #{orderTime}
     </delete>
+
+    <update id="modifyOrderStatus">
+        UPDATE record
+            SET status = #{status}
+        WHERE order_time=#{orderTime} AND user_id = #{uid};
+    </update>
 
 </mapper>

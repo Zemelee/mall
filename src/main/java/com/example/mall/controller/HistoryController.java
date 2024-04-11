@@ -56,4 +56,18 @@ public class HistoryController {
     public boolean delHistoryByTime(@RequestBody Date orderTime) {
         return historyService.delHistoryByTime(orderTime);
     }
+
+    @Getter
+    @ToString
+    static class OrderStatus {
+        Date orderTime;
+        int status;
+        int uid;
+    }
+
+
+    @PostMapping("/modify")
+    public boolean modifyOrderStatus(@RequestBody OrderStatus orderStatus) {
+        return historyService.modifyOrderStatus(orderStatus.getStatus(), orderStatus.getOrderTime(), orderStatus.getUid());
+    }
 }

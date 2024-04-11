@@ -17,6 +17,7 @@ public class History {
     private int quantity;
     private float price;
     private Date order_time;
+    private int status;
 
     @Override
     public String toString() {

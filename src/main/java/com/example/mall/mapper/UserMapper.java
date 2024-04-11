@@ -41,7 +41,7 @@ public interface UserMapper {
 
     List<User> getAllUser();
 
-
+    int getUserCount();
 
 
 }

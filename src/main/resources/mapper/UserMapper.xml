@@ -108,5 +108,9 @@
         SELECT user_id,username,address,phone,balance,accumulated FROM user
     </select>
 
+    <select id="getUserCount" resultType="java.lang.Integer">
+        select count(*) from user
+    </select>
+
 
 </mapper>

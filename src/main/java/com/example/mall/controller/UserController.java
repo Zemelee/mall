@@ -168,6 +168,11 @@ public class UserController {
         return userService.getAllUser();
     }
 
+    @GetMapping("/user/count")
+    public Integer getUserCount() {
+        return userMapper.getUserCount();
+    }
+
 
 }
 

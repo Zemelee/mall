@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Date;
 import java.util.List;
+
 @Mapper
 public interface HistoryMapper {
     List<History> getHistory(int userid);
@@ -14,6 +15,9 @@ public interface HistoryMapper {
 
     List<HistoryResponse> getHistoryByPid(int pid);
 
-    List<HistoryResponse> getAllHistory(int page,int size);
+    List<HistoryResponse> getAllHistory(int offset, int size);
+
     boolean delHistoryByTime(Date orderTime);
+
+    boolean modifyOrderStatus(int status, Date orderTime, int uid);
 }
