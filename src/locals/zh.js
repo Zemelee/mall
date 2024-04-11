@@ -11,7 +11,7 @@ export default {
     music: "听听歌"
   },
   Head: {
-    switch: "English",
+    switch: "中文",
     category: {
       device: "设备",
       food: "食品",

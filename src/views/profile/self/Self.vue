@@ -44,7 +44,7 @@
           余额
         </div>
       </template>
-      <el-tag size="small">{{ profile.balance }}</el-tag>
+      {{ profile.balance }}
     </el-descriptions-item>
     <el-descriptions-item>
       <template #label>
@@ -66,9 +66,11 @@
           等级
         </div>
       </template>
-      <span v-if="profile.accumulated < 1000">普通会员</span>
-      <span v-else-if="profile.accumulated >= 1000">黄金会员</span>
-      <span v-else-if="profile.accumulated >= 5000">黑金会员</span>
+      <el-tag size="small">
+        <span v-if="profile.accumulated < 1000">普通会员</span>
+        <span v-else-if="profile.accumulated >= 1000">黄金会员</span>
+        <span v-else-if="profile.accumulated >= 5000">黑金会员</span>
+      </el-tag>
     </el-descriptions-item>
   </el-descriptions>
   <el-dialog style="width: 500px" v-model="showUpdate">

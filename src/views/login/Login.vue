@@ -27,11 +27,11 @@
 
           <button @click="changeLocale('zh')">中文</button>
           <button @click="changeLocale('en')">English</button>
-          <button @click="md5Test">console</button>
           <div><el-button type="primary" @click="login">{{ $t("Login.login") }}</el-button>
             <el-button class="thirdparty-button" type="primary" @click="dialog">
               {{ $t("Login.register") }}
             </el-button>
+            &nbsp;&nbsp;&nbsp;&nbsp;
             <a href="http://sugarblack.top/music/#/default/home" target="_blank" rel="noopener noreferrer">
               {{ $t("Login.music") }}
             </a>
@@ -88,13 +88,13 @@ function md5Test() {
   console.log(md5);
 }
 async function login() {
-  // if (Bcode.value == "") {
-  //   ElMessage.error("请输入验证码！");
-  //   return;
-  // } else if (Bcode.value != Acode.value) {
-  //   ElMessage.error("验证码不正确！");
-  //   return;
-  // }
+  if (Bcode.value == "") {
+    ElMessage.error("请输入验证码！");
+    return;
+  } else if (Bcode.value != Acode.value) {
+    ElMessage.error("验证码不正确！");
+    return;
+  }
   await service
     .post("/user/login", {
       username: username.value,

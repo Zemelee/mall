@@ -20,7 +20,7 @@
           </template>
         </el-dropdown>
         <el-menu router :default-active="$route.path" class="el-menu-vertical-demo">
-          
+
           <el-menu-item index="/profile/self">
             <i class="el-icon-s-home"></i>
             <template #title>个人中心</template>
@@ -41,7 +41,7 @@
             <template #title>购物页</template>
           </el-menu-item>
         </el-menu>
-        
+
       </el-aside>
       <el-main>
         <div class="main">
@@ -62,6 +62,10 @@ const router = useRouter();
 function newtab(url) {
   router.push({ path: url });
 }
+
+const logout = () => {
+  router.push("/login");
+};
 </script>
 
 <style lang="less" scoped>
