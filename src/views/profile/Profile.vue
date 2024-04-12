@@ -1,7 +1,7 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-aside width="200px" class="aside">
+      <el-aside width="160px" class="aside">
         <el-dropdown style="margin-top: 20px;">
           <span class="el-dropdown-link">
             <img :src="avatarGif" style="border: 1px solid black" class="avatar" />
@@ -43,6 +43,7 @@
         </el-menu>
 
       </el-aside>
+
       <el-main>
         <div class="main">
           <router-view />

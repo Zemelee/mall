@@ -28,6 +28,7 @@ export default {
     search: "搜索商品...",
     title: "皆有杂货铺",
     AIservice: "智能客服",
+    manualService: "人工客服",
     center: "个人中心",
     logout: "退出登录"
   },

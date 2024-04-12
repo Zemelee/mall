@@ -32,6 +32,7 @@
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click="newtab('/chat')">{{ $t("Head.AIservice") }}</el-dropdown-item>
+            <el-dropdown-item @click="newtab('/chatua')">{{ $t("Head.manualService") }}</el-dropdown-item>
             <el-dropdown-item @click="newtab('/profile/self')">{{ $t("Head.center") }}</el-dropdown-item>
             <el-dropdown-item>
               <el-popconfirm confirm-button-text="Yes" cancel-button-text="No" :icon="InfoFilled" icon-color="#626AEF"

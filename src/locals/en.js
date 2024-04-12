@@ -27,6 +27,7 @@ export default {
     search:"search...",
     title: "MALL",
     AIservice: "AIservice",
+    manualService: "manualService",
     center: "ME>",
     logout: "logout"
   },

@@ -42,6 +42,7 @@ const submitForm = async () => {
         if (response.data === "ok") {
             service.get(`/user/id=${localStorage.getItem("userid")}`)
             .then((res) => {
+                
                 // emit('update-info', res.data);
             })
         }

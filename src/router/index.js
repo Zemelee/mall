@@ -3,6 +3,7 @@ import NotFound from '../views/NotFound.vue'
 import Mall from '../views/mall/Mall.vue'
 import Login from '../views/login/Login.vue'
 import Chat from '../views/chat/Chat.vue'
+import ChatUA from '../views/chat/ChatUA.vue'
 import Details from '../views/Details.vue'
 import Pay from '../views/pay/Pay.vue'
 import Cart from '../views/profile/cart/Cart.vue'
@@ -37,6 +38,11 @@ const routes = [
     path: '/chat',
     name: 'chat',
     component: Chat,
+  },
+  {
+    path: '/chatua',
+    name: 'chatua',
+    component: ChatUA,
   },
   {
     path: '/pay', //

@@ -1,9 +1,11 @@
 <template>
-  <div>
+  <div class="product">
     <div v-if="details">
       <h1>{{ details.name }}</h1>
-      <div>
-        <img style="width: 100px; height: 100px" :src="details.picsrc" />
+      <div class="product-image" @mousemove="showMagnifierFn" @mouseleave="hideMagnifierFn">
+        <img :src="details.picsrc" @mouseleave="hideZoom" />
+        <div class="magnifier" v-if="showMagnifier"
+          :style="{ backgroundImage: `url(${details.picsrc})`,backgroundPosition: magnifierPosition,border:'1px solid red',width: '100px', height: '100px' }"></div>
       </div>
       <p>{{ details.description }}</p>
       <!-- 将 id 的值和 attrid 绑定-->
@@ -13,20 +15,21 @@
       <!-- 通过 find 方法和 id 匹配来获取对应的 attributions 对象 -->
       <div>
         {{
-      attrid == 0
-        ? details.price
-        : details.price +
-        details.attributions.find((a) => a.id === attrid).more
-    }}
+          attrid == 0
+            ? details.price
+            : details.price +
+            details.attributions.find((a) => a.id === attrid).more
+        }}
       </div>
       <el-input-number v-model="numSelect" @change="debouncedAddNumSelect" :min="1" />
     </div>
-
-    <div>
-      <el-button @click="addCart"> 加入购物车 </el-button>
-    </div>
-    <div>
-      <el-button @click="router.push('/profile/cart')"> 去购物车 </el-button>
+    <div style="margin-top: 20px;display: flex;justify-content: space-between;">
+      <div>
+        <el-button @click="addCart"> 加入购物车 </el-button>
+      </div>
+      <div>
+        <el-button @click="router.push('/profile/cart')"> 去购物车 </el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -66,6 +69,27 @@ async function getById(id) {
       console.log("err:", err);
     });
 }
+
+
+let showMagnifier = ref(false);
+let magnifierPosition = ref('0 0')
+const showMagnifierFn = (event) => {
+      showMagnifier = true;
+      const imageRect = event.target.getBoundingClientRect();
+      const offsetX = event.clientX - imageRect.left;
+      const offsetY = event.clientY - imageRect.top;
+      const magnifierSize = 200; // 放大镜尺寸
+      const magnifierX = offsetX - magnifierSize / 2;
+      const magnifierY = offsetY - magnifierSize / 2;
+      magnifierPosition = `${magnifierX}px ${magnifierY}px`;
+      console.log(magnifierPosition);
+    };
+    const hideMagnifierFn = () => {
+      showMagnifier = false;
+    };
+
+
+
 const addNumSelect = () => {
   if (attrid.value == 0) {
     ElMessage.warning("未选择规格");
@@ -121,4 +145,35 @@ function addCart() {
 }
 </script>
 
-<style></style>
+<style scoped>
+.product {
+  position: relative;
+  width: 300px;
+  /* 商品图像容器宽度 */
+  height: 300px;
+  /* 商品图像容器高度 */
+}
+
+.product-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.product-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.magnifier {
+  position: absolute;
+  width: 200px;
+  /* 放大镜尺寸 */
+  height: 200px;
+  /* 放大镜尺寸 */
+  border: 2px solid #000;
+  background-size: cover;
+  pointer-events: none;
+}
+</style>

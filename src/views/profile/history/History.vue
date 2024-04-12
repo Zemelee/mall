@@ -2,10 +2,8 @@
   <div>
 
     <el-table :default-sort="{ prop: 'order_time', order: 'descending' }" :data="histories" height="550"
-      style="width: 100%" border >
-      <el-table-column type="selection" width="55">
+      style="width: 100%" border>
 
-      </el-table-column>
       <el-table-column type="index" label="序号" width="70">
         <template #default="scope">
           {{ scope.$index + 1 }}
@@ -13,15 +11,28 @@
       </el-table-column>
       <el-table-column prop="name" label="商品名" width="100" />
       <el-table-column prop="attrval" label="规格" width="120" />
-      <el-table-column prop="quantity" label="数量" width="80" />
-      <el-table-column label="小计" width="130">
+      <el-table-column prop="quantity" label="数量" width="70" />
+      <el-table-column label="小计" width="100">
         <template #default="scope">
           ￥{{ (scope.row.price * scope.row.quantity).toFixed(2) }}
         </template>
       </el-table-column>
-      <el-table-column prop="order_time" sortable label="下单时间&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;操作" width="280">
+      <el-table-column prop="order_time" sortable label="下单时间" width="180">
         <template #default="scope">
-          {{ new Date(scope.row.order_time).toISOString().slice(0, 19).replace("T", " ") }} &nbsp; &nbsp; &nbsp;
+          {{ new Date(scope.row.order_time).toISOString().slice(0, 19).replace("T", " ") }}
+        </template>
+      </el-table-column>
+
+      <el-table-column prop="status" label="订单状态" width="100">
+        <template #default="scope">
+          <el-tag>
+            {{ scope.row.status === 0 ? "待收货" : "已收货" }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="order_time" label="操作" width="160">
+        <template #default="scope">
+          <el-button :disabled="scope.row.status === 1"  size="mini" @click="modifyStatus(scope.row.order_time)">收货</el-button>
           <el-button type="danger" size="mini" @click="delByTime(scope.row.order_time)">删除</el-button>
         </template>
       </el-table-column>
@@ -64,6 +75,7 @@ const userid = localStorage.getItem("userid");
 service.get(`/mall/history/get/${userid}`)
   .then((res) => {
     histories.value = res.data; // 更新 ref 数据需访问 value 属性
+    console.log("history:", res.data);
   })
   .catch((err) => {
     console.error(err);
@@ -104,6 +116,32 @@ const delByTime = (time) => {
 
   )
 
+}
+const modifyStatus = (time) => {
+  ElMessageBox.confirm(
+    `确认收货吗?`,
+    'Warning',
+    {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  ).then(async () => {
+    const isModify = await service.post('/mall/history/modify', { orderTime: time, uid: userid },)
+    if (isModify) {
+      ElMessage({
+        type: 'success',
+        message: '修改成功!'
+      });
+      service.get(`/mall/history/get/${userid}`)
+        .then((res) => {
+          histories.value = res.data; // 更新 ref 数据需访问 value 属性
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  })
 }
 
 
