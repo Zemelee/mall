@@ -46,8 +46,9 @@
 
     <update id="modifyOrderStatus">
         UPDATE record
-            SET status = #{status}
-        WHERE order_time=#{orderTime} AND user_id = #{uid};
+        SET status = 1
+        WHERE order_time = #{orderTime}
+          AND user_id = #{uid};
     </update>
 
 </mapper>

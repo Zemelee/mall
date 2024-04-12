@@ -19,5 +19,5 @@ public interface HistoryMapper {
 
     boolean delHistoryByTime(Date orderTime);
 
-    boolean modifyOrderStatus(int status, Date orderTime, int uid);
+    boolean modifyOrderStatus(Date orderTime, int uid);
 }

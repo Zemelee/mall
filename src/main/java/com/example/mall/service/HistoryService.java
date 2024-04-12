@@ -56,7 +56,7 @@ public class HistoryService {
         return historyMapper.delHistoryByTime(orderTime);
     }
 
-    public boolean modifyOrderStatus(int status,Date orderTime,int uid){
-        return historyMapper.modifyOrderStatus(status,orderTime,uid);
+    public boolean modifyOrderStatus(Date orderTime,int uid){
+        return historyMapper.modifyOrderStatus(orderTime,uid);
     }
 }
