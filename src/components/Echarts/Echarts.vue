@@ -74,8 +74,6 @@ export default {
     };
   },
   async created() {
-    
-
     const count = await service.get("/user/count")
     this.userCount = count
     this.t = setTimeout(this.time, 1000);

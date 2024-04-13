@@ -17,6 +17,8 @@
           <el-input placeholder="输入反馈关键词" v-model="keyword" @keyup.enter="searchFeedback" /></el-col>
         <el-button type="primary" @click="searchFeedback">
           搜索</el-button>
+          <el-button type="primary" @click="$router.push('/home/chat')">
+          私信</el-button>
       </div>
     </Box>
     <el-table v-loading="loading" :data="feedbacks" border style="width: 100%"

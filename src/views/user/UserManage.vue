@@ -19,26 +19,50 @@
       <el-table-column show-overflow-tooltip prop="accumulated" label="会员等级" width="100">
         <template #default="scope">
           <!-- 假设scope.row.status表示状态，已处理为'handled' -->
-          <el-tag :type="scope.row.accumulated > 10000 ? '' : 'info'">{{ scope.row.accumulated > 10000 ? '非会员' : '会员' }}</el-tag>
+          <el-tag :type="scope.row.accumulated > 10000 ? '' : 'info'">{{ scope.row.accumulated > 10000 ? '非会员' : '会员'
+            }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="状态" width="100">
-        <template #default="scope">
-          <!-- 假设scope.row.status表示状态，已处理为'handled' -->
-          <el-tag :type="scope.row.status === 0 ? '' : 'info'">{{ scope.row.status == 0 ? '正常' : '已禁用' }}</el-tag>
-        </template>
+        <!-- 假设scope.row.status表示状态，已处理为'handled' -->
+        <el-tag>正常</el-tag>
       </el-table-column>
 
 
       <el-table-column label="操作" width="200">
         <template #default="scope">
           <el-button size="mini" @click="checkHistory(scope.row.user_id)">订单记录</el-button>
-          <!-- <el-button size="mini" :type="scope.row.status === 0 ? 'danger' : 'info'"
-            @click="handleDelete(scope.$index, scope.row)" :disabled="scope.row.status != 0">{{ scope.row.status == '0'
-              ? '去处理' : '已处理' }}</el-button> -->
         </template>
       </el-table-column>
     </el-table>
+
+    <el-dialog v-model="showOrderHistory" title="订单记录" width="500" center>
+      <!-- <span>
+        It should be noted that the content will not be aligned in center by
+        default
+      </span> -->
+      <el-table :data="orderHistoryList">
+        <el-table-column type="selection" width="55">
+        </el-table-column>
+        <el-table-column prop="userid" label="用户ID" width="90">
+        </el-table-column>
+        <el-table-column prop="name" label="商品名称" width="90">
+        </el-table-column>
+        <el-table-column prop="attrval" label="规格" width="170">
+        </el-table-column>
+        <el-table-column prop="quantity" label="数量" width="100">
+        </el-table-column>
+
+        <el-table-column prop="price" label="价格" width="90">
+        </el-table-column>
+
+        <el-table-column show-overflow-tooltip label="总价" width="100">
+          <template #default="scope">
+            {{ scope.row.price * scope.row.quantity }}
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
@@ -49,7 +73,9 @@ export default {
     return {
       userList: [],
       columns: [],
-      loading:false,
+      loading: false,
+      showOrderHistory: false,
+      orderHistoryList: []
     }
   },
   async created() {
@@ -65,10 +91,12 @@ export default {
     })
     console.log(this.columns)
   },
-  methods:{
-    checkHistory(uid){
-      service.get(`/mall/history/get/${uid}`).then(res=>{
+  methods: {
+    checkHistory(uid) {
+      service.get(`/mall/history/get/${uid}`).then(res => {
         console.log(res)
+        this.orderHistoryList = res;
+        this.showOrderHistory = true;
       })
     }
   }

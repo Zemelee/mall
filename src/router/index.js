@@ -4,6 +4,7 @@ import NotFound from '../views/frame/NotFound.vue'
 import addProduct from '../views/product/AddProduct.vue'
 import allProduct from '../views/product/AllProduct.vue'
 import allFeedback from '../views/AllFeedback.vue'
+import Chat from '../views/Chat.vue'
 import User from '../views/user/UserManage.vue'
 import Order from '../views/order/OrderManage.vue'
 import Test from '../components/Test/Test.vue'
@@ -53,6 +54,12 @@ const routes = [
         path: 'order',
         name: 'order',
         component: Order,
+        hidden: true  //隐藏
+      },
+      {
+        path: 'chat',
+        name: 'chat',
+        component: Chat,
         hidden: true  //隐藏
       },
       {

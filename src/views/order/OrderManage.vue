@@ -22,8 +22,8 @@
             {{ scope.row.price * scope.row.quantity }}
           </template>
         </el-table-column>
-
-        <el-table-column show-overflow-tooltip prop="order_time" label="下单时间" width="230">
+            
+        <el-table-column sortable  prop="order_time" label="下单时间" width="230">
           <template #default="scope">
             {{ new Date(scope.row.order_time).toISOString().slice(0, 19).replace("T", " ") }}
           </template>
