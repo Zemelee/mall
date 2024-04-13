@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 dist
+websoket
 dist-ssr
 *.local
 

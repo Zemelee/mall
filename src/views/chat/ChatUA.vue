@@ -83,9 +83,18 @@ export default {
         this.websocket.send(JSON.stringify({ role }));
       };
       this.websocket.onmessage = (event) => {
-        console.log(event.data)
         this.rcvMessage = JSON.parse(event.data);
-        this.msgHistory.push(this.rcvMessage)
+        // 对方发送的消息
+        if (this.rcvMessage.time) {
+          this.msgHistory.push(this.rcvMessage)
+        } else {
+          // 对方上线的消息
+          this.$message({
+            message: "管理员已上线",
+            type: 'success',
+            duration: 2000
+          });
+        }
       };
       this.websocket.onclose = () => {
         console.log('WebSocket连接关闭');
