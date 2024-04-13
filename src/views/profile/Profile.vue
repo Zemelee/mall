@@ -9,7 +9,7 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item @click="newtab('/chat')">{{ $t("Head.AIservice") }}</el-dropdown-item>
-              <el-dropdown-item @click="newtab('/profile/self')">{{ $t("Head.center") }}</el-dropdown-item>
+              <el-dropdown-item @click="newtab('/chatua')">{{ $t("Head.manualService") }}</el-dropdown-item>
               <el-dropdown-item>
                 <el-popconfirm confirm-button-text="Yes" cancel-button-text="No" :icon="InfoFilled" icon-color="#626AEF"
                   title="确认退出?" @confirm="logout">
@@ -45,7 +45,7 @@
       </el-aside>
 
       <el-main>
-        <div class="main">
+        <div class="main-view">
           <router-view />
         </div>
       </el-main>
@@ -90,5 +90,12 @@ const logout = () => {
   border-radius: 50%;
   margin-top: 5px;
   /* 调整垂直居中的位置 */
+}
+
+.main-view {
+  margin-left: 250px;
+  display: flex;
+  min-width: 120px;
+  min-height: 50vh;
 }
 </style>

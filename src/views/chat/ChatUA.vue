@@ -6,7 +6,7 @@
         justify-content: flex-start;
       ">
       <!-- 对话展示 -->
-      <div class="chat-page reply-left" style="border: 1px solid red">
+      <div class="chat-page reply-left">
         <!-- logo -->
         <img style="width: 100px; margin-left: 20px; border-radius: 4px"
           src="https://xinghuo.xfyun.cn/static/media/sparkdesk.34d76de5c2313b16ec3beacbe4269b9f.svg" />
@@ -16,25 +16,32 @@
               backgroundColor: item.role == 'user' ? '#c8c9cc' : '#c6e2ff',
             }">
             <div class="avavatar" style="border-radius: 50%">
-              <img style="width: 24px; border-radius: inherit" :src="item.role == 'user'
+              <img style="width: 44px; border-radius: inherit" :src="item.role == 'user'
                 ? 'https://himg.bdimg.com/sys/portrait/item/public.1.34814738.pVyNT_BiankdF5rQj7Qscg.jpg'
                 : 'https://xinghuo.xfyun.cn/static/media/gpt-logo.e9ad4150a385435f5a90b50c44dad847.svg'
                 " alt="" />
             </div>
-            <div class="message-content" :class="{ 'message-sent': item.role }">
+            <div>
+              {{ new Date(item.time).toISOString().slice(0, 19).replace("T", " ") }}
+              <el-divider direction="vertical" />
               {{ item.content }}
             </div>
+
           </div>
         </div>
       </div>
 
       <div class="message-input">
-        <input type="text" v-model="message.role" placeholder="输入消息...">
-        <input type="text" v-model="message.content" @keyup.enter="sendMessage" placeholder="输入消息...">
-        <button @click="sendMessage">发送</button>
+        输入框
+        <el-input v-model="message.content" type="textarea" placeholder="向客服留言..." />
+        <div style="display: flex; justify-content: space-between;">
+
+          <span style="margin-left: 20px;">{{ message.role }}</span>
+          <button style="margin-right: 20px;" @click="sendMessage">发送</button>
+        </div>
       </div>
     </div>
-    <div v-else>WebSocket连接失败</div>
+    <div v-else>WebSocket连接失败,可使用智能客服</div>
 
   </div>
 </template>
@@ -44,13 +51,14 @@ import axios from 'axios';
 export default {
   data() {
     return {
+      host: "sugarblack.top",
       port_chat: 3100,
-      port_sql: 3110,
+      port_sql: 3000,
       websocket: null,
       connected: false,
       message: {
         role: 'user',
-        content: 'test',
+        content: '',
         time: new Date().getTime()
       },
       rcvMessage: '',
@@ -58,17 +66,17 @@ export default {
     };
   },
   created() {
-    axios.get(`http://localhost:${this.port_sql}/chatua/query?uid=2`).then(res => {
+    axios.get(`http://${this.host}:${this.port_sql}/chatua/query?uid=2`).then(res => {
       console.log(res.data)
       this.msgHistory = res.data;
     })
   },
   mounted() {
-    this.connectWebSocket();
+    this.connectWebSocket("user");
   },
   methods: {
     connectWebSocket(role) {
-      this.websocket = new WebSocket(`ws://localhost:${this.port_chat}`);
+      this.websocket = new WebSocket(`ws://${this.host}:${this.port_chat}`);
       this.websocket.onopen = () => {
         console.log('WebSocket连接成功');
         this.connected = true;
@@ -93,13 +101,14 @@ export default {
       if (this.message.content !== '') {
         let curMsgBody = { role: this.message.role, content: this.message.content, time: new Date().getTime() }
         this.websocket.send(JSON.stringify(curMsgBody));
-        const addRes = await axios.post(`http://localhost:${this.port_sql}/chatua/add`, {
+        const addRes = await axios.post(`http://${this.host}:${this.port_sql}/chatua/add`, {
           uid: localStorage.getItem("userid"),
           ...curMsgBody
         })
         if (addRes.data == "ok") {
-          const queryRes = await axios.get(`http://localhost:${this.port_sql}/chatua/query?uid=${localStorage.getItem("userid")}`)
+          const queryRes = await axios.get(`http://${this.host}:${this.port_sql}/chatua/query?uid=${localStorage.getItem("userid")}`)
           this.msgHistory = queryRes.data
+          this.message.content = '';
         }
       }
     }
@@ -110,21 +119,23 @@ export default {
 <style lang="less" scoped>
 .message-input {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 60%;
+  right: 0;
+  width: 40%;
+  height: 78vh;
   padding: 10px;
   background-color: #f2f2f2;
-  display: flex;
+  // display: flex;
   align-items: center;
 }
 
 .message-input input {
   flex: 1;
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid #d76e6e;
   border-radius: 5px;
   margin-right: 10px;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .message-input button {
@@ -143,10 +154,11 @@ export default {
 
 .reply-left {
   display: flex;
-  width: 97%;
+  width: 55%;
+  border: 1px solid #ab6c24;
   margin-right: 10px;
   flex-direction: column;
-  height: 85vh;
+  height: 80vh;
 
   .message-container {
     flex: 1;
@@ -169,9 +181,5 @@ export default {
 
 .message {
   margin-bottom: 8px;
-}
-
-.message-sent {
-  background-color: #e6f7ff;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="feedback">
-    <h4>用户反馈</h4>
+    <h4>任何反馈可通过此页面反馈</h4>
     <form @submit.prevent="submitForm">
       <div>
         <label for="name">姓名：</label>
@@ -11,9 +11,10 @@
         <input type="email" id="email" v-model="form.email" required />
       </div>
       <div>
-        <label for="feedback">反馈信息：</label>
-        <textarea id="feedback" v-model="form.feedback" required></textarea>
+        <label for="feedback">内容：</label>
+        <el-input id="feedback" type="textarea" v-model="form.feedback" required></el-input>
       </div>
+      <br>
       <button type="submit">提交</button>
     </form>
   </div>
@@ -29,17 +30,18 @@ const form = reactive({
   feedback: "",
 });
 
-function submitForm() {  service.post("/user/feedback/post", form)
-    .then(res => {
-      if (res.data == "feedback successfully") {
-        ElMessage.success("反馈成功");
-        form.username = ""
-        form.email = ""
-        form.feedback = ""
-      }
-    })
-    .catch(err =>
-      ElMessage.success("提交失败"))
+function submitForm() {
+  service.post("/user/feedback/post", form)
+  .then(res => {
+    if (res.data == "feedback successfully") {
+      ElMessage.success("反馈成功");
+      form.username = ""
+      form.email = ""
+      form.feedback = ""
+    }
+  })
+  .catch(err =>
+    ElMessage.success("提交失败"))
 }
 
 let feedbackList = reactive([])
@@ -55,6 +57,6 @@ onBeforeMount(async () => {
 <style scoped>
 .feedback {
   width: 80%;
-  margin: auto;
+  /* margin: auto; */
 }
 </style>

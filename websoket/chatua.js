@@ -31,10 +31,8 @@ wss.on('connection', function connection(ws) {
       admins.push(ws);
     }
     console.log("users:", users.length, "admins:", admins.length)
-
     // 判断消息类型并进行转发
     switch (role) {
-
       case 'user':
         // 将用户消息转发给管理员
         admins.forEach(admin => admin.send(JSON.stringify({ role, content, time })));

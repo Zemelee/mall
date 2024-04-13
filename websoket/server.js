@@ -7,26 +7,44 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const port = 3110; // 定义服务器端口
-
 // 创建数据库连接
-const connection = mysql.createConnection({
-    host: 'localhost', // 数据库地址
-    user: 'root', // 数据库用户名
-    password: '784397', // 数据库密码
-    database: 'mall' // 数据库名称
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '784397',
+    database: 'mall'
 });
 
-// 连接到数据库
-connection.connect((err) => {
-    if (err) {
-        console.error('Error connecting to database: ' + err.stack);
-        return;
-    }
-    console.log('Connected to database as id ' + connection.threadId);
+// 添加记录的接口
+app.post('/addChat', (req, res) => {
+    console.log(req.body);
+    // 获取请求参数
+    const ip = req.body.ip;
+    const text = req.body.text;
+    const location = req.body.location;
+    const role = req.body.role;
+    const time = req.body.time;
+    const date = new Date(time);
+    const datetime = date.getFullYear() + "-" +
+        (date.getMonth() + 1) + "-" +
+        date.getDate() + " " +
+        date.getHours() + ":" +
+        date.getMinutes() + ":" +
+        date.getSeconds();
+    // 构建SQL语句
+    const sql = 'INSERT INTO chat(ip, text, role, time,location) VALUES (?, ?, ?, ?,?)';
+    // 执行SQL语句
+    db.query(sql, [ip, text, role, datetime,location], (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).send('数据库错误');
+        }
+        res.send('好');
+    });
+
 });
 
-// 插入数据的 HTTP 接口
+// 插入数据ua的 HTTP 接口------------------------------------------------------
 app.post('/chatua/add', (req, res) => {
     console.log(req.body)
     const uid = req.body.uid;
@@ -41,7 +59,7 @@ app.post('/chatua/add', (req, res) => {
         date.getSeconds();
     const insertQuery = 'INSERT INTO chatua (uid, content, role, time) VALUES (?, ?, ?, ?)';
 
-    connection.query(insertQuery, [uid, content, role, time], (error, results, fields) => {
+    db.query(insertQuery, [uid, content, role, time], (error, results, fields) => {
         if (error) {
             console.error('Error inserting data: ' + error.stack);
             res.status(500).send('Error inserting data');
@@ -55,7 +73,7 @@ app.post('/chatua/add', (req, res) => {
 // 查询数据的 HTTP 接口
 app.get('/chatua/query', (req, res) => {
     const query = `SELECT * FROM chatua where uid = ${req.query.uid}`;
-    connection.query(query, (error, results, fields) => {
+    db.query(query, (error, results, fields) => {
         if (error) {
             console.error('Error querying data: ' + error.stack);
             res.status(500).send('Error querying data');
@@ -65,7 +83,7 @@ app.get('/chatua/query', (req, res) => {
     });
 });
 
-// 监听指定端口
-app.listen(port, () => {
-    console.log(`Server is listening at http://localhost:${port}`);
+
+app.listen(3000, () => {
+    console.log(`服务启动,端口:3000`);
 });

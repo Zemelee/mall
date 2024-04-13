@@ -57,6 +57,7 @@
 
 
 <script setup>
+import './style.css'
 import service from "../../request/index.js";
 import Header from "./Header.vue";
 import Footer from "./Footer.vue";

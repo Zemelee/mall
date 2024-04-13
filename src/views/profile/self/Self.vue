@@ -73,6 +73,9 @@
       </el-tag>
     </el-descriptions-item>
   </el-descriptions>
+  
+  <el-button @click="showUpdate = true">修改</el-button>
+  <el-button @click="showRecharge = true">充值</el-button>
   <el-dialog style="width: 500px" v-model="showUpdate">
     <updateInfo :info="profile"></updateInfo>
   </el-dialog>
@@ -80,8 +83,6 @@
     <Recharge></Recharge>
   </el-dialog>
   <br>
-  <el-button @click="showUpdate = true">修改</el-button>
-  <el-button @click="showRecharge = true">充值</el-button>
   <br>
 </template>
 

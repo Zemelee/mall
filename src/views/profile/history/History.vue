@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin-left: -100px;">
 
     <el-table :default-sort="{ prop: 'order_time', order: 'descending' }" :data="histories" height="550"
       style="width: 100%" border>
