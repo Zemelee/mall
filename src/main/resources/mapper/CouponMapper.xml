@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mall.mapper.CouponMapper">
+    <insert id="genCoupon" parameterType="com.example.mall.entity.Coupon" >
+        <!-- 这里假设Coupon是优惠券的实体类，包含了cid，code，discount，create，expire，status属性 -->
+        INSERT INTO coupon (code, discount, created, expire, status)
+        VALUES (#{code}, #{discount}, #{created}, #{expire}, #{status})
+    </insert>
+
+    <select id="getNewCoupon" resultType="com.example.mall.entity.Coupon">
+        select *
+        from coupon
+        where created = #{created}
+    </select>
+
+    <select id="getAllCoupon" resultType="com.example.mall.entity.Coupon">
+        select * from coupon
+    </select>
+
+    <select id="getCouponByCode" resultType="com.example.mall.entity.Coupon">
+        select * from coupon where code = #{code}
+    </select>
+
+    <update id="modifyCouponStatus">
+        UPDATE coupon
+        SET status = 1
+        WHERE code = #{code}
+    </update>
+
+    <insert id="addCouponUseRecord">
+        INSERT INTO couponuse (cid, uid, orderTime, discountNum)
+        VALUES (#{cid}, #{uid}, #{orderTime}, #{discountNum})
+    </insert>
+
+    <select id="getCouponUsedByID" resultType="com.example.mall.entity.CouponUsed">
+        select * from couponuse where cid = #{cid}
+    </select>
+
+
+
+
+
+</mapper>
