@@ -1,7 +1,7 @@
 <template>
   <div style="margin-left: -100px;">
 
-    <el-table :default-sort="{ prop: 'order_time', order: 'descending' }" :data="histories" height="550"
+    <el-table :default-sort="{ prop: 'order_time', order: 'descending' }" :data="historiesPaged" height="400"
       style="width: 100%" border>
 
       <el-table-column type="index" label="序号" width="70">
@@ -38,6 +38,14 @@
       </el-table-column>
 
     </el-table>
+
+    <el-pagination
+      background
+      layout="total,prev, pager, next"
+      :total="histories.length"
+      :page-size="5"
+      @current-change="handleCurrentChange"
+    />
   </div>
 </template>
 <script setup>
@@ -45,6 +53,7 @@ import { ref } from "vue";
 import service from "@/request/index.js";
 import { ElMessage, ElMessageBox } from 'element-plus'
 let histories = ref([]);
+let historiesPaged = ref([]);
 
 
 // const spanMethod = ({ row, column, rowIndex, columnIndex }) => {
@@ -75,6 +84,7 @@ const userid = localStorage.getItem("userid");
 service.get(`/mall/history/get/${userid}`)
   .then((res) => {
     histories.value = res.data; // 更新 ref 数据需访问 value 属性
+    historiesPaged.value = res.data.slice(0, 5);
     console.log("history:", res.data);
   })
   .catch((err) => {
@@ -142,6 +152,15 @@ const modifyStatus = (time) => {
         });
     }
   })
+}
+
+const handleCurrentChange = (val) => {
+  console.log(`当前页: ${val}`);
+  if (val === 1) {
+    historiesPaged.value = histories.value.slice(0, 5);
+  } else {
+    historiesPaged.value = histories.value.slice((val - 1) * 5, val * 5);
+  }
 }
 
 

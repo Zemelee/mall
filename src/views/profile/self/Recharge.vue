@@ -43,11 +43,11 @@ const recharge = () => {
         ElMessage.error('请输入密码');
         return;
     }
-    if (password.value != "111") {
+    if (password.value != "21") {
         ElMessage.error('密码错误');
         return;
     }
-    if (password.value == "111") {
+    if (password.value == "21") {
         let recharge = {
             id: localStorage.getItem("userid"),
             amount: selectedAmount.value

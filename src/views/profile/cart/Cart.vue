@@ -41,15 +41,37 @@
         <el-button type="submit" @click="submitOrder">提交订单</el-button>
       </form>
     </main>
+    <el-dialog v-model="showPay">
+      当前订单总价：{{ totalPrice.toFixed(2) }} <span v-if="discountNum != 0">- {{ discountNum.toFixed(2) }}
+        = {{ (totalPrice - discountNum).toFixed(2) }}</span>元
+      <br>
+      <el-form>
+        <el-form-item label="请输入支付密码">
+          <el-input v-model="payPassword" show-password></el-input>
+        </el-form-item>
+        <el-form-item label="有优惠码?">
+          <el-switch v-model="useCoupon" inline-prompt active-text="是" inactive-text="否" />
+        </el-form-item>
+        <el-form-item inline v-show="useCoupon" label="优惠码">
+          <el-input placeholder="请输入优惠码" :disabled="validateDisabled" v-model="couponCode"></el-input>
+        </el-form-item>
+        <el-form-item label="验证优惠码">
+          <el-button :disabled="validateDisabled" @click="validateCoupon">验证</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" :disabled="!payPassword" @click="pay">确认支付</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
 import { useRouter } from "vue-router";
 import service from "@/request/index";
-import { ref, computed } from "vue";
+import { ref, computed, h } from "vue";
 import { useCartStore } from "@/store/cart.js";
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox, ElSwitch } from 'element-plus'
 const router = useRouter();
 const userid = localStorage.getItem("userid");
 const Cart = useCartStore();
@@ -123,10 +145,36 @@ const submitOrder = () => {
     })
   open()
 };
+let useCoupon = ref(false)
+let payPassword = ref(null);
+let couponCode = ref("");
+let discountNum = ref(0);
+let validateDisabled = ref(false)
+const validateCoupon = () => {
+  if (couponCode.value) {
+    service.get(`coupon/validate/${couponCode.value}`).then(couponObj => {
+      console.log(couponObj.data)
+      if (couponObj.data == "") {
+        ElMessage.error("优惠券无效")
+        return;
+      } else if (new Date(couponObj.data.expire) <= new Date()) {
+        ElMessage.error("优惠券已过期")
+        return;
+      } else if (couponObj.data.status === 1) {
+        ElMessage.error("优惠券已使用")
+        return;
+      }
+      discountNum.value = totalPrice.value - (totalPrice.value * (couponObj.data.discount) / 10);
+      totalPrice.value = totalPrice.value * (couponObj.data.discount) / 10;
+      ElMessage.success(`优惠券验证成功,已优惠${discountNum.value}元!`)
+      validateDisabled.value = true;
+    })
+  }
 
+};
 const open = () => {
   ElMessageBox.confirm(
-    `总价格为${totalPrice.value.toFixed(2)},确认提交订单吗?`,
+    `确认提交此订单吗?`,
     'Warning',
     {
       confirmButtonText: '提交',
@@ -135,35 +183,25 @@ const open = () => {
     }
   )
     .then(() => {
-      ElMessageBox.prompt('输入支付密码', {
-        confirmButtonText: '确认',
-        cancelButtonText: '取消',
-      })
-        .then(async ({ value }) => {
-          const loginResponse = await service.post("/user/login", {
-            username: localStorage.getItem("username"),
-            password: value
-          })
-          console.log(loginResponse.data);
-          if (loginResponse.data.success) {
-            pay()
-          } else {
-            console.log(localStorage.getItem("username"),value)
-            ElMessage.error("支付密码错误")
-          }
-        })
-        .catch(() => {
-          ElMessage({
-            type: 'info',
-            message: '取消支付',
-          })
-        })
+      showPay.value = true;
+    }).catch(() => {
+
     })
 }
 
 
 const pay = async () => {
+  const loginResponse = await service.post("/user/login", {
+    username: localStorage.getItem("username"),
+    password: payPassword.value
+  })
+  console.log(loginResponse)
+  if (!loginResponse.data.success) {
+    ElMessage.error("密码错误");
+    return;
+  }
   const orderItems = []
+  const orderTime = new Date();
   selectedItems.value.forEach(item => {
     orderItems.push({
       userid: userid,
@@ -173,7 +211,7 @@ const pay = async () => {
       attrid: item.attrid,
       quantity: item.num,
       price: item.price,
-      order_time: new Date().getTime()
+      order_time: orderTime
     })
   })
   let consume = await service.post("/user/consume", {
@@ -193,11 +231,26 @@ const pay = async () => {
         selectedItems.value = [];
         setTimeout(() => {
           router.push("/profile/history");
-        }, 3000);
+        }, 2000);
       })
       .catch((err) => {
         console.log(err);
       });
+    // 如果 validateDisabled 为true，说明使用了优惠券，则调用优惠券接口
+    if (validateDisabled.value) {
+      service.post("/coupon/use", {
+        uid: userid,
+        code: couponCode.value,
+        time: orderTime,
+        discountNum: discountNum.value
+      }).then((res) => {
+        if (res.data) {
+          ElMessage.success("优惠券使用成功")
+        } else {
+          ElMessage.error("优惠券使用失败")
+        }
+      })
+    }
   }
 
 };

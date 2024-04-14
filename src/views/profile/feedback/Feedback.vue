@@ -11,8 +11,7 @@
         <input type="email" id="email" v-model="form.email" required />
       </div>
       <div>
-        <label for="feedback">内容：</label>
-        <el-input id="feedback" type="textarea" v-model="form.feedback" required></el-input>
+        <el-input id="feedback" type="textarea" placeholder="请输入反馈内容..." v-model="form.feedback" required></el-input>
       </div>
       <br>
       <button type="submit">提交</button>

@@ -102,6 +102,7 @@ async function login() {
       password: password.value,
     })
     .then((res) => {
+        console.log(res)
       if (res.data.success == false) {
         ElMessage.error("用户名或密码错误！");
       } else {
