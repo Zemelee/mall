@@ -4,8 +4,8 @@
 
     <!--mybatis-->
     <select id="getHistory" resultType="com.example.mall.entity.History">
-        SELECT (r.user_id) as userid,
-               r.product_id,
+        SELECT r.product_id,
+               (r.user_id) as userid,
                p.`name`,
                (a.id) as attrid,
                a.attrval,

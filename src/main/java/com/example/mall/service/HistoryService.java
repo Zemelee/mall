@@ -26,11 +26,7 @@ public class HistoryService {
     }
 
     public List<History> getHistory(int userid) {
-        List<History> historyList = historyMapper.getHistory(userid);
-        for (History history: historyList){
-            System.out.println(history);
-        }
-        return historyList;
+        return historyMapper.getHistory(userid);
     }
 
     public boolean addHistory(List<History> histories) {
