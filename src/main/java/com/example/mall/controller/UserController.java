@@ -35,6 +35,7 @@ public class UserController {
         boolean isValidUser = userService.validateUser(username, password);
         if (isValidUser) {
             User resUser = userService.userLogin(username, password);
+            System.out.println(resUser);
             resUser.setToken(JwtUtil.createToken(username));
             response.setSuccess(true);
             response.setMessage("登陆成功");
