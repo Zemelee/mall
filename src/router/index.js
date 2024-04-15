@@ -7,6 +7,7 @@ import allFeedback from '../views/AllFeedback.vue'
 import Chat from '../views/Chat.vue'
 import User from '../views/user/UserManage.vue'
 import Order from '../views/order/OrderManage.vue'
+import GenCoupon from '../views/coupon/GenCoupon.vue'
 import Test from '../components/Test/Test.vue'
 
 const routes = [
@@ -60,6 +61,12 @@ const routes = [
         path: 'chat',
         name: 'chat',
         component: Chat,
+        hidden: true  //隐藏
+      },
+      {
+        path: 'coupon',
+        name: 'coupon',
+        component: GenCoupon,
         hidden: true  //隐藏
       },
       {

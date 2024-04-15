@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const service = axios.create({
-    baseURL: 'http://sugarblack.top:8081',
+    baseURL: 'http://localhost:8081',
     timeout: 6000,
 });
 service.interceptors.request.use(config => {

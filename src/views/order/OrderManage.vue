@@ -22,15 +22,23 @@
             {{ scope.row.price * scope.row.quantity }}
           </template>
         </el-table-column>
-            
-        <el-table-column sortable  prop="order_time" label="下单时间" width="230">
+
+        <el-table-column sortable prop="order_time" label="下单时间" width="200">
           <template #default="scope">
             {{ new Date(scope.row.order_time).toISOString().slice(0, 19).replace("T", " ") }}
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip label="订单状态" width="100">
+          <template #default="scope">
+            <el-tag v-if="scope.row.status == 0" type="danger">未收货</el-tag>
+            <el-tag v-else type="success">已收货</el-tag>
           </template>
         </el-table-column>
 
         <el-table-column label="操作" width="200">
           <template #default="scope">
+            <el-button size="mini" :disabled="scope.row.status == 1"
+              @click="modifyStatus(scope.row.order_time, scope.row.user_id)">收货</el-button>
             <el-button size="mini" type="danger" @click="delHistory(scope.row.order_time)">删除</el-button>
           </template>
         </el-table-column>
@@ -50,7 +58,6 @@ export default {
   created() {
     service.post("/mall/history/get", { page: 1, size: 100 }).then(res => {
       this.orderList = res
-      console.log(res)
     })
   },
   methods: {
@@ -65,16 +72,28 @@ export default {
             'Content-Type': 'application/json'
           }
         })
-        if(isDel){
+        if (isDel) {
           this.$message({
             type: 'success',
             message: '删除成功!'
           });
           this.orderList = this.orderList.filter(item => item.order_time !== orderTime)
-        }else{
+        } else {
           this.$message({
             type: 'error',
             message: `${JSON.parse(isDel)}`
+          });
+        }
+      })
+    },
+    modifyStatus(orderTime, uid) {
+      service.post("/mall/history/modify", { orderTime: orderTime, uid: uid }).then(async (res) => {
+        console.log(res)
+        if (res) {
+          this.orderList = await service.post("/mall/history/get", { page: 1, size: 100 })
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
           });
         }
       })
