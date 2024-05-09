@@ -52,10 +52,10 @@
         <el-form-item label="有优惠码?">
           <el-switch v-model="useCoupon" inline-prompt active-text="是" inactive-text="否" />
         </el-form-item>
-        <el-form-item inline v-show="useCoupon" label="优惠码">
+        <el-form-item v-show="useCoupon" label="优惠码">
           <el-input placeholder="请输入优惠码" :disabled="validateDisabled" v-model="couponCode"></el-input>
         </el-form-item>
-        <el-form-item label="验证优惠码">
+        <el-form-item v-show="useCoupon" label="验证优惠码">
           <el-button :disabled="validateDisabled" @click="validateCoupon">验证</el-button>
         </el-form-item>
         <el-form-item>
@@ -166,7 +166,7 @@ const validateCoupon = () => {
       }
       discountNum.value = totalPrice.value - (totalPrice.value * (couponObj.data.discount) / 10);
       totalPrice.value = totalPrice.value * (couponObj.data.discount) / 10;
-      ElMessage.success(`优惠券验证成功,已优惠${discountNum.value}元!`)
+      ElMessage.success(`${couponObj.data.discount}折优惠券验证成功,已优惠${discountNum.value.toFixed(2)}元!`)
       validateDisabled.value = true;
     })
   }

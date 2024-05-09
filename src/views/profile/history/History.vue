@@ -141,15 +141,9 @@ const modifyStatus = (time) => {
     if (isModify) {
       ElMessage({
         type: 'success',
-        message: '修改成功!'
+        message: '收货成功'
       });
-      service.get(`/mall/history/get/${userid}`)
-        .then((res) => {
-          histories.value = res.data; // 更新 ref 数据需访问 value 属性
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      window.location.reload();
     }
   })
 }

@@ -10,6 +10,7 @@ import Cart from '../views/profile/cart/Cart.vue'
 import Profile from '../views/profile/Profile.vue'
 import Self from '../views/profile/self/Self.vue'
 import History from '../views/profile/history/History.vue'
+import Coupon from '../views/profile/coupon//Coupon.vue'
 import Feedback from '../views/profile/feedback/Feedback.vue'
 // import Test from '../views/Test.vue'
 import { ElMessage } from "element-plus";
@@ -68,6 +69,11 @@ const routes = [
         path: '/profile/feedback',
         name: 'feedback',
         component: Feedback
+      },
+      {
+        path: '/profile/coupon',
+        name: 'coupon',
+        component: Coupon
       },
       {
         path: '/profile/cart',
