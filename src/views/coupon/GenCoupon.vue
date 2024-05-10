@@ -96,15 +96,17 @@ export default {
             }
             service.post("/coupon/gen", { discount: this.discount, duration: this.duration }).then(res => {
                 this.$message({
-                    message: "优惠券提交成功",
+                    message: "优惠券提交成功,已添加到优惠券列表",
                     type: 'success',
                     duration: 2000
                 });
+                console.log(res)
+                this.discount = 0;
+                this.duration = 0;
                 this.couponList.push(res)
             })
         },
         async showCouponInfo(code) {
-        
             this.couponInfo = await service.get(`/coupon/record/${code}`)
             console.log(this.couponInfo)
             this.dialogVisible = true;

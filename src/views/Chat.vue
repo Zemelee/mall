@@ -22,6 +22,7 @@
                                 " alt="" />
                         </div>
                         <div>{{ new Date(item.time).toISOString().slice(0, 19).replace("T", " ") }}</div>
+                        <el-divider direction="vertical" />
                         <div class="message-content" :class="{ 'message-sent': item.role }">
                             {{ item.content }}
                         </div>
@@ -53,7 +54,7 @@ export default {
     },
     data() {
         return {
-            host: 'sugarblack.top',
+            host: 'localhost',
             port_sql: 3000,
             websocket: null,
             connected: false,
@@ -191,7 +192,5 @@ export default {
     margin-bottom: 8px;
 }
 
-.message-sent {
-    background-color: #e6f7ff;
-}
+
 </style>

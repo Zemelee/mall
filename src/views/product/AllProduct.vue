@@ -155,8 +155,7 @@ export default {
   methods: {
     pageFunc(pageInfo) {
       // 偏移量
-      console.log({ page: (pageInfo.pageNum) * pageInfo.pageSize, size: pageInfo.pageSize })
-      service.post("/mall/product/get", { page: (pageInfo.pageNum) * pageInfo.pageSize, size: pageInfo.pageSize + 110 }).then((response) => {
+      service.post("/mall/product/get", { page: (pageInfo.pageNum), size: pageInfo.pageSize }).then((response) => {
         this.productions = response;
       });
     },
@@ -170,6 +169,13 @@ export default {
       }
     },
     async delMul() {
+      if (this.ids.length === 0) {
+        this.$message({
+          type: 'warning',
+          message: '请选择要删除的商品'
+        });
+        return;
+      }
       const startTime = Date.now();
       this.loading = true;
       let delMsg;
