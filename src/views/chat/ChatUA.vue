@@ -16,7 +16,7 @@
               backgroundColor: item.role == 'user' ? '#c8c9cc' : '#c6e2ff',
             }">
             <div class="avavatar" style="border-radius: 50%">
-              <img style="width: 44px; border-radius: inherit" :src="item.role == 'user'
+              <img style="width: 34px; border-radius: inherit" :src="item.role == 'user'
                 ? 'https://himg.bdimg.com/sys/portrait/item/public.1.34814738.pVyNT_BiankdF5rQj7Qscg.jpg'
                 : 'https://xinghuo.xfyun.cn/static/media/gpt-logo.e9ad4150a385435f5a90b50c44dad847.svg'
                 " alt="" />
@@ -51,7 +51,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      host: "sugarblack.top",
+      host: "localhost",
       port_chat: 3100,
       port_sql: 3000,
       websocket: null,

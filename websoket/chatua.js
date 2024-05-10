@@ -9,25 +9,14 @@ const users = [];
 const admins = [];
 wss.on('connection', function connection(ws) {
 
-  // 监听连接建立事件，根据身份将连接添加到对应的用户或管理员列表中
-  ws.on('open', function open() {
-    console.log('ws');
-    const { role } = ws;
-    console.log(`${role}连接建立`);
-    if (role === 'user') {
-      users.push(ws);
-    } else if (role === 'admin') {
-      admins.push(ws);
-    }
-  });
   // 监听消息
   ws.on('message', function incoming(message) {
     // 解析消息中的类型和内容
     const { role, content, time } = JSON.parse(message);
     console.log(`收到消息：${message}`);
-    if (role == 'user') {
+    if (!users.includes(ws) && role == 'user') {
       users.push(ws);
-    } else if (role == 'admin') {
+    } else if (!admins.includes(ws) && role == 'admin') {
       admins.push(ws);
     }
     console.log("users:", users.length, "admins:", admins.length)
@@ -45,6 +34,11 @@ wss.on('connection', function connection(ws) {
         console.log('未知消息类型');
     }
   });
+
+
+
+
+
 
   // 监听关闭连接事件
   ws.on('close', function close() {

@@ -8,13 +8,20 @@
         </div>
         <p>{{ details.description }}</p>
       </div>
-      <div style="margin-left: 120px;">
-        <!-- 将 id 的值和 attrid 绑定-->
-        <el-select v-model="attrid" @change="changeAttr" placeholder="选择规格">
-          <el-option v-for="attr in details.attributions" :key="attr.id" :label="attr.attrval" :value="attr.id" />
-        </el-select>
+
+
+      <div style="margin-left: 120px;margin-top: 80px;">
+        <div><!-- 将 id 的值和 attrid 绑定-->
+          <el-select v-model="attrid" @change="changeAttr" placeholder="选择规格">
+            <el-option v-for="attr in details.attributions" :key="attr.id" :label="attr.attrval" :value="attr.id" />
+          </el-select>
+        </div>
+
+        <br>
+        <el-input-number v-model="numSelect" @change="debouncedAddNumSelect" :min="1" />
         <!-- 通过 find 方法和 id 匹配来获取对应的 attributions 对象 -->
         <div>
+          商品单价:
           {{
             attrid == 0
               ? details.price
@@ -22,16 +29,16 @@
               details.attributions.find((a) => a.id === attrid).more
           }}
         </div>
-        <el-input-number v-model="numSelect"  @change="debouncedAddNumSelect" :min="1" />
-
+        <div v-if="inventory">库存剩余: {{ inventory }}</div>
         <div>
           <el-button @click="addCart"> 加入购物车 </el-button>
         </div>
         <div>
-          <el-button @click="router.push('/profile/cart')"> 去购物车 </el-button>
+
+          <el-button @click="router.push('/profile/cart')"> 跳转购物车 </el-button>
         </div>
       </div>
-      
+
     </div>
 
   </div>
@@ -39,7 +46,7 @@
 
 <script setup>
 import service from "../request/index.js";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useCartStore } from "@/store/cart.js";
 import { useRoute, useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
@@ -48,7 +55,7 @@ const router = useRouter();
 const Cart = useCartStore();
 const details = ref(null);
 onMounted(async () => {
-  details.value = await getById(route.params.id);
+  details.value = await getById(route.params.id); //包含attributions数组和基本信息
 });
 // 防抖函数
 const debounce = (func, delay) => {
@@ -60,8 +67,9 @@ const debounce = (func, delay) => {
     }, delay);
   };
 }
-const attrid = ref(0); // 用户选择
-const numSelect = ref(1); // 数量选择
+const attrid = ref(0); // 用户规格选择id
+const numSelect = ref(1); // 用户数量选择
+let inventory = ref(0)
 async function getById(id) {
   return service
     .get(`/mall/product/id=${id}`)
@@ -72,6 +80,11 @@ async function getById(id) {
       console.log("err:", err);
     });
 }
+// 监听规格选择,显示库存
+watch(attrid, (newAttrId, oldAttrId) => {
+  let tempAttrbution = details.value.attributions.find(item => item.id == newAttrId)
+  inventory.value = tempAttrbution.inventory
+})
 
 const addNumSelect = () => {
   if (attrid.value == 0) {
@@ -79,10 +92,8 @@ const addNumSelect = () => {
     numSelect.value = 1;
     return;
   }
-  const targetSelect = details.value.attributions.find((a) => a.id == attrid.value)
-  if (targetSelect.inventory > numSelect.value) {
-    numSelect.value++;
-  } else {
+  const targetSelect = details.value.attributions.find((a) => a.id == attrid.value) //对应的某项attributions
+  if (targetSelect.inventory < numSelect.value) {
     ElMessage.warning("库存不足");
     numSelect.value = targetSelect.inventory;
     return
@@ -131,7 +142,7 @@ function addCart() {
 <style scoped>
 .product {
   position: relative;
-  width: 300px;
+  width: 500px;
   /* 商品图像容器宽度 */
   height: 300px;
   /* 商品图像容器高度 */
