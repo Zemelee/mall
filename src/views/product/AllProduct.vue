@@ -1,17 +1,17 @@
 <template>
   <div>
     <Box>
-      <el-button @click="delMul" type="danger" >批量删除</el-button>
+      <el-button @click="delMul" type="danger">批量删除</el-button>
     </Box>
-    <el-table v-loading="loading" border ref="multipleTable" :data="productions" tooltip-effect="dark"
-      style="width: 100%" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" border :data="productions" tooltip-effect="dark"
+      style="height: 350px; overflow-y: auto;" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55">
       </el-table-column>
       <el-table-column prop="id" label="ID" width="100">
       </el-table-column>
       <el-table-column prop="picsrc" label="图片" width="60">
         <template v-slot="scope">
-          <img :src="scope.row.picsrc" style="width: 50px;height: 50px">
+          <el-image :src="scope.row.picsrc" style="width: 50px;height: 50px"  lazy />
         </template>
       </el-table-column>
       <el-table-column prop="name" label="名称" width="130">
@@ -40,10 +40,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <Box v-if="productions.length !== 0">
-      <Paginations :page-size="page.pageSize" :layout="layout" :current-page="page.pageNum" :pageTotal="page.total"
-        @pageFunc="pageFunc"></Paginations>
-    </Box>
 
     <!-- Form -->
     <el-dialog v-model="editForm" title="编辑商品" width="70%">
@@ -133,32 +129,17 @@ export default {
         state: 0
       },
       formLabelWidth: '120px',
-      // 放置页码及相关数据
-      page: {
-        pageNum: 1, //当前页
-        pageSize: 10, //每页条目数
-        total: 30, // 记录总数
-        totalPage: 1, //页数
-      },
-      layout: "total, sizes, prev, pager, next, jumper, ->, slot", //分页组件会展示的功能项
       ids: [],//表格多选时的数据id
       loading: false,
       currentRow: {},
     }
   },
   created() {
-    service.post("/mall/product/get", { page: 1, size: 10 }).then((response) => {
+    service.post("/mall/product/get", { page: 1, size: 555 }).then((response) => {
       this.productions = response;
-      // this.page.total = response.length;
     });
   },
   methods: {
-    pageFunc(pageInfo) {
-      // 偏移量
-      service.post("/mall/product/get", { page: (pageInfo.pageNum), size: pageInfo.pageSize }).then((response) => {
-        this.productions = response;
-      });
-    },
     handleSelectionChange(val) {
       this.ids = [];
       for (let item of val) {
