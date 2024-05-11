@@ -139,4 +139,9 @@
             LIMIT 5 OFFSET 0
     </select>
 
+    <select id="getInventory" parameterType="integer" resultType="java.lang.Integer">
+        select inventory from attribution
+        where id = #{attrId};
+    </select>
+
 </mapper>

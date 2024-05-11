@@ -14,7 +14,9 @@ public interface ProductMapper {
 
     // 根据种类ID查询商品信息
     List<Product> getProductByCategory(int category);
-    void addSalesAndSubInventory(int product_id,int attribution_id,int quantity);
+
+    void addSalesAndSubInventory(int product_id, int attribution_id, int quantity);
+
     // 新增商品
     void addProduct(Product product);
 
@@ -22,7 +24,9 @@ public interface ProductMapper {
     boolean addProductAttribution(Attribution attr);
 
     Product getProductWithAttributes(int productId);
+
     List<Product> searchProduct(String keyword);
+
     List<Product> getProduct(int page, int size);
 
 
@@ -30,7 +34,9 @@ public interface ProductMapper {
 
     boolean delProductById(Integer id);
 
-    boolean setProductId(int pid,int oldPid);
+    boolean setProductId(int pid, int oldPid);
 
     List<Product> getRecommend(int uid);
+
+    int getInventory(int attrId);
 }

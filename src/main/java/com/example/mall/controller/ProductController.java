@@ -1,7 +1,9 @@
 package com.example.mall.controller;
 
 import com.example.mall.entity.Product;
+import com.example.mall.entity.IQ;
 import com.example.mall.service.ProductService;
+import lombok.Data;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/mall/product")
@@ -116,5 +119,11 @@ public class ProductController {
     @GetMapping("/recommend/uid={uid}")
     public ResponseEntity<List<Product>> getRecommend(@PathVariable int uid) {
         return new ResponseEntity<>(productService.getRecommend(uid), HttpStatus.CREATED);
+    }
+
+
+    @PostMapping("/inventory")
+    public ResponseEntity<Map> isInventoryFull(@RequestBody List<IQ> IQS) {
+        return new ResponseEntity<>(productService.isInventoryFull(IQS), HttpStatus.CREATED);
     }
 }

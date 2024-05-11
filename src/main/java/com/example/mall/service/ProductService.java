@@ -1,12 +1,17 @@
 package com.example.mall.service;
 
+import com.example.mall.controller.ProductController;
 import com.example.mall.entity.Attribution;
+import com.example.mall.entity.IQ;
 import com.example.mall.entity.Product;
 import com.example.mall.mapper.ProductMapper;
+import lombok.Data;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductService {
@@ -55,7 +60,7 @@ public class ProductService {
         // 先插入商品信息
         productMapper.addProduct(product);
         int pid = product.getId();//拿到了插入后的id值
-        System.out.println("oldPid:"+oldPid);
+        System.out.println("oldPid:" + oldPid);
         if (oldPid != null) {
             productMapper.setProductId(pid, oldPid);
         }
@@ -81,6 +86,7 @@ public class ProductService {
     }
 
     public List<Product> getProduct(int page, int size) {
+        page = (page - 1) * size;
         return productMapper.getProduct(page, size);
     }
 
@@ -89,9 +95,17 @@ public class ProductService {
         return productMapper.delProductById(id);
     }
 
-    public List<Product> getRecommend(int uid){
+    public List<Product> getRecommend(int uid) {
         return productMapper.getRecommend(uid);
     }
 
 
+    public Map<Integer, Boolean> isInventoryFull(List<IQ> IQS) {
+        Map<Integer, Boolean> map = new HashMap<>();
+        for (IQ iq : IQS) {
+            int attrIdInventory = productMapper.getInventory(iq.getAttrid());
+            map.put(iq.getAttrid(), attrIdInventory >= iq.getQuantity());
+        }
+        return map;
+    }
 }
