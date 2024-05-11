@@ -19,7 +19,7 @@
       </el-table-column>
       <el-table-column prop="order_time" sortable label="下单时间" width="180">
         <template #default="scope">
-          {{ new Date(scope.row.order_time).toISOString().slice(0, 19).replace("T", " ") }}
+          {{ new Date(scope.row.order_time).toLocaleString() }}
         </template>
       </el-table-column>
 

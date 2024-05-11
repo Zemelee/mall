@@ -106,7 +106,8 @@ async function login() {
       if (res.data.success == false) {
         ElMessage.error("用户名或密码错误！");
       } else {
-        localStorage.setItem("token", JSON.stringify(res.data.user.token));
+        document.cookie = `token=${res.data.user.token.value}; path=/`;
+        localStorage.setItem("token", JSON.stringify(res.data.user.token.value));
         localStorage.setItem("userid", JSON.stringify(res.data.user.user_id));
         localStorage.setItem("username", res.data.user.username);
         router.push("/mall");

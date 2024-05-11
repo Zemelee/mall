@@ -51,7 +51,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      host: "localhost",
+      host: "sugarblack.top",
       port_chat: 3100,
       port_sql: 3000,
       websocket: null,
