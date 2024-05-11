@@ -2,6 +2,8 @@ package com.example.mall.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import javax.servlet.http.Cookie;
+
 @Getter
 @Setter
 public class User {
@@ -12,6 +14,6 @@ public class User {
     private float balance;
     private float accumulated;
     private String phone;
-    private String token;
+    private Cookie token;
 }
 

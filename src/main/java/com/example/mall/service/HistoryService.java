@@ -33,7 +33,6 @@ public class HistoryService {
         return histories.stream() // 将histories列表转换为Stream
                 .allMatch(history -> { // 使用allMatch来检查每个history是否都添加成功
                     try {
-                        System.out.println(history);
                         productMapper.addSalesAndSubInventory(history.getProduct_id(), history.getAttrid(), history.getQuantity());
                         return historyMapper.addHistory(history);
                     } catch (Exception e) {

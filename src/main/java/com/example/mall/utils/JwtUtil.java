@@ -20,7 +20,6 @@ public class JwtUtil {
                 .setId(UUID.randomUUID().toString())  //随机种子
                 .signWith(SignatureAlgorithm.HS256, signature)  //signature
                 .compact();
-        System.out.println(jwtToken);
         return jwtToken;
     }
 }

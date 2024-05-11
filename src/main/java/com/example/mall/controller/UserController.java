@@ -10,6 +10,7 @@ import com.example.mall.service.UserService;
 import com.example.mall.utils.JwtUtil;
 import lombok.Getter;
 import lombok.ToString;
+import javax.servlet.http.Cookie;
 import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,10 @@ public class UserController {
         boolean isValidUser = userService.validateUser(username, password);
         if (isValidUser) {
             User resUser = userService.userLogin(username, password);
-            resUser.setToken(JwtUtil.createToken(username));
+            String token = JwtUtil.createToken(username);
+            Cookie cookie = new Cookie("token", token);
+//            cookie.setHttpOnly(true); // 防止通过 JavaScript 访问 Cookie
+            resUser.setToken(cookie);
             response.setSuccess(true);
             response.setMessage("登陆成功");
             response.setUser(resUser);
