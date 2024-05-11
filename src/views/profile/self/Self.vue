@@ -73,11 +73,11 @@
       </el-tag>
     </el-descriptions-item>
   </el-descriptions>
-  
+
   <el-button @click="showUpdate = true">修改</el-button>
   <el-button @click="showRecharge = true">充值</el-button>
   <el-dialog style="width: 500px" v-model="showUpdate">
-    <updateInfo :info="profile"></updateInfo>
+    <updateInfo :info="profile" @updateData="handleUpdateInfo"></updateInfo>
   </el-dialog>
   <el-dialog style="width: 500px" v-model="showRecharge">
     <Recharge></Recharge>
@@ -128,6 +128,15 @@ onMounted(() => {
       ElMessage.error("数据渲染失败:", JSON.stringify(err));
     });
 });
+const handleUpdateInfo = (data) => {
+  profile.username = data.username;
+  profile.address = data.address;
+  profile.balance = data.balance;
+  profile.password = data.password;
+  profile.phone = data.phone;
+  showUpdate.value = false;
+};
+
 
 const size = ref("");
 const iconStyle = computed(() => {

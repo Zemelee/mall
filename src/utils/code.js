@@ -33,3 +33,14 @@ function randomColor(min, max) {
     const b = Math.floor(Math.random() * (max - min + 1) + min)
     return 'rgb(' + r + ',' + g + ',' + b + ')'
 }
+
+export function debounce(func, delay) {
+    let timeoutId;
+
+    return (...args) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            func(...args);
+        }, delay);
+    };
+};

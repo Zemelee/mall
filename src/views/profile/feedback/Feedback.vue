@@ -16,6 +16,7 @@
       <br>
       <button type="submit">提交</button>
     </form>
+    本项目开源至：https://github.com/Zemelee/mall
   </div>
 </template>
 

@@ -59,7 +59,7 @@
           <el-button :disabled="validateDisabled" @click="validateCoupon">验证</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" :disabled="!payPassword" @click="pay">确认支付</el-button>
+          <el-button type="primary" :disabled="!payPassword" @click="pay" v-loading.fullscreen.lock="fullscreenLoading">确认支付</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -69,9 +69,11 @@
 <script setup>
 import { useRouter } from "vue-router";
 import service from "@/request/index";
+import { debounce } from "@/utils/code";
 import { ref, computed, h } from "vue";
 import { useCartStore } from "@/store/cart.js";
-import { ElMessage, ElMessageBox, ElSwitch } from 'element-plus'
+import { ElMessage, ElMessageBox, ElLoading } from 'element-plus'
+const fullscreenLoading = ref(false)
 const router = useRouter();
 const userid = localStorage.getItem("userid");
 const Cart = useCartStore();
@@ -191,12 +193,14 @@ const open = () => {
 
 
 const pay = async () => {
+  fullscreenLoading.value = true
   const loginResponse = await service.post("/user/login", {
     username: localStorage.getItem("username"),
     password: payPassword.value
   })
   console.log(loginResponse)
   if (!loginResponse.data.success) {
+    fullscreenLoading.value = false
     ElMessage.error("密码错误");
     return;
   }
@@ -214,10 +218,28 @@ const pay = async () => {
       order_time: orderTime
     })
   })
+  // 验证库存是否充足
+  let IQS = orderItems.map(orderItem => ({
+    attrid: orderItem.attrid,
+    quantity: orderItem.quantity
+  }));
+  //IQS      ----  [{attrid: 11, quantity: 2},{attrid: 11, quantity: 2}]
+  //inventory----  {1:true,5:false}
+  let inventory = await service.post("/mall/product/inventory", IQS);
+  for (let i = 0; i < IQS.length; i++) {
+    let attrid = IQS[i].attrid;  //前端传的attrid
+    if (!inventory.data[attrid]) {  //不是用下标获取，是通过键值获取
+      fullscreenLoading.value = false
+      let notFull = orderItems.find(item => item.attrid === attrid); //找到库存不足的商品
+      ElMessage.error(`${notFull.name} - ${notFull.attrval}库存不足`);
+      return;
+    }
+  }
   let consume = await service.post("/user/consume", {
     id: userid,
     amount: totalPrice.value,
   });
+  fullscreenLoading.value = false
   if (!consume.data.status) {
     ElMessage.error("余额不足");
     return;
@@ -231,7 +253,7 @@ const pay = async () => {
         selectedItems.value = [];
         setTimeout(() => {
           router.push("/profile/history");
-        }, 2000);
+        }, 1500);
       })
       .catch((err) => {
         console.log(err);

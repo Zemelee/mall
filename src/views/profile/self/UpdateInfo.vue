@@ -9,7 +9,7 @@
                 <el-input size="small" v-model="user.username" />
             </el-form-item>
             <el-form-item label="密码">
-                <el-input size="small" v-model="user.password" />
+                <el-input size="small" v-model="user.password" type="password" />
             </el-form-item>
             <el-form-item label="地址">
                 <el-input size="small" v-model="user.address" />
@@ -25,33 +25,50 @@
 </template>
 
 <script setup>
-import { ref, onMounted  } from 'vue';
+import { ref, onMounted, defineEmits } from 'vue';
+import { ElMessage } from "element-plus";
 import service from '@/request';
+const emit = defineEmits(['updateData'])
 const { info } = defineProps(['info']);
-const user = ref({
-    user_id: localStorage.getItem('userid'),
+
+let user = ref({
+    user_id: 0,
     username: '',
     password: '',
     address: '',
-    phone: '',
-})
+    phone: ''
+});
+
+let originalUser = {};
+onMounted(() => {
+    user.value.user_id = localStorage.getItem('userid');
+    user.value.username = info.username;
+    user.value.address = info.address;
+    user.value.password = info.password;
+    user.value.phone = info.phone;
+    originalUser = { ...user.value };
+});
+
 const submitForm = async () => {
+    const modified = Object.keys(originalUser).some(key => originalUser[key] !== user.value[key]);
+
+    if (!modified) {
+        ElMessage.warning("未修改数据！")
+        return; // 不提交数据
+    }
+
     try {
         const response = await service.post(`/user/update/${user.value.user_id}`, user.value);
         // 更新成功,传递给父组件
         if (response.data === "ok") {
             service.get(`/user/id=${localStorage.getItem("userid")}`)
-            .then((res) => {
-                
-                // emit('update-info', res.data);
-            })
+                .then((res) => {
+                    emit('updateData', res.data);
+                    ElMessage.success("修改成功")
+                })
         }
     } catch (error) {
-        console.log('Failed to update user information');
+        ElMessage.error("修改失败")
     }
 };
-onMounted(() => {
-    // 如果有需要，可以在这里加载用户初始数据
-});
-
 </script>
