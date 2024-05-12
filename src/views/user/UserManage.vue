@@ -19,15 +19,10 @@
       <el-table-column show-overflow-tooltip prop="accumulated" label="会员等级" width="100">
         <template #default="scope">
           <!-- 假设scope.row.status表示状态，已处理为'handled' -->
-          <el-tag :type="scope.row.accumulated > 10000 ? '' : 'info'">{{ scope.row.accumulated > 10000 ? '非会员' : '会员'
+          <el-tag :type="scope.row.accumulated > 10000 ? '' : 'info'">{{ scope.row.accumulated > 10000 ? '会员' : '用户'
             }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="状态" width="100">
-        <!-- 假设scope.row.status表示状态，已处理为'handled' -->
-        <el-tag>正常</el-tag>
-      </el-table-column>
-
 
       <el-table-column label="操作" width="200">
         <template #default="scope">

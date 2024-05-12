@@ -1,10 +1,10 @@
 <template>
     <div>
-        <el-form inline="true" style="width:1000px">
+        <el-form inline="true" style="width:1400px">
             <el-form-item label="优惠券生成:">
             </el-form-item>
             <el-form-item label="折扣力度">
-                <el-select v-model="discount" placeholder="请选择">
+                <el-select v-model="discount" placeholder="请选择" style="width: 100px">
                     <el-option label="2折" value="2"></el-option>
                     <el-option label="3折" value="3"></el-option>
                     <el-option label="4折" value="4"></el-option>
@@ -16,7 +16,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="有效时长">
-                <el-select v-model="duration" placeholder="请选择">
+                <el-select v-model="duration" placeholder="请选择" style="width: 100px">
                     <el-option label="1天" value="1"></el-option>
                     <el-option label="7天" value="7"></el-option>
                     <el-option label="10天" value="10"></el-option>
@@ -24,13 +24,17 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button @click="genCoupon">生成优惠券</el-button>
+                <el-button @click="genCoupon" type="primary">生成优惠券</el-button>
             </el-form-item>
         </el-form>
         <el-table :data="couponList" border>
             <el-table-column prop="cid" label="优惠码ID" width="100">
             </el-table-column>
-            <el-table-column prop="code" label="优惠码" width="200"></el-table-column>
+            <el-table-column prop="code" label="优惠码" width="200">
+                <template #default="scope">
+                    <div @click="copyCoupon(scope.row.code)">{{ scope.row.code }}</div>
+                </template>
+            </el-table-column>
             <el-table-column prop="discount" label="折扣" width="100">
                 <template #default="scope">{{ scope.row.discount + "0%" }}</template>
             </el-table-column>
@@ -39,7 +43,7 @@
                     }}</template>
             </el-table-column>
             <el-table-column prop="expire" label="过期时间" width="210">
-                <template #default="scope">{{ new Date(scope.row.expire).toISOString().slice(0, 19).replace("T", " ")
+                <template #default="scope">{{ new Date(scope.row.expire).toLocaleString()
                     }}</template></el-table-column>
             <el-table-column prop="status" label="使用状态" width="130">
                 <template #default="scope">
@@ -50,7 +54,7 @@
             <el-table-column label="操作">
                 <template #default="scope">
                     <el-button @click="showCouponInfo(scope.row.code)" :disabled="scope.row.status == 0">详情</el-button>
-                    <el-button @click="delCoupon(scope.row)">删除</el-button>
+                    <el-button @click="delCoupon(scope.row.code)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -68,11 +72,12 @@
 
 <script>
 import service from "@/request/index.js"
+import { debounce } from '@/utils/debounce.js';
 export default {
     data() {
         return {
-            discount: 0,
-            duration: 0,
+            discount: "",
+            duration: "",
             couponList: [],
             dialogVisible: false,
             couponInfo: null
@@ -80,12 +85,12 @@ export default {
     },
     created() {
         service.get("/coupon/get").then(res => {
-            console.log(res);
             this.couponList = res
         })
     },
     methods: {
-        genCoupon() {
+        genCoupon: debounce(function () {
+
             if (this.discount == 0 || this.duration == 0) {
                 this.$message({
                     message: "请选择折扣力度和有效时长",
@@ -105,12 +110,24 @@ export default {
                 this.duration = 0;
                 this.couponList.push(res)
             })
-        },
+        }, 500),
         async showCouponInfo(code) {
             this.couponInfo = await service.get(`/coupon/record/${code}`)
             console.log(this.couponInfo)
             this.dialogVisible = true;
-        }
+        },
+        copyCoupon: debounce(async function (code) {
+            try {
+                await navigator.clipboard.writeText(code);
+                this.$message.success('复制成功');
+            } catch (error) {
+                this.$message.error('复制失败');
+            }
+        }, 500),
+        delCoupon: debounce(async function (code) {
+            this.couponList = this.couponList.filter(item => item.code != code)
+            this.$message.success('删除成功');
+        }, 500)
     }
 }
 </script>
