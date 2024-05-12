@@ -59,7 +59,8 @@
           <el-button :disabled="validateDisabled" @click="validateCoupon">验证</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" :disabled="!payPassword" @click="pay" v-loading.fullscreen.lock="fullscreenLoading">确认支付</el-button>
+          <el-button type="primary" :disabled="!payPassword" @click="pay"
+            v-loading.fullscreen.lock="fullscreenLoading">确认支付</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -69,7 +70,7 @@
 <script setup>
 import { useRouter } from "vue-router";
 import service from "@/request/index";
-import { debounce } from "@/utils/code";
+import { debounce } from "@/utils/debounce";
 import { ref, computed, h } from "vue";
 import { useCartStore } from "@/store/cart.js";
 import { ElMessage, ElMessageBox, ElLoading } from 'element-plus'
@@ -129,7 +130,7 @@ const totalPrice = computed(() => {
 
 const selectedItems = ref([]);
 const showPay = ref(false);
-const submitOrder = () => {
+const submitOrder = debounce(function () {
   if (selectedItems.value.length === 0) {
     ElMessage.warning("请选择商品");
     return;
@@ -146,7 +147,7 @@ const submitOrder = () => {
       }
     })
   open()
-};
+}, 500)
 let useCoupon = ref(false)
 let payPassword = ref(null);
 let couponCode = ref("");
