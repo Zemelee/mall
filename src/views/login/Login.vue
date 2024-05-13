@@ -51,10 +51,10 @@
 
 <script setup>
 import { generateCodeImg, generateCode } from "../../utils/code";
-import crypto from 'crypto-js';
+import { md5 } from "@/utils/md5"
 import service from "../../request/index";
 import Dialog from "./Register.vue";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 const router = useRouter();
@@ -78,31 +78,29 @@ const createCode = () => {
   var newCode = generateCodeImg(newCodeText);
   codeImg.value = newCode;
 };
+onMounted(() => {
 
+});
 // 获取用户信息
 const username = ref("12");
 const password = ref("21");
 
-function md5Test() {
-  var md5 = crypto.MD5(password.value).toString()
-  console.log(md5);
-}
+
 async function login() {
+  console.log(md5(password.value))
   if (Bcode.value == "") {
     ElMessage.error("请输入验证码！");
     return;
-  } else if (Bcode.value != Acode.value) {
+  } else if (Bcode.value.toUpperCase() != Acode.value) {
     ElMessage.error("验证码不正确！");
     return;
   }
-  await service
+  service
     .post("/user/login", {
       username: username.value,
-      // password: crypto.MD5(password.value).toString(),
-      password: password.value,
+      password: md5(password.value),
     })
     .then((res) => {
-        console.log(res)
       if (res.data.success == false) {
         ElMessage.error("用户名或密码错误！");
       } else {

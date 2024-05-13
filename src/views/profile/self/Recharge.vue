@@ -1,6 +1,6 @@
 <template>
     <div class="recharge-container">
-        <h2>用户充值余额</h2>
+        <h2>用户充值余额子组件</h2>
 
         <div class="amount-selection">
             <h3>选择充值金额</h3>
@@ -10,10 +10,9 @@
                     {{ amount }}
                 </div>
             </div>
-            <!-- <div class="custom-amount">
-          <input v-model="customAmount" type="number" min="1" step="1" placeholder="自定义金额">
-          <button @click="selectCustomAmount">确定</button>
-        </div> -->
+            <div class="custom-amount">
+                <input v-model="customAmount" type="number" min="1" step="50" placeholder="自定义金额">
+            </div>
         </div>
 
         <div class="password-input">
@@ -25,17 +24,28 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref,watch ,defineEmits} from 'vue';
 import { ElMessage } from "element-plus";
 import service from '../../../request';
+const emit = defineEmits(['updateAmount'])
 
-const amounts = [10, 20, 50, 100];
-const selectedAmount = ref(0);
+const amounts = [100, 500, 1000, 10000];
+const selectedAmount = ref(0);  // 选中金额
+const customAmount = ref(0); // 自定义金额
 const password = ref('');
 
 const selectAmount = (amount) => {
     selectedAmount.value = amount;
+    customAmount.value = 0;
 };
+
+watch(customAmount,(newValue,oldValue)=>{
+    if(newValue<0){
+        customAmount.value = 0;
+        selectedAmount.value = 0;
+    }
+})
+
 
 
 const recharge = () => {
@@ -48,14 +58,16 @@ const recharge = () => {
         return;
     }
     if (password.value == "21") {
+        console.log(selectedAmount.value || customAmount.value)
         let recharge = {
             id: localStorage.getItem("userid"),
-            amount: selectedAmount.value
+            amount: selectedAmount.value || customAmount.value
         }
         service.post("/user/recharge", recharge).then(res => {
             if (res.data == 1) {
-                ElMessage.success('充值成功');
+                ElMessage.success(`充值成功￥${recharge.amount}`);
                 // 父传子更新数据
+                emit('updateAmount', recharge.amount)
             }
         })
     }

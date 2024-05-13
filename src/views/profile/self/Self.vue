@@ -80,7 +80,8 @@
     <updateInfo :info="profile" @updateData="handleUpdateInfo"></updateInfo>
   </el-dialog>
   <el-dialog style="width: 500px" v-model="showRecharge">
-    <Recharge></Recharge>
+    <!-- 子传父自定义事件对应的函数不加参数！！！ -->
+    <Recharge @updateAmount="handleAmount"></Recharge>
   </el-dialog>
   <br>
   <br>
@@ -135,6 +136,12 @@ const handleUpdateInfo = (data) => {
   profile.password = data.password;
   profile.phone = data.phone;
   showUpdate.value = false;
+};
+
+const handleAmount = (amount) => {
+  console.log(amount)
+  profile.balance += amount;
+  showRecharge.value = false;
 };
 
 

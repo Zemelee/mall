@@ -72,6 +72,7 @@ import { useRouter } from "vue-router";
 import service from "@/request/index";
 import { debounce } from "@/utils/debounce";
 import { ref, computed, h } from "vue";
+import {md5} from "@/utils/md5";
 import { useCartStore } from "@/store/cart.js";
 import { ElMessage, ElMessageBox, ElLoading } from 'element-plus'
 const fullscreenLoading = ref(false)
@@ -197,7 +198,7 @@ const pay = async () => {
   fullscreenLoading.value = true
   const loginResponse = await service.post("/user/login", {
     username: localStorage.getItem("username"),
-    password: payPassword.value
+    password: md5(payPassword.value)
   })
   console.log(loginResponse)
   if (!loginResponse.data.success) {

@@ -25,9 +25,12 @@
 </template>
 
 <script setup>
+import { useRouter } from "vue-router";
 import { ref, onMounted, defineEmits } from 'vue';
 import { ElMessage } from "element-plus";
 import service from '@/request';
+import { md5 } from '@/utils/md5';
+const router = useRouter();
 const emit = defineEmits(['updateData'])
 const { info } = defineProps(['info']);
 
@@ -44,7 +47,7 @@ onMounted(() => {
     user.value.user_id = localStorage.getItem('userid');
     user.value.username = info.username;
     user.value.address = info.address;
-    user.value.password = info.password;
+    // user.value.password = info.password;
     user.value.phone = info.phone;
     originalUser = { ...user.value };
 });
@@ -58,17 +61,34 @@ const submitForm = async () => {
     }
 
     try {
+        //如果修改了密码，则hash  未修改则使用原密码的hash
+        if (user.value.password == '') {
+            user.value.password = info.password;
+        } else {
+            user.value.password = md5(user.value.password);
+        }
+        console.log(user.value)
+        // return;
         const response = await service.post(`/user/update/${user.value.user_id}`, user.value);
+
         // 更新成功,传递给父组件
         if (response.data === "ok") {
             service.get(`/user/id=${localStorage.getItem("userid")}`)
                 .then((res) => {
+                    console.log(1,res.data)
                     emit('updateData', res.data);
                     ElMessage.success("修改成功")
+                    //改了密码则跳转到登录页
+                    if (user.value.password != info.password) {
+                        router.push("/login")
+                    }
+                }).catch((e) => {
+                    console.log(e)
+                    ElMessage.error("修改失败1")
                 })
         }
     } catch (error) {
-        ElMessage.error("修改失败")
+        ElMessage.error("修改失败2")
     }
 };
 </script>
