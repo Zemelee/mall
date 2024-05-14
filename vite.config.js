@@ -6,6 +6,7 @@ export default defineConfig({
   base: './',
   plugins: [vue()],
   build: {
+    assetsInlineLimit: 1024 * 60,// 10kb以下，转Base64
     target: 'es2015',
     outDir: 'dist',
     rollupOptions: {
@@ -25,7 +26,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8081',
+        target: 'http://sugarblack.top:8081',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, "")
       }
